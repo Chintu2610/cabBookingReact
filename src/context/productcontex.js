@@ -4,15 +4,22 @@ import reducer from "../reducer/productReducer";
 
 const AppContext = createContext();
 
-const API = "https://api.pujakaitem.com/api/products";
+const API = "http://localhost:1995/cab/getAllAvailableCab"; // Ensure the correct protocol
 
 const initialState = {
-  isLoading: false,
-  isError: false,
-  products: [],
-  featureProducts: [],
-  isSingleLoading: false,
-  singleProduct: {},
+  filter_products: [],
+  all_products: [],
+  grid_view: true,
+  sorting_value: "lowest",
+  filters: {
+    text: "",
+    category: "all",
+    company: "all",
+    color: "all",
+    maxPrice: 0,
+    price: 0,
+    minPrice: 0,
+  },
 };
 
 const AppProvider = ({ children }) => {
@@ -22,22 +29,23 @@ const AppProvider = ({ children }) => {
     dispatch({ type: "SET_LOADING" });
     try {
       const res = await axios.get(url);
-      const products = await res.data;
+      const products = res.data;
+      console.log("Fetched products:", products);
       dispatch({ type: "SET_API_DATA", payload: products });
     } catch (error) {
+      console.error("Error fetching products:", error);
       dispatch({ type: "API_ERROR" });
     }
   };
-
-  // my 2nd api call for single product
 
   const getSingleProduct = async (url) => {
     dispatch({ type: "SET_SINGLE_LOADING" });
     try {
       const res = await axios.get(url);
-      const singleProduct = await res.data;
+      const singleProduct = res.data;
       dispatch({ type: "SET_SINGLE_PRODUCT", payload: singleProduct });
     } catch (error) {
+      console.error("Error fetching single product:", error);
       dispatch({ type: "SET_SINGLE_ERROR" });
     }
   };
@@ -53,7 +61,7 @@ const AppProvider = ({ children }) => {
   );
 };
 
-// custom hooks
+// Custom hooks
 const useProductContext = () => {
   return useContext(AppContext);
 };

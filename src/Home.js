@@ -12,6 +12,11 @@ const Home = () => {
     <>
       <HeroSection myData={data} />
       {/* <FeatureProduct /> */}
+      {/* <img 
+        src={`${process.env.PUBLIC_URL}/images/cabImages/cab-1.jpg`} 
+        alt="Cab" 
+        style={{ width: '100%', height: 'auto' }} // Optional: for styling
+      /> */}
       <Services />
       <Trusted />
     </>
