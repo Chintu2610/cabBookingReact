@@ -5,13 +5,13 @@ import Trusted from "./components/Trusted";
 
 const Home = () => {
   const data = {
-    name: "thapa store",
+    name: "Seamless Cab Booking Experience at Your Fingertips",
   };
 
   return (
     <>
       <HeroSection myData={data} />
-      <FeatureProduct />
+      {/* <FeatureProduct /> */}
       <Services />
       <Trusted />
     </>

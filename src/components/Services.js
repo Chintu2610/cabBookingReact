@@ -1,7 +1,6 @@
 import styled from "styled-components";
-import { TbTruckDelivery } from "react-icons/tb";
-import { MdSecurity } from "react-icons/md";
-import { GiReceiveMoney } from "react-icons/gi";
+import { TbBook2, TbHistory, TbTrack } from "react-icons/tb";
+
 import { RiSecurePaymentLine } from "react-icons/ri";
 
 const Services = () => {
@@ -11,22 +10,22 @@ const Services = () => {
         <div className="grid grid-three-column">
           <div className="services-1">
             <div>
-              <TbTruckDelivery className="icon" />
-              <h3>Super Fast and Free Delivery</h3>
+              <TbBook2 className="icon" />
+              <h3>Easy Booking Options</h3>
             </div>
           </div>
 
           <div className="services-2">
             <div className="services-colum-2">
               <div>
-                <MdSecurity className="icon" />
-                <h3>Non-contact Shipping</h3>
+                <TbTrack className="icon" />
+                <h3>Real-Time Tracking:</h3>
               </div>
             </div>
             <div className="services-colum-2">
               <div>
-                <GiReceiveMoney className="icon" />
-                <h3>Money-back Guaranteed</h3>
+                <TbHistory className="icon" />
+                <h3>Ride History and Receipts</h3>
               </div>
             </div>
           </div>

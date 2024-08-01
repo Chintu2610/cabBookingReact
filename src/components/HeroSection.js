@@ -13,12 +13,18 @@ const HeroSection = ({ myData }) => {
             <p className="intro-data">Welcome to </p>
             <h1> {name} </h1>
             <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestias
-              atque temporibus veniam doloribus libero ad error omnis voluptates
-              animi! Suscipit sapiente.
+              Welcome to the future of transportation with our easy-to-use cab
+              booking service. Whether you're heading to a business meeting,
+              airport, or a night out on the town, our platform offers a
+              hassle-free way to book your ride. Enjoy real-time tracking,
+              reliable drivers, and a comfortable journey from start to finish.
+              With just a few taps, you can secure a cab that meets your needs
+              and preferences, ensuring a smooth and stress-free travel
+              experience every time. Book now and experience convenience like
+              never before.
             </p>
             <NavLink>
-              <Button>show now</Button>
+              <Button>Book now</Button>
             </NavLink>
           </div>
           {/* our homepage image  */}

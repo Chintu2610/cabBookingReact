@@ -27,8 +27,8 @@ const Footer = () => {
         <footer>
           <div className="container grid grid-four-column">
             <div className="footer-about">
-              <h3>Thapa Technical</h3>
-              <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. </p>
+              <h3>Weblabs Technologies.</h3>
+              <p>Innovate Your World with IT Excellence. </p>
             </div>
             <div className="footer-subscribe">
               <h3>Subscribe to get important updates</h3>
@@ -45,11 +45,14 @@ const Footer = () => {
                   <FaDiscord className="icons" />
                 </div>
                 <div>
+                  <a
+                    href="https://www.instagram.com/weblabstechnologies/">                 
                   <FaInstagram className="icons" />
+                  </a>
                 </div>
                 <div>
                   <a
-                    href="https://www.youtube.com/channel/UCwfaAHy4zQUb2APNOGXUCCA"
+                    href="https://www.youtube.com/@theweblabstechnologies"
                     target="_blank" rel="noreferrer">
                     <FaYoutube className="icons" />
                   </a>
@@ -58,7 +61,7 @@ const Footer = () => {
             </div>
             <div className="footer-contact">
               <h3>Call Us</h3>
-              <h3>+91 12345678978</h3>
+              <h3>+91 9701999033</h3>
             </div>
           </div>
 
@@ -66,7 +69,7 @@ const Footer = () => {
             <hr />
             <div className="container grid grid-two-column ">
               <p>
-                @{new Date().getFullYear()} ThapaTechnical. All Rights Reserved
+                @{new Date().getFullYear()} Weblabs Technologies. All Rights Reserved
               </p>
               <div>
                 <p>PRIVACY POLICY</p>
