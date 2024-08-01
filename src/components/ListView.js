@@ -1,28 +1,31 @@
+import React from "react";
 import { NavLink } from "react-router-dom";
 import styled from "styled-components";
 import FormatPrice from "../Helpers/FormatPrice";
 import { Button } from "../styles/Button";
+import PropTypes from "prop-types";
 
 const ListView = ({ products }) => {
   return (
     <Wrapper className="section">
       <div className="container grid">
         {products.map((curElem) => {
-          const { id, name, image, price, description } = curElem;
+          const { cabId, carName, cabImage, perKmRate, currLocation } = curElem;
           return (
-            <div className="card grid grid-two-column">
+            <div className="card grid grid-two-column" key={cabId}>
               <figure>
-                <img src={image} alt={name} />
+                {/* <img src={cabImage} alt={carName} /> */}
+                <img src={`../../public/images/cabImages/cab-1.jpg`} alt={carName} />
               </figure>
 
               <div className="card-data">
-                <h3>{name}</h3>
+                <h3>{carName}</h3>
                 <p>
-                  <FormatPrice price={price} />
+                  <FormatPrice price={perKmRate} />
                 </p>
-                <p>{description.slice(0, 90)}...</p>
+                <p>{currLocation.slice(0, 90)}...</p>
 
-                <NavLink to={`/singleproduct/${id}`} className="btn-main">
+                <NavLink to={`/singleproduct/${cabId}`} className="btn-main">
                   <Button className="btn">Read More</Button>
                 </NavLink>
               </div>
@@ -32,6 +35,18 @@ const ListView = ({ products }) => {
       </div>
     </Wrapper>
   );
+};
+
+ListView.propTypes = {
+  products: PropTypes.arrayOf(
+    PropTypes.shape({
+      cabId: PropTypes.number.isRequired,
+      carName: PropTypes.string.isRequired,
+      cabImage: PropTypes.string.isRequired,
+      perKmRate: PropTypes.number.isRequired,
+      currLocation: PropTypes.string.isRequired,
+    })
+  ).isRequired,
 };
 
 const Wrapper = styled.section`

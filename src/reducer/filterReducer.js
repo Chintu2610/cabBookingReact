@@ -1,36 +1,21 @@
 const filterReducer = (state, action) => {
   switch (action.type) {
     case "LOAD_FILTER_PRODUCTS":
-      let priceArr = action.payload.map((curElem) => curElem.price);
-      console.log(
-        "🚀 ~ file: filterReducer.js ~ line 5 ~ filterReducer ~ priceArr",
-        priceArr
-      );
-
-      // 1way
-      // console.log(Math.max.apply(null, priceArr));
-
-      // let maxPrice = priceArr.reduce(
-      //   (initialVal, curVal) => Math.max(initialVal, curVal),
-      //   0
-      // );
-      // console.log(
-      //   "🚀 ~ file: filterReducer.js ~ line 16 ~ filterReducer ~ maxPrice",
-      //   maxPrice
-      // );
-
-      let maxPrice = Math.max(...priceArr);
-      console.log(
-        "🚀 ~ file: filterReducer.js ~ line 23 ~ filterReducer ~ maxPrice",
-        maxPrice
-      );
-
-      return {
-        ...state,
-        filter_products: [...action.payload],
-        all_products: [...action.payload],
-        filters: { ...state.filters, maxPrice, price: maxPrice },
-      };
+      console.log("Payload received:", action.payload); // Log the payload
+      if (action.payload && Array.isArray(action.payload)) {
+        let priceArr = action.payload.map((curElem) => curElem.perKmRate);
+        let maxPrice = Math.max(...priceArr);
+        return {
+          ...state,
+          filter_products: [...action.payload],
+          all_products: [...action.payload],
+          filters: { ...state.filters, maxPrice, price: maxPrice },
+        };
+      } else {
+        console.error("Invalid payload:", action.payload);
+        return state; // Return the state unchanged if the payload is invalid
+      }
+    
 
     case "SET_GRID_VIEW":
       return {
@@ -45,48 +30,34 @@ const filterReducer = (state, action) => {
       };
 
     case "GET_SORT_VALUE":
-      // let userSortValue = document.getElementById("sort");
-      // let sort_value = userSortValue.options[userSortValue.selectedIndex].value;
       return {
         ...state,
         sorting_value: action.payload,
       };
 
     case "SORTING_PRODUCTS":
-      let newSortData;
-      // let tempSortProduct = [...action.payload];
-
-      const { filter_products, sorting_value } = state;
-      let tempSortProduct = [...filter_products];
-
+      let tempSortProduct = [...state.filter_products];
       const sortingProducts = (a, b) => {
-        if (sorting_value === "lowest") {
-          return a.price - b.price;
+        if (state.sorting_value === "lowest") {
+          return a.perKmRate - b.perKmRate;
         }
-
-        if (sorting_value === "highest") {
-          return b.price - a.price;
+        if (state.sorting_value === "highest") {
+          return b.perKmRate - a.perKmRate;
         }
-
-        if (sorting_value === "a-z") {
-          return a.name.localeCompare(b.name);
+        if (state.sorting_value === "a-z") {
+          return a.carName.localeCompare(b.carName);
         }
-
-        if (sorting_value === "z-a") {
-          return b.name.localeCompare(a.name);
+        if (state.sorting_value === "z-a") {
+          return b.carName.localeCompare(a.carName);
         }
       };
-
-      newSortData = tempSortProduct.sort(sortingProducts);
-
       return {
         ...state,
-        filter_products: newSortData,
+        filter_products: tempSortProduct.sort(sortingProducts),
       };
 
     case "UPDATE_FILTERS_VALUE":
       const { name, value } = action.payload;
-
       return {
         ...state,
         filters: {
@@ -98,40 +69,35 @@ const filterReducer = (state, action) => {
     case "FILTER_PRODUCTS":
       let { all_products } = state;
       let tempFilterProduct = [...all_products];
-
       const { text, category, company, color, price } = state.filters;
 
       if (text) {
-        tempFilterProduct = tempFilterProduct.filter((curElem) => {
-          return curElem.name.toLowerCase().includes(text);
-        });
-      }
-
-      if (category !== "all") {
-        tempFilterProduct = tempFilterProduct.filter(
-          (curElem) => curElem.category === category
+        tempFilterProduct = tempFilterProduct.filter((curElem) =>
+          curElem.carName.toLowerCase().includes(text.toLowerCase())
         );
       }
-
+      if (category !== "all") {
+        tempFilterProduct = tempFilterProduct.filter(
+          (curElem) => curElem.carType === category
+        );
+      }
       if (company !== "all") {
         tempFilterProduct = tempFilterProduct.filter(
           (curElem) => curElem.company.toLowerCase() === company.toLowerCase()
         );
       }
-
       if (color !== "all") {
         tempFilterProduct = tempFilterProduct.filter((curElem) =>
           curElem.colors.includes(color)
         );
       }
-
       if (price === 0) {
         tempFilterProduct = tempFilterProduct.filter(
-          (curElem) => curElem.price === price
+          (curElem) => curElem.perKmRate === price
         );
       } else {
         tempFilterProduct = tempFilterProduct.filter(
-          (curElem) => curElem.price <= price
+          (curElem) => curElem.perKmRate <= price
         );
       }
       return {
