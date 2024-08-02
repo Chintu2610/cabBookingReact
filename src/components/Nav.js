@@ -1,14 +1,52 @@
-import React, { useState } from "react";
-import { NavLink } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { NavLink, useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { FiShoppingCart } from "react-icons/fi";
+
 import { CgMenu, CgClose } from "react-icons/cg";
-import { useCartContext } from "../context/cart_context";
 
 const Nav = () => {
-  const [menuIcon, setMenuIcon] = useState();
-  const { total_item } = useCartContext();
+  const [menuIcon, setMenuIcon] = useState(false);
+  const [userRole, setUserRole] = useState("");
+  const navigate = useNavigate();
+  const handleLogout = () => {
+    const uuId = localStorage.getItem("uuid");
+    if (uuId) {
+      // Check if uuid exists in local storage
+      const url = `http://localhost:1995/Userlogin/logout?uuid=${uuId}`;
 
+      fetch(url, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+        .then((response) => {
+          if (response.ok) {
+            sessionStorage.removeItem("currUserId");
+            sessionStorage.removeItem("uuid");
+            sessionStorage.removeItem("currRole");
+            sessionStorage.removeItem("currStatus");
+            setUserRole("");
+            navigate("/login"); // Redirect to login page
+          } else if (response.status === 401) {
+            alert("Invalid uuid. Please try again.");
+            navigate("/login"); // Redirect to login page
+          } else {
+            alert("An unexpected error occurred. Please try again later.");
+            navigate("/login"); // Redirect to login page
+          }
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+        });
+    }
+  };
+
+  useEffect(() => {
+    // Retrieve user role from local storage or API
+    const role = localStorage.getItem("currRole");
+    setUserRole(role);
+  }, []);
   const Nav = styled.nav`
     .navbar-lists {
       display: flex;
@@ -170,50 +208,119 @@ const Nav = () => {
           <li>
             <NavLink
               to="/"
-              className="navbar-link "
-              onClick={() => setMenuIcon(false)}>
+              className="navbar-link"
+              onClick={() => setMenuIcon(false)}
+            >
               Home
             </NavLink>
           </li>
           <li>
             <NavLink
               to="/about"
-              className="navbar-link "
-              onClick={() => setMenuIcon(false)}>
+              className="navbar-link"
+              onClick={() => setMenuIcon(false)}
+            >
               About
             </NavLink>
           </li>
           <li>
             <NavLink
               to="/products"
-              className="navbar-link "
-              onClick={() => setMenuIcon(false)}>
+              className="navbar-link"
+              onClick={() => setMenuIcon(false)}
+            >
               Cabs
             </NavLink>
           </li>
           <li>
             <NavLink
               to="/contact"
-              className="navbar-link "
-              onClick={() => setMenuIcon(false)}>
+              className="navbar-link"
+              onClick={() => setMenuIcon(false)}
+            >
               Contact
             </NavLink>
           </li>
-          <li>
-            {/* <NavLink to="/cart" className="navbar-link cart-trolley--link">
-              <FiShoppingCart className="cart-trolley" />
-              <span className="cart-total--item"> {total_item} </span>
-            </NavLink> */}
-            <NavLink
-              to="/contact"
-              className="navbar-link "
-              onClick={() => setMenuIcon(false)}>
-              Login
-            </NavLink>
-          </li>
+          {userRole === "Admin" && (
+            <>
+              <li>
+                <NavLink
+                  to="/admin-dashboard"
+                  className="navbar-link"
+                  onClick={() => setMenuIcon(false)}
+                >
+                  Dashboard
+                </NavLink>
+              </li>
+              <li>
+                <NavLink
+                  to="/admin-settings"
+                  className="navbar-link"
+                  onClick={() => setMenuIcon(false)}
+                >
+                  Admin Settings
+                </NavLink>
+              </li>
+              <li>
+                <NavLink
+                  className="navbar-link"
+                  onClick={() => {
+                    setMenuIcon(false);
+                    handleLogout(); // Call handleLogout function
+                  }}
+                >
+                  LogOut
+                </NavLink>
+              </li>
+            </>
+          )}
+          {userRole === "Customer" && (
+            <>
+              <li>
+                <NavLink
+                  to="/customer-dashboard"
+                  className="navbar-link"
+                  onClick={() => setMenuIcon(false)}
+                >
+                  Dashboard
+                </NavLink>
+              </li>
+              <li>
+                <NavLink
+                  to="/customer-orders"
+                  className="navbar-link"
+                  onClick={() => setMenuIcon(false)}
+                >
+                  My Bookings
+                </NavLink>
+              </li>
+              <li>
+                <NavLink
+                  className="navbar-link"
+                  onClick={() => {
+                    setMenuIcon(false);
+                    handleLogout(); // Call handleLogout function
+                  }}
+                >
+                  LogOut
+                </NavLink>
+              </li>
+            </>
+          )}
+          {!userRole && (
+            <li>
+              <NavLink
+                to="/login"
+                className="navbar-link"
+                onClick={() => setMenuIcon(false)}
+              >
+                Login
+              </NavLink>
+            </li>
+          )}
         </ul>
 
-        {/* two button for open and close of menu */}
+        {/* Two buttons for open and close of menu */}
         <div className="mobile-navbar-btn">
           <CgMenu
             name="menu-outline"
