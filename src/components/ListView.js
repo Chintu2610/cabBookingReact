@@ -15,7 +15,7 @@ const ListView = ({ products }) => {
             <div className="card grid grid-two-column" key={cabId}>
               <figure>
                 {/* <img src={cabImage} alt={carName} /> */}
-                <img src={`../../public/images/cabImages/cab-1.jpg`} alt={carName} />
+                <img src={`${process.env.PUBLIC_URL}/images/cabImages/${cabImage}`} alt={carName} />
               </figure>
 
               <div className="card-data">
