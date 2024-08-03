@@ -252,15 +252,7 @@ const Nav = () => {
                   Dashboard
                 </NavLink>
               </li>
-              <li>
-                <NavLink
-                  to="/admin-settings"
-                  className="navbar-link"
-                  onClick={() => setMenuIcon(false)}
-                >
-                  Admin Settings
-                </NavLink>
-              </li>
+             
               <li>
                 <NavLink
                   className="navbar-link"
