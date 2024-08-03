@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { Card, Container, Row, Col } from 'react-bootstrap';
 import { motion } from 'framer-motion';
-
-
+import Sidebar from '../Sidebar/sidebar';
+import AdminDashboard from './Dashboard';
+import styled from "styled-components";
 const Dashboard = () => {
   const [role, setRole] = useState('');
   const [email, setEmail] = useState('');
@@ -16,125 +17,33 @@ const Dashboard = () => {
   
 
   return (
-    <div className="d-flex flex-column min-vh-100 bg-dark text-light">
-      
-      
+    <div className="d-flex flex-column bg-dark text-light">
+      <Wrapper>
+        
+      <SidebarWrapper>
+          <Sidebar />
+          </SidebarWrapper>
+        
       {/* Sidebar and Page Content */}
-      <Container fluid className="flex-grow-1">
-        <Row className="flex-nowrap">
-         
-          <Col xs={10} className="p-4">
-            {/* Page Content */}
-            <div className="text-center mb-4">
-              <h2>Welcome, {role}</h2>
-            </div>
-            <Row>
-              <Col md={6} lg={3} className="mb-4">
-                <motion.div 
-                  initial={{ opacity: 0 }} 
-                  animate={{ opacity: 1 }} 
-                  transition={{ duration: 0.5 }}
-                >
-                  <Card>
-                    <Card.Body>
-                      <Card.Title>Trip</Card.Title>
-                      <Card.Text>
-                        <a href="BookingHistoryAdmin.html" className="stretched-link">View Booking History</a>
-                      </Card.Text>
-                    </Card.Body>
-                  </Card>
-                </motion.div>
-              </Col>
-              <Col md={6} lg={3} className="mb-4">
-                <motion.div 
-                  initial={{ opacity: 0 }} 
-                  animate={{ opacity: 1 }} 
-                  transition={{ duration: 0.6 }}
-                >
-                  <Card>
-                    <Card.Body>
-                      <Card.Title>Driver</Card.Title>
-                      <Card.Text>
-                        <a href="Drivercontroller.html" className="stretched-link">Manage Drivers</a>
-                      </Card.Text>
-                    </Card.Body>
-                  </Card>
-                </motion.div>
-              </Col>
-              <Col md={6} lg={3} className="mb-4">
-                <motion.div 
-                  initial={{ opacity: 0 }} 
-                  animate={{ opacity: 1 }} 
-                  transition={{ duration: 0.7 }}
-                >
-                  <Card>
-                    <Card.Body>
-                      <Card.Title>Cab</Card.Title>
-                      <Card.Text>
-                        <a href="CabController.html" className="stretched-link">Manage Cabs</a>
-                      </Card.Text>
-                    </Card.Body>
-                  </Card>
-                </motion.div>
-              </Col>
-              <Col md={6} lg={3} className="mb-4">
-                <motion.div 
-                  initial={{ opacity: 0 }} 
-                  animate={{ opacity: 1 }} 
-                  transition={{ duration: 0.8 }}
-                >
-                  <Card>
-                    <Card.Body>
-                      <Card.Title>Customer</Card.Title>
-                      <Card.Text>
-                        <a href="customers.html" className="stretched-link">View Customers</a>
-                      </Card.Text>
-                    </Card.Body>
-                  </Card>
-                </motion.div>
-              </Col>
-              {admin && (
-                <>
-                  <Col md={6} lg={3} className="mb-4">
-                    <motion.div 
-                      initial={{ opacity: 0 }} 
-                      animate={{ opacity: 1 }} 
-                      transition={{ duration: 0.9 }}
-                    >
-                      <Card>
-                        <Card.Body>
-                          <Card.Title>Register Admin</Card.Title>
-                          <Card.Text>
-                            <a href="admin_register.html" className="stretched-link">Register New Admin</a>
-                          </Card.Text>
-                        </Card.Body>
-                      </Card>
-                    </motion.div>
-                  </Col>
-                  <Col md={6} lg={3} className="mb-4">
-                    <motion.div 
-                      initial={{ opacity: 0 }} 
-                      animate={{ opacity: 1 }} 
-                      transition={{ duration: 1 }}
-                    >
-                      <Card>
-                        <Card.Body>
-                          <Card.Title>View All Admin</Card.Title>
-                          <Card.Text>
-                            <a href="ViewAllAdmin.html" className="stretched-link">View All Admins</a>
-                          </Card.Text>
-                        </Card.Body>
-                      </Card>
-                    </motion.div>
-                  </Col>
-                </>
-              )}
-            </Row>
-          </Col>
-        </Row>
-      </Container>
+      <Col xs={12} className="min-vh-100 p-4">
+      <AdminDashboard/>
+      </Col>
+      </Wrapper>
     </div>
   );
 };
+const Wrapper = styled.section`
+  padding: 10rem 0;
+`;
+const SidebarWrapper = styled.div`
+ 
+  top: 10rem;
+  left: 0;
+  width: 20%;
+  height: calc(100% - 10rem);
+  background-color: #6c757d;
+  overflow-x: auto;
+  overflow-y: hidden;
+`;
 
 export default Dashboard;
