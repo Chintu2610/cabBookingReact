@@ -1,5 +1,5 @@
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import About from './About';
 import Home from './Home';
 import Products from './Products';
@@ -10,11 +10,19 @@ import ErrorPage from './ErrorPage';
 import { GlobalStyle } from './GlobalStyle';
 import { ThemeProvider } from 'styled-components';
 import Header from './components/Header';
-import Footer from './components/Footer';
 import Login from './components/Login';
 import Register from './components/Register';
 import Dashboard from './components/AdminDashboard';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import BookingHistory from './components/bookingHistory';
+import Users from './components/users';
+import FormicDemo from './components/formic-demo/formic-demo';
+import YupDemo from './components/YUP_Eemo/YUP';
+import { FormikComponent } from './components/formik-component/formik-component';
+import { UserRegister } from './components/UserRegister';
+import Drivers from './components/drivers';
+import { DriverRegister } from './components/registerDriver';
+import WithFooter from './components/WithFooter';
 
 const App = () => {
   const theme = {
@@ -39,33 +47,53 @@ const App = () => {
     },
   };
 
-  // Component to conditionally render the footer based on the route
-  const ConditionalFooter = () => {
-    const location = useLocation();
-    const showFooter = location.pathname !== '/admin-dashboard';
-
-    return showFooter ? <Footer /> : null;
-  };
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userRole, setUserRole] = useState("");
+  useEffect(() => {
+    const uuid = sessionStorage.getItem('uuid');
+    setIsLoggedIn(!!uuid);
+    const role = sessionStorage.getItem("currRole");
+    setUserRole(role);
+    console.log("in app.js"+userRole);
+  }, []);
 
   return (
     <ThemeProvider theme={theme}>
-      <Router>
+      <BrowserRouter>
         <GlobalStyle />
-        <Header />
+        <Header currentRole={{"userRole":userRole}} />
         <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/products" element={<Products />} />
-          <Route path="/contact" element={<Contact />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/singleproduct/:id" element={<SingleProduct />} />
-          <Route path="/cart" element={<Cart />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/admin-dashboard" element={<Dashboard />} />
+          <Route path="/" element={<WithFooter showFooter={true} />}>
+            <Route index element={<Home />} />
+            <Route path="about" element={<About />} />
+            <Route path="products" element={<Products />} />
+            <Route path="contact" element={<Contact />} />
+            <Route path="login" element={<Login />} />
+            <Route path="singleproduct/:id" element={<SingleProduct />} />
+            <Route path="cart" element={<Cart />} />
+            <Route path="register" element={<UserRegister />} />
+            <Route path="formiK-demo" element={<FormicDemo />} />
+            <Route path="yup-demo" element={<YupDemo />} />
+            <Route path="formik-component" element={<FormikComponent />} />
+          </Route>
+          <Route path="/admin-dashboard" element={<WithFooter showFooter={false} />}>
+            <Route index element={<Dashboard />} />
+          </Route>
+          <Route path="/booking-history" element={<WithFooter showFooter={false} />}>
+            <Route index element={<BookingHistory />} />
+          </Route>
+          <Route path="/users" element={<WithFooter showFooter={false} />}>
+            <Route index element={<Users />} />
+          </Route>
+          <Route path="/drivers" element={<WithFooter showFooter={false} />}>
+            <Route index element={<Drivers />} />
+          </Route>
+          <Route path="/registerDriver" element={<WithFooter showFooter={false} />}>
+            <Route index element={<DriverRegister />} />
+          </Route>
           <Route path="*" element={<ErrorPage />} />
         </Routes>
-        <ConditionalFooter />
-      </Router>
+      </BrowserRouter>
     </ThemeProvider>
   );
 };

@@ -1,6 +1,45 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+
 
 const AdminDashboard = () => {
+  const [countdata, setCountData] = useState({
+    noOfUserRegistered:0,
+	 noOfBookings:0,
+	 noOfBookingsLastMonth:0,
+	 noOfDrivers:0,
+   noOfCab:0
+  });
+  const fetchData = async () => {
+    
+    try {
+      const uuid=sessionStorage.getItem("uuid");
+     
+      const response = await fetch(`http://localhost:1995/admin/getCountsForAdminDashboard?uuid=${uuid}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setCountData({
+          noOfUserRegistered: data.noOfUserRegistered,
+          noOfBookings: data.noOfBookings,
+          noOfBookingsLastMonth: data.noOfBookingsLastMonth,
+          noOfDrivers: data.noOfDrivers,
+          noOfCab:data.noOfCab
+          });
+      } else {
+       
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
+  useEffect(() => {
+    fetchData();
+  }, []);
   return (
     <div className="content-wrapper">
       {/* Content Header (Page header) */}
@@ -27,49 +66,49 @@ const AdminDashboard = () => {
             <div className="col-lg-3 col-6">
               <div className="small-box bg-info">
                 <div className="inner">
-                  <h3>150</h3>
+                  <h3>{countdata.noOfBookingsLastMonth}</h3>
                   <p>New Bookings</p>
                 </div>
                 <div className="icon">
                   <i className="ion ion-bag"></i>
                 </div>
-                <a href="#" className="small-box-footer">More info <i className="fas fa-arrow-circle-right"></i></a>
+                <a href="/booking-history" className="small-box-footer">More info <i className="fas fa-arrow-circle-right"></i></a>
               </div>
             </div>
             <div className="col-lg-3 col-6">
               <div className="small-box bg-success">
                 <div className="inner">
-                  <h3>53<sup style={{ fontSize: '20px' }}>%</sup></h3>
-                  <p>Bounce Rate</p>
+                  <h3>{countdata.noOfCab}</h3>
+                  <p>Total Cab</p>
                 </div>
                 <div className="icon">
                   <i className="ion ion-stats-bars"></i>
                 </div>
-                <a href="#" className="small-box-footer">More info <i className="fas fa-arrow-circle-right"></i></a>
+                <a href="/products" className="small-box-footer">More info <i className="fas fa-arrow-circle-right"></i></a>
               </div>
             </div>
             <div className="col-lg-3 col-6">
               <div className="small-box bg-warning">
                 <div className="inner">
-                  <h3>44</h3>
-                  <p>User Registrations</p>
+                  <h3>{countdata.noOfUserRegistered}</h3>
+                  <p>User Registered</p>
                 </div>
                 <div className="icon">
                   <i className="ion ion-person-add"></i>
                 </div>
-                <a href="#" className="small-box-footer">More info <i className="fas fa-arrow-circle-right"></i></a>
+                <a href="/users" className="small-box-footer">More info <i className="fas fa-arrow-circle-right"></i></a>
               </div>
             </div>
             <div className="col-lg-3 col-6">
               <div className="small-box bg-danger">
                 <div className="inner">
-                  <h3>65</h3>
-                  <p>Unique Visitors</p>
+                  <h3>{countdata.noOfDrivers}</h3>
+                  <p>No Of drivers</p>
                 </div>
                 <div className="icon">
                   <i className="ion ion-pie-graph"></i>
                 </div>
-                <a href="#" className="small-box-footer">More info <i className="fas fa-arrow-circle-right"></i></a>
+                <a href="/drivers" className="small-box-footer">More info <i className="fas fa-arrow-circle-right"></i></a>
               </div>
             </div>
           </div>

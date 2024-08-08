@@ -9,9 +9,10 @@ const Dashboard = () => {
   const [email, setEmail] = useState('');
   const [admin,setAdmin]= useState(false);
   useEffect(() => {
-    setRole(localStorage.getItem('currRole'));
-    setEmail(localStorage.getItem('email'));
+    setRole(sessionStorage.getItem('currRole'));
+    setEmail(sessionStorage.getItem('email'));
     setAdmin(true);
+     
   }, []);
 
   
