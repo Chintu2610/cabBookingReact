@@ -461,7 +461,7 @@ mark,
 
 .initialism {
   font-size: 90%;
-  text-transform: uppercase;
+     
 }
 
 .blockquote {
@@ -21356,7 +21356,7 @@ body.text-sm .control-sidebar {
 }
 
 .description-block > .description-text {
-  text-transform: uppercase;
+     
 }
 
 .description-block .description-icon {
@@ -21724,7 +21724,7 @@ body.text-sm .control-sidebar {
   right: -2px;
   text-align: center;
   text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.4);
-  text-transform: uppercase;
+     
   top: 10px;
   -webkit-transform: rotate(45deg);
   transform: rotate(45deg);

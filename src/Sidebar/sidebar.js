@@ -50,10 +50,10 @@ const Sidebar = () => {
               </ul>
             </li> */}
             <li className="nav-item">
-              <Link to="/widgets" className="nav-link">
+              <Link to="/registerDriver" className="nav-link">
                 <i className="nav-icon fas fa-th"></i>
                 <p>
-                  Widgets
+                Register Driver
                   <span className="right badge badge-danger">New</span>
                 </p>
               </Link>
@@ -62,7 +62,7 @@ const Sidebar = () => {
               <a href="#" className="nav-link">
                 <i className="nav-icon fas fa-copy"></i>
                 <p>
-                  Layout Options
+                  sdfsd
                   <i className="fas fa-angle-left right"></i>
                   <span className="badge badge-info right">6</span>
                 </p>

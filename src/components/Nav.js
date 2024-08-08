@@ -4,13 +4,15 @@ import styled from "styled-components";
 
 import { CgMenu, CgClose } from "react-icons/cg";
 
-const Nav = () => {
+const Nav = ({role}) => {
+  console.log("in Nav.js"+role.userRole);
   const [menuIcon, setMenuIcon] = useState(false);
-  const [userRole, setUserRole] = useState("");
+ 
   const navigate = useNavigate();
   const handleLogout = () => {
-    const uuId = localStorage.getItem("uuid");
+    const uuId = sessionStorage.getItem("uuid");
     if (uuId) {
+      console.log(uuId);
       // Check if uuid exists in local storage
       const url = `http://localhost:1995/Userlogin/logout?uuid=${uuId}`;
 
@@ -26,7 +28,11 @@ const Nav = () => {
             sessionStorage.removeItem("uuid");
             sessionStorage.removeItem("currRole");
             sessionStorage.removeItem("currStatus");
-            setUserRole("");
+            sessionStorage.removeItem("userName");
+            sessionStorage.removeItem("email");
+           
+
+            
             navigate("/login"); // Redirect to login page
           } else if (response.status === 401) {
             alert("Invalid uuid. Please try again.");
@@ -44,8 +50,8 @@ const Nav = () => {
 
   useEffect(() => {
     // Retrieve user role from local storage or API
-    const role = localStorage.getItem("currRole");
-    setUserRole(role);
+    // const role = sessionStorage.getItem("currRole");
+    // setUserRole(role);
   }, []);
   const Nav = styled.nav`
     .navbar-lists {
@@ -241,7 +247,7 @@ const Nav = () => {
               Contact
             </NavLink>
           </li>
-          {userRole === "Admin" && (
+          {role.userRole === "Admin" && (
             <>
               <li>
                 <NavLink
@@ -266,7 +272,7 @@ const Nav = () => {
               </li>
             </>
           )}
-          {userRole === "Customer" && (
+          {(role.userRole === "Customer") && (
             <>
               <li>
                 <NavLink
@@ -299,7 +305,7 @@ const Nav = () => {
               </li>
             </>
           )}
-          {!userRole && (
+          {!role.userRole && (
             <li>
               <NavLink
                 to="/login"
@@ -312,19 +318,7 @@ const Nav = () => {
           )}
         </ul>
 
-        {/* Two buttons for open and close of menu */}
-        <div className="mobile-navbar-btn">
-          <CgMenu
-            name="menu-outline"
-            className="mobile-nav-icon"
-            onClick={() => setMenuIcon(true)}
-          />
-          <CgClose
-            name="close-outline"
-            className="mobile-nav-icon close-outline"
-            onClick={() => setMenuIcon(false)}
-          />
-        </div>
+       
       </div>
     </Nav>
   );

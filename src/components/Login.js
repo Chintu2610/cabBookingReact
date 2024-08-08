@@ -22,12 +22,12 @@ const Login = () => {
 
       if (response.ok) {
         const data = await response.json();
-        localStorage.setItem('currUserId', data.currUserId);
-        localStorage.setItem('uuid', data.uuid);
-        localStorage.setItem('currRole', data.currRole);
-        localStorage.setItem('currStatus', data.currStatus);
-        localStorage.setItem('userName', data.userName);
-        localStorage.setItem('email', data.email);
+        sessionStorage.setItem('currUserId', data.currUserId);
+        sessionStorage.setItem('uuid', data.uuid);
+        sessionStorage.setItem('currRole', data.currRole);
+        sessionStorage.setItem('currStatus', data.currStatus);
+        sessionStorage.setItem('userName', data.userName);
+        sessionStorage.setItem('email', data.email);
 
         switch (data.currRole) {
           case 'Admin':
@@ -52,10 +52,10 @@ const Login = () => {
   return (
     <div className="container" style={{marginTop: '15rem'}}>
       <div className="row justify-content-center">
-        <div className="col-md-4">
+        <div className="col-md-5">
           <div className="card">
             <div className="card-body">
-              <h2 className="card-title text-center mb-4">Login</h2>
+            <h5 className="text-center mb-4">Welcome Back! Please Log In</h5>
               <form onSubmit={handleSubmit}>
                 <div className="mb-3">
                   <label htmlFor="email" className="form-label">Email</label>
