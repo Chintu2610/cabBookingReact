@@ -1,16 +1,16 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-
+import { useCookies } from 'react-cookie';
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
-
+  const [cookies,setCookie,removeCookie]=useCookies();
   const handleSubmit = async (event) => {
     event.preventDefault();
 
     const formData = { email, password };
-
+    
     try {
       const response = await fetch('http://localhost:1995/Userlogin/Login', {
         method: 'POST',
@@ -22,12 +22,19 @@ const Login = () => {
 
       if (response.ok) {
         const data = await response.json();
-        sessionStorage.setItem('currUserId', data.currUserId);
-        sessionStorage.setItem('uuid', data.uuid);
-        sessionStorage.setItem('currRole', data.currRole);
-        sessionStorage.setItem('currStatus', data.currStatus);
-        sessionStorage.setItem('userName', data.userName);
-        sessionStorage.setItem('email', data.email);
+        setCookie('currUserId',data.currUserId,{expires:new Date('2025-05-06')});
+        setCookie('uuid', data.uuid,{expires:new Date('2025-05-06')});
+        setCookie('currRole', data.currRole,{expires:new Date('2025-05-06')});
+        setCookie('currStatus', data.currStatus,{expires:new Date('2025-05-06')});
+        setCookie('userName', data.userName,{expires:new Date('2025-05-06')});
+        setCookie('email', data.email,{expires:new Date('2025-05-06')});
+        
+        // sessionStorage.setItem('currUserId', data.currUserId);
+        // sessionStorage.setItem('uuid', data.uuid);
+        // sessionStorage.setItem('currRole', data.currRole);
+        // sessionStorage.setItem('currStatus', data.currStatus);
+        // sessionStorage.setItem('userName', data.userName);
+        // sessionStorage.setItem('email', data.email);
 
         switch (data.currRole) {
           case 'Admin':
@@ -41,6 +48,7 @@ const Login = () => {
         }
       } else if (response.status === 401) {
         alert('Invalid email or password. Please try again.');
+        
       } else {
         alert('An unexpected error occurred. Please try again later.');
       }

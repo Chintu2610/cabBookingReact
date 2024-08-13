@@ -6,7 +6,7 @@ import { Button } from "../styles/Button";
 
 const FilterSection = () => {
   const {
-    filters: { text, category, color, price, maxPrice, minPrice },
+    filters: { text, category, price, maxPrice, minPrice },
     updateFilterValue,
     all_products,
     clearFilters,
@@ -18,22 +18,17 @@ const FilterSection = () => {
       return curElem[attr];
     });
 
-    if (attr === "colors") {
-      // return (newVal = ["All", ...new Set([].concat(...newVal))]);
-      newVal = newVal.flat();
-    }
+    
 
     return (newVal = ["all", ...new Set(newVal)]);
   };
 
   // we need to have the individual data of each in an array format
   const categoryData = getUniqueData(all_products, "category");
-  const companyData = getUniqueData(all_products, "company");
+  const companyData = getUniqueData(all_products, "currLocation");
+  
   const colorsData = getUniqueData(all_products, "colors");
-  // console.log(
-  //   "🚀 ~ file: FilterSection.js ~ line 23 ~ FilterSection ~ companyData",
-  //   colorsData
-  // );
+
 
   return (
     <Wrapper>
@@ -42,14 +37,14 @@ const FilterSection = () => {
           <input
             type="text"
             name="text"
-            placeholder="Search"
+            placeholder="Search By Car Name"
             value={text}
             onChange={updateFilterValue}
           />
         </form>
       </div>
 
-      <div className="filter-category">
+      {/* <div className="filter-category">
         <h3>Category</h3>
         <div>
           {categoryData.map((curElem, index) => {
@@ -66,20 +61,20 @@ const FilterSection = () => {
             );
           })}
         </div>
-      </div>
+      </div> */}
 
       <div className="filter-company">
-        <h3>Company</h3>
+        <h3>City</h3>
 
         <form action="#">
           <select
-            name="company"
-            id="company"
-            className="filter-company--select"
+            name="currLocation"
+            id="currLocation"
+            className="filter-city--select"
             onClick={updateFilterValue}>
             {companyData.map((curElem, index) => {
               return (
-                <option key={index} value={curElem} name="company">
+                <option key={index} value={curElem} name="currLocation">
                   {curElem}
                 </option>
               );
@@ -88,42 +83,8 @@ const FilterSection = () => {
         </form>
       </div>
 
-      <div className="filter-colors colors">
-        <h3>Colors</h3>
-
-        <div className="filter-color-style">
-          {colorsData.map((curColor, index) => {
-            if (curColor === "all") {
-              return (
-                <button
-                  key={index}
-                  type="button"
-                  value={curColor}
-                  name="color"
-                  className="color-all--style"
-                  onClick={updateFilterValue}>
-                  all
-                </button>
-              );
-            }
-            return (
-              <button
-                key={index}
-                type="button"
-                value={curColor}
-                name="color"
-                style={{ backgroundColor: curColor }}
-                className={color === curColor ? "btnStyle active" : "btnStyle"}
-                onClick={updateFilterValue}>
-                {color === curColor ? <FaCheck className="checkStyle" /> : null}
-              </button>
-            );
-          })}
-        </div>
-      </div>
-
       <div className="filter_price">
-        <h3>Price</h3>
+        <h3>Price / KM</h3>
         <p>
           <FormatPrice price={price} />
         </p>
@@ -151,7 +112,7 @@ const Wrapper = styled.section`
   display: flex;
   flex-direction: column;
   gap: 3rem;
-
+  margin-top:100px;
   h3 {
     padding: 2rem 0;
     font-size: bold;
@@ -189,7 +150,7 @@ const Wrapper = styled.section`
     }
   }
 
-  .filter-company--select {
+  .filter-city--select {
     padding: 0.3rem 1.2rem;
     font-size: 1.6rem;
     color: ${({ theme }) => theme.colors.text};

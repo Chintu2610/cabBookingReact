@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import styled from "styled-components";
 import Nav from "./Nav";
 
 const Header = ({currentRole}) => {
   console.log("in Header.js"+currentRole.userRole);
+ 
   return (
     <MainHeader>
       <NavLink to="/">

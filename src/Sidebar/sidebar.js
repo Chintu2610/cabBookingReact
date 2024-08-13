@@ -1,7 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-
+import { useCookies } from 'react-cookie';
 const Sidebar = () => {
+  //const role = sessionStorage.getItem("currRole");
+  const [cookies,setCookie,removeCookie]=useCookies();
   return (
     <aside className="main-sidebar sidebar-dark-primary elevation-4 position-fixed" style={{marginTop:'100px',backgroundColor:'#F6F8FA'}} >
      
@@ -12,43 +14,11 @@ const Sidebar = () => {
             <img src="dist/img/user2-160x160.jpg" className="img-circle elevation-2" alt="User" />
           </div>
           <div className="info">
-            <a href="#" className="d-block">Alexander Pierce</a>
+            <a href="#" className="d-block">{cookies.currRole}</a>
           </div>
         </div>
-
-        
-
         <nav className="mt-2">
-          <ul className="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-            {/* <li className="nav-item menu-open">
-              <a href="#" className="nav-link active">
-                <i className="nav-icon fas fa-tachometer-alt"></i>
-                <p>
-                  Dashboard
-                  <i className="right fas fa-angle-left"></i>
-                </p>
-              </a>
-              <ul className="nav nav-treeview">
-                <li className="nav-item">
-                  <Link to="/index" className="nav-link active">
-                    <i className="far fa-circle nav-icon"></i>
-                    <p>Dashboard v1</p>
-                  </Link>
-                </li>
-                <li className="nav-item">
-                  <Link to="/index2" className="nav-link">
-                    <i className="far fa-circle nav-icon"></i>
-                    <p>Dashboard v2</p>
-                  </Link>
-                </li>
-                <li className="nav-item">
-                  <Link to="/index3" className="nav-link">
-                    <i className="far fa-circle nav-icon"></i>
-                    <p>Dashboard v3</p>
-                  </Link>
-                </li>
-              </ul>
-            </li> */}
+          <ul className="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">          
             <li className="nav-item">
               <Link to="/registerDriver" className="nav-link">
                 <i className="nav-icon fas fa-th"></i>
@@ -59,10 +29,19 @@ const Sidebar = () => {
               </Link>
             </li>
             <li className="nav-item">
+              <Link to="/registerCab" className="nav-link">
+                <i className="nav-icon fas fa-th"></i>
+                <p>
+                Register Cab
+                  <span className="right badge badge-danger">New</span>
+                </p>
+              </Link>
+            </li>
+            <li className="nav-item">
               <a href="#" className="nav-link">
                 <i className="nav-icon fas fa-copy"></i>
                 <p>
-                  sdfsd
+                Register Cab
                   <i className="fas fa-angle-left right"></i>
                   <span className="badge badge-info right">6</span>
                 </p>

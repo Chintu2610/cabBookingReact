@@ -4,13 +4,15 @@ import { motion } from 'framer-motion';
 import Sidebar from '../Sidebar/sidebar';
 import AdminDashboard from './Dashboard';
 import styled from "styled-components";
+import { useCookies } from 'react-cookie';
 const Dashboard = () => {
   const [role, setRole] = useState('');
   const [email, setEmail] = useState('');
   const [admin,setAdmin]= useState(false);
+  const [cookies,setCookie,removeCookie]=useCookies();
   useEffect(() => {
-    setRole(sessionStorage.getItem('currRole'));
-    setEmail(sessionStorage.getItem('email'));
+    setRole(cookies.currRole);
+    setEmail(cookies.email);
     setAdmin(true);
      
   }, []);
@@ -24,8 +26,7 @@ const Dashboard = () => {
       <SidebarWrapper>
           <Sidebar />
           </SidebarWrapper>
-        
-      {/* Sidebar and Page Content */}
+      
       <Col xs={12} className="min-vh-100 p-4">
       <AdminDashboard/>
       </Col>

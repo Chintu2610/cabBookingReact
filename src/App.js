@@ -11,7 +11,6 @@ import { GlobalStyle } from './GlobalStyle';
 import { ThemeProvider } from 'styled-components';
 import Header from './components/Header';
 import Login from './components/Login';
-import Register from './components/Register';
 import Dashboard from './components/AdminDashboard';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import BookingHistory from './components/bookingHistory';
@@ -23,6 +22,10 @@ import { UserRegister } from './components/UserRegister';
 import Drivers from './components/drivers';
 import { DriverRegister } from './components/registerDriver';
 import WithFooter from './components/WithFooter';
+import { CabRegister } from './components/registerCab';
+import Cabs from './Products';
+import BookingPage from './components/BookingPage';
+import { useCookies } from 'react-cookie';
 
 const App = () => {
   const theme = {
@@ -49,10 +52,11 @@ const App = () => {
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userRole, setUserRole] = useState("");
+  const[cookies,setCookie,removeCookie]=useCookies();
   useEffect(() => {
     const uuid = sessionStorage.getItem('uuid');
     setIsLoggedIn(!!uuid);
-    const role = sessionStorage.getItem("currRole");
+    const role = cookies.currRole;
     setUserRole(role);
     console.log("in app.js"+userRole);
   }, []);
@@ -66,7 +70,7 @@ const App = () => {
           <Route path="/" element={<WithFooter showFooter={true} />}>
             <Route index element={<Home />} />
             <Route path="about" element={<About />} />
-            <Route path="products" element={<Products />} />
+            <Route path="cabs" element={<Cabs />} />
             <Route path="contact" element={<Contact />} />
             <Route path="login" element={<Login />} />
             <Route path="singleproduct/:id" element={<SingleProduct />} />
@@ -75,6 +79,7 @@ const App = () => {
             <Route path="formiK-demo" element={<FormicDemo />} />
             <Route path="yup-demo" element={<YupDemo />} />
             <Route path="formik-component" element={<FormikComponent />} />
+            <Route path="/booking/:cabId" element={<BookingPage />} />
           </Route>
           <Route path="/admin-dashboard" element={<WithFooter showFooter={false} />}>
             <Route index element={<Dashboard />} />
@@ -90,6 +95,9 @@ const App = () => {
           </Route>
           <Route path="/registerDriver" element={<WithFooter showFooter={false} />}>
             <Route index element={<DriverRegister />} />
+          </Route>
+          <Route path="/registerCab" element={<WithFooter showFooter={false} />}>
+            <Route index element={<CabRegister />} />
           </Route>
           <Route path="*" element={<ErrorPage />} />
         </Routes>

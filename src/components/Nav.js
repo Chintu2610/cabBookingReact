@@ -1,16 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import { Cookies,useCookies,removeCookie } from 'react-cookie';
 
-import { CgMenu, CgClose } from "react-icons/cg";
 
 const Nav = ({role}) => {
+  const [cookies,setCookie,removeCookie]=useCookies();
   console.log("in Nav.js"+role.userRole);
   const [menuIcon, setMenuIcon] = useState(false);
  
   const navigate = useNavigate();
   const handleLogout = () => {
-    const uuId = sessionStorage.getItem("uuid");
+    const uuId = cookies.uuid;
     if (uuId) {
       console.log(uuId);
       // Check if uuid exists in local storage
@@ -24,6 +25,13 @@ const Nav = ({role}) => {
       })
         .then((response) => {
           if (response.ok) {
+            removeCookie("currUserId");
+            removeCookie("uuid");
+            removeCookie("currRole");
+            removeCookie("currStatus");
+            removeCookie("userName");
+            removeCookie("email");
+
             sessionStorage.removeItem("currUserId");
             sessionStorage.removeItem("uuid");
             sessionStorage.removeItem("currRole");
@@ -231,7 +239,7 @@ const Nav = ({role}) => {
           </li>
           <li>
             <NavLink
-              to="/products"
+              to="/cabs"
               className="navbar-link"
               onClick={() => setMenuIcon(false)}
             >
