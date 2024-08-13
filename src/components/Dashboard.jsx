@@ -1,7 +1,17 @@
 import React, { useEffect, useState } from 'react';
-
+import { useCookies } from 'react-cookie';
+import { useNavigate } from 'react-router-dom';
 
 const AdminDashboard = () => {
+  const Navigate=useNavigate();
+  useEffect(() => {
+    if(cookies.uuid===undefined)
+    {
+      Navigate("/login");
+    }
+    fetchData();
+  }, []);
+  const [cookies,setCookie,removeCookie]=useCookies();
   const [countdata, setCountData] = useState({
     noOfUserRegistered:0,
 	 noOfBookings:0,
@@ -12,7 +22,7 @@ const AdminDashboard = () => {
   const fetchData = async () => {
     
     try {
-      const uuid=sessionStorage.getItem("uuid");
+      const uuid=cookies.uuid;
      
       const response = await fetch(`http://localhost:1995/admin/getCountsForAdminDashboard?uuid=${uuid}`, {
         method: 'GET',
@@ -37,9 +47,7 @@ const AdminDashboard = () => {
       console.error('Error:', error);
     }
   };
-  useEffect(() => {
-    fetchData();
-  }, []);
+  
   return (
     <div className="content-wrapper">
       {/* Content Header (Page header) */}

@@ -9,17 +9,7 @@ export function DriverRegister() {
   return (
     <div className="container" style={{ marginTop: "100px" }}>
       <Formik
-        //       "userName": "string",
-        //   "password": "string",
-        //   "address": "string",
-        //   "mobileNumber": "string",
-        //   "email": "string",
-        //   "userRole": "string",
-        //   "driverId": 0,
-        //   "licenceNo": "string",
-        //   "rating": 0,
-        //   "currLocation": "string",
-        //   "currDriverStatus": "string"
+      
         initialValues={{
           userName: "",
           age: 0,
@@ -64,7 +54,8 @@ export function DriverRegister() {
             .max(10, "Length should not exceed 10"),
           mobileNumber: yup
             .string() // Use .string() since Mobile is a text input
-            .required("Mobile number is required").matches(/\+91 d{10}/,"please enter valid mobile numnber"),
+            .required("Mobile number is required")
+            .matches(/\+91 d{10}/, "please enter valid mobile numnber"),
           email: yup
             .string()
             .required("Email is required")
@@ -87,11 +78,18 @@ export function DriverRegister() {
               /[\W_]/,
               "Password must contain at least one special character"
             ),
-            age:yup.number()
-            .required("age is required"),
-            
-            licence:yup.string()
-            .required("licence is required"),
+            age: yup
+            .number()
+            .required("Age is required")
+            .positive("Age must be a positive number")
+            .integer("Age must be an integer")
+            .min(18, "Age must be greater than or equal to 18")
+          ,
+
+          licence: yup.string().required("licence is required"),
+
+          location: yup.string().required("please provide a valid location."),
+          status: yup.string().nonNullable().required("status is required."),
         })}
       >
         {({ isSubmitting }) => (
@@ -176,7 +174,7 @@ export function DriverRegister() {
                           component="div"
                           className="text-danger"
                         />
-                      </div>                  
+                      </div>
                       <div className="mb-3">
                         <label htmlFor="age" className="form-label">
                           Age
@@ -193,50 +191,55 @@ export function DriverRegister() {
                         />
                       </div>
                       <div className="mb-3">
-                       <label htmlFor="licence" className="form-label">
-                         Licence Number
-                       </label>
-                       <Field
-                         type="text"
-                         name="licence"
-                         className="form-control"
-                       />
-                       <ErrorMessage
-                         name="licence"
-                         component="div"
-                         className="text-danger"
-                       />
-                     </div>
-                     <div className="mb-3">
-                       <label htmlFor="email" className="form-label">
-                         Current Location
-                       </label>
-                       <Field
-                         type="text"
-                         name="location"
-                         className="form-control"
-                       />
-                       <ErrorMessage
-                         name="location"
-                         component="div"
-                         className="text-danger"
-                       />
-                     </div>
-                     <div className="mb-3">
-                       <label htmlFor="status" className="form-label">
-                         Driver Status
-                       </label>
-                       <Field
-                         type="text"
-                         name="status"
-                         className="form-control"
-                       />
-                       <ErrorMessage
-                         name="status"
-                         component="div"
-                         className="text-danger"
-                       />
-                     </div>
+                        <label htmlFor="licence" className="form-label">
+                          Licence Number
+                        </label>
+                        <Field
+                          type="text"
+                          name="licence"
+                          className="form-control"
+                        />
+                        <ErrorMessage
+                          name="licence"
+                          component="div"
+                          className="text-danger"
+                        />
+                      </div>
+                      <div className="mb-3">
+                        <label htmlFor="email" className="form-label">
+                          Current Location
+                        </label>
+                        <Field
+                          type="text"
+                          name="location"
+                          className="form-control"
+                        />
+                        <ErrorMessage
+                          name="location"
+                          component="div"
+                          className="text-danger"
+                        />
+                      </div>
+                      <div className="mb-3">
+                        <label htmlFor="status" className="form-label">
+                          Driver Status
+                        </label>
+                        <Field
+                          name="status"
+                          as="select"
+                          className="form-control"
+                        >
+                          <option value="">Select status</option>
+                          <option value="Active">Active</option>
+                          <option value="Inactive">Inactive</option>
+                          
+                        </Field>
+                        <ErrorMessage
+                          name="status"
+                          component="div"
+                          className="text-danger"
+                        />
+                      </div>
                       <button
                         type="submit"
                         className="btn btn-primary form-control"
@@ -244,7 +247,6 @@ export function DriverRegister() {
                       >
                         Register
                       </button>
-                      
                     </div>
                   </div>
                 </div>

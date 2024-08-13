@@ -4,7 +4,7 @@ import ProductList from "./components/ProductList";
 import Sort from "./components/Sort";
 //import { useFilterContext } from "./context/filter_context";
 
-const Products = () => {
+const Cabs = () => {
   return (
     <Wrapper>
       <div className="container grid grid-filter-column">
@@ -37,4 +37,4 @@ const Wrapper = styled.section`
   }
 `;
 
-export default Products;
+export default Cabs;
