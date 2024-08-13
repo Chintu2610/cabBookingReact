@@ -22,12 +22,34 @@ const MapComponent = ({ onLocationSelect }) => {
   const [markerPosition, setMarkerPosition] = useState(center);
   const [autocomplete, setAutocomplete] = useState(null);
 
-  const onMapClick = useCallback((event) => {
-    const lat = event.latLng.lat();
-    const lng = event.latLng.lng();
-    setMarkerPosition({ lat, lng });
-    onLocationSelect({ lat, lng });
-  }, [onLocationSelect]);
+  // Function to get address from latitude and longitude using Geocoding API
+  const getAddressFromLatLng = async (lat, lng) => {
+    try {
+      const geocoder = new window.google.maps.Geocoder();
+      const response = await geocoder.geocode({ location: { lat, lng } });
+      if (response.results[0]) {
+        return response.results[0].formatted_address;
+      } else {
+        console.log('No results found');
+        return '';
+      }
+    } catch (error) {
+      console.error('Geocoder failed due to: ' + error);
+      return '';
+    }
+  };
+
+  const onMapClick = useCallback(
+    async (event) => {
+      const lat = event.latLng.lat();
+      const lng = event.latLng.lng();
+      setMarkerPosition({ lat, lng });
+
+      const address = await getAddressFromLatLng(lat, lng);
+      onLocationSelect(address);
+    },
+    [onLocationSelect]
+  );
 
   const onLoad = useCallback((map) => {
     const bounds = new window.google.maps.LatLngBounds(center);
@@ -43,7 +65,7 @@ const MapComponent = ({ onLocationSelect }) => {
     setAutocomplete(autocompleteInstance);
   };
 
-  const onPlaceChanged = () => {
+  const onPlaceChanged = async () => {
     if (autocomplete !== null) {
       const place = autocomplete.getPlace();
       if (place.geometry) {
@@ -51,13 +73,15 @@ const MapComponent = ({ onLocationSelect }) => {
         const lng = place.geometry.location.lng();
         setMarkerPosition({ lat, lng });
         map.panTo({ lat, lng });
-        onLocationSelect({ lat, lng });
+
+        const address = await getAddressFromLatLng(lat, lng);
+        onLocationSelect(address);
       }
     }
   };
 
   return isLoaded ? (
-    <div style={{marginTop:"100px"}}>
+    <div style={{ marginTop: '100px' }}>
       <Autocomplete
         onLoad={onLoadAutocomplete}
         onPlaceChanged={onPlaceChanged}
