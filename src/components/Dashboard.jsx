@@ -92,7 +92,7 @@ const AdminDashboard = () => {
                 <div className="icon">
                   <i className="ion ion-stats-bars"></i>
                 </div>
-                <a href="/products" className="small-box-footer">More info <i className="fas fa-arrow-circle-right"></i></a>
+                <a href="/cabs" className="small-box-footer">More info <i className="fas fa-arrow-circle-right"></i></a>
               </div>
             </div>
             <div className="col-lg-3 col-6">

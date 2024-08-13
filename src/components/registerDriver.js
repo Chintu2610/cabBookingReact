@@ -52,11 +52,11 @@ export function DriverRegister() {
             .required("Username is required")
             .min(4, "Minimum length should be 4")
             .max(10, "Length should not exceed 10"),
-          mobileNumber: yup
-            .string() // Use .string() since Mobile is a text input
-            .required("Mobile number is required")
-            .matches(/\+91 d{10}/, "please enter valid mobile numnber"),
-          email: yup
+            mobileNumber: yup
+            .string() // Ensures the input is treated as a string
+            .required("Mobile number is required") // Makes the field mandatory
+            .matches(/^\d{10}$/, "Please enter a valid 10-digit mobile number"), // Validates exactly 10 digits
+            email: yup
             .string()
             .required("Email is required")
             .email("Invalid email format"),
@@ -86,10 +86,10 @@ export function DriverRegister() {
             .min(18, "Age must be greater than or equal to 18")
           ,
 
-          licence: yup.string().required("licence is required"),
+          licenceNo: yup.string().required("licence is required"),
 
-          location: yup.string().required("please provide a valid location."),
-          status: yup.string().nonNullable().required("status is required."),
+          currLocation: yup.string().required("please provide a valid location."),
+          currDriverStatus: yup.string().nonNullable().required("status is required."),
         })}
       >
         {({ isSubmitting }) => (
@@ -196,11 +196,11 @@ export function DriverRegister() {
                         </label>
                         <Field
                           type="text"
-                          name="licence"
+                          name="licenceNo"
                           className="form-control"
                         />
                         <ErrorMessage
-                          name="licence"
+                          name="licenceNo"
                           component="div"
                           className="text-danger"
                         />
@@ -211,11 +211,11 @@ export function DriverRegister() {
                         </label>
                         <Field
                           type="text"
-                          name="location"
+                          name="currLocation"
                           className="form-control"
                         />
                         <ErrorMessage
-                          name="location"
+                          name="currLocation"
                           component="div"
                           className="text-danger"
                         />
@@ -225,7 +225,7 @@ export function DriverRegister() {
                           Driver Status
                         </label>
                         <Field
-                          name="status"
+                          name="currDriverStatus"
                           as="select"
                           className="form-control"
                         >
@@ -235,7 +235,7 @@ export function DriverRegister() {
                           
                         </Field>
                         <ErrorMessage
-                          name="status"
+                          name="currDriverStatus"
                           component="div"
                           className="text-danger"
                         />

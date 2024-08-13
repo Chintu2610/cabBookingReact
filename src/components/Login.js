@@ -63,10 +63,10 @@ const Login = () => {
         <div className="col-md-5">
           <div className="card">
             <div className="card-body">
-            <h5 className="text-center mb-4">Welcome Back! Please Log In</h5>
+            <h3 className="text-center mb-4">Welcome Back! Please Log In</h3>
               <form onSubmit={handleSubmit}>
                 <div className="mb-3">
-                  <label htmlFor="email" className="form-label">Email</label>
+                  <label htmlFor="email" className="form-label fs-5">Email</label>
                   <input 
                     type="email" 
                     id="email" 
@@ -78,7 +78,7 @@ const Login = () => {
                   />
                 </div>
                 <div className="mb-3">
-                  <label htmlFor="password" className="form-label">Password</label>
+                  <label htmlFor="password" className="form-label fs-5">Password</label>
                   <input 
                     type="password" 
                     id="password" 
@@ -89,14 +89,15 @@ const Login = () => {
                     required 
                   />
                 </div>
-                <button type="submit" className="btn btn-primary w-100">Login</button>
+                <button type="submit" className="btn btn-primary w-100 fs-5">Login</button>
               </form>
               <div className="row mt-3">
-                <div className="col text-end">
-                  <Link className="text-muted" to="/forgot-password">Forgot password?</Link>
+              <div className="col text-start fs-5 ">
+                  <Link className="text-danger" to="/forgot-password">Forgot password?</Link>
                 </div>
-                <div className="col text-end">
-                  <Link className="text-muted" to="/register">Register</Link>
+
+                <div className="col text-end fs-5">
+                  <Link className="text-success" to="/register">Register</Link>
                 </div>
               </div>
             </div>

@@ -79,7 +79,7 @@ export function CabRegister() {
                     <div className="card-body">
                       <h5 className="text-center mb-4">Register Cab</h5>
                       <div className="mb-3">
-                        <label htmlFor="carType" className="form-label">
+                        <label htmlFor="carType" className="form-label fs-5">
                           Car Type
                         </label>
                         <Field
@@ -109,7 +109,7 @@ export function CabRegister() {
                       </div>
 
                       <div className="mb-3">
-                        <label htmlFor="carName" className="form-label">
+                        <label htmlFor="carName" className="form-label fs-5">
                           Car Name
                         </label>
                         <Field
@@ -124,7 +124,7 @@ export function CabRegister() {
                         />
                       </div>
                       <div className="mb-3">
-                        <label htmlFor="carNumber" className="form-label">
+                        <label htmlFor="carNumber" className="form-label fs-5">
                           Car Number
                         </label>
                         <Field
@@ -139,7 +139,7 @@ export function CabRegister() {
                         />
                       </div>
                       <div className="mb-3">
-                        <label htmlFor="perKmRate" className="form-label">
+                        <label htmlFor="perKmRate" className="form-label fs-5">
                           Per Km Rate
                         </label>
                         <Field
@@ -154,7 +154,7 @@ export function CabRegister() {
                         />
                       </div>
                       <div className="mb-3">
-                        <label htmlFor="currLocation" className="form-label">
+                        <label htmlFor="currLocation" className="form-label fs-5">
                           Current Location
                         </label>
                         <Field
@@ -169,7 +169,7 @@ export function CabRegister() {
                         />
                       </div>
                       <div className="mb-3">
-                        <label htmlFor="cabCurrStatus" className="form-label">
+                        <label htmlFor="cabCurrStatus" className="form-label fs-5">
                           Cab Status
                         </label>
                         <Field
@@ -188,7 +188,7 @@ export function CabRegister() {
                         />
                       </div>
                       <div className="mb-3">
-                        <label htmlFor="cabImage" className="form-label">
+                        <label htmlFor="cabImage" className="form-label fs-5">
                           Cab Image
                         </label>
                         <input

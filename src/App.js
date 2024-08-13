@@ -26,6 +26,8 @@ import { CabRegister } from './components/registerCab';
 import Cabs from './Products';
 import BookingPage from './components/BookingPage';
 import { useCookies } from 'react-cookie';
+import PasswordResetForm from './components/forgot-password';
+import ResetPassword from './components/forgot-password';
 
 const App = () => {
   const theme = {
@@ -73,6 +75,7 @@ const App = () => {
             <Route path="cabs" element={<Cabs />} />
             <Route path="contact" element={<Contact />} />
             <Route path="login" element={<Login />} />
+            <Route path="forgot-password" element={<ResetPassword />} />
             <Route path="singleproduct/:id" element={<SingleProduct />} />
             <Route path="cart" element={<Cart />} />
             <Route path="register" element={<UserRegister />} />
