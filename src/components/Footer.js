@@ -1,10 +1,31 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { NavLink } from "react-router-dom";
 import { Button } from "../styles/Button";
 import { FaDiscord, FaInstagram, FaYoutube } from "react-icons/fa";
 
+
+
 const Footer = () => {
+  const [email, setEmail] = useState('');
+
+  const handleSubscribe = async (e) => {
+    e.preventDefault();
+    try {
+      await fetch('http://localhost:1995/email/subscribe', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: new URLSearchParams({ email }),
+      });
+      alert('Subscription successful!');
+    } catch (error) {
+      console.error('Error:', error);
+      alert('Subscription failed. Please try again.');
+    }
+  };
+
   return (
     <>
       <Wrapper>
@@ -28,13 +49,19 @@ const Footer = () => {
           <div className="container grid grid-four-column">
             <div className="footer-about">
               <h3>Weblabs Technologies.</h3>
-              <p>Innovate Your World with IT Excellence. </p>
+              <p>Innovate Your World with IT Excellence.</p>
             </div>
             <div className="footer-subscribe">
               <h3>Subscribe to get important updates</h3>
-              <form action="#">
-                <input type="email" name="email" placeholder="YOUR E-MAIL" />
-
+              <form onSubmit={handleSubscribe}>
+                <input
+                  type="email"
+                  name="email"
+                  placeholder="YOUR E-MAIL"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                />
                 <input type="submit" value="subscribe" />
               </form>
             </div>
@@ -45,15 +72,15 @@ const Footer = () => {
                   <FaDiscord className="icons" />
                 </div>
                 <div>
-                  <a
-                    href="https://www.instagram.com/weblabstechnologies/">                 
-                  <FaInstagram className="icons" />
+                  <a href="https://www.instagram.com/weblabstechnologies/">
+                    <FaInstagram className="icons" />
                   </a>
                 </div>
                 <div>
                   <a
                     href="https://www.youtube.com/@theweblabstechnologies"
-                    target="_blank" rel="noreferrer">
+                    target="_blank" rel="noreferrer"
+                  >
                     <FaYoutube className="icons" />
                   </a>
                 </div>
@@ -67,7 +94,7 @@ const Footer = () => {
 
           <div className="footer-bottom--section">
             <hr />
-            <div className="container grid grid-two-column ">
+            <div className="container grid grid-two-column">
               <p>
                 @{new Date().getFullYear()} Weblabs Technologies. All Rights Reserved
               </p>

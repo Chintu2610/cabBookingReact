@@ -2,9 +2,10 @@ import { useState, useEffect } from "react";
 import DataTable from "react-data-table-component";
 import Sidebar from "../Sidebar/sidebar";
 import styled from "styled-components";
-
+import { useCookies } from "react-cookie";
 
 function Users() {
+  const [cookie,removeCookie,setCookie]=useCookies();
   const columns = [
     
     {
@@ -39,7 +40,7 @@ function Users() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const uuid=sessionStorage.getItem("uuid");
+        const uuid=cookie.uuid;
         const response = await fetch(`http://localhost:1995/customer/viewAllCustomer?uuid=${uuid}`);
         if (response.ok) {
           const data = await response.json();
