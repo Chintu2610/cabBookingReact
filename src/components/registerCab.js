@@ -17,7 +17,9 @@ export function CabRegister() {
           perKmRate: "",
           currLocation: "",
           cabCurrStatus: "",
-          cabImage: null, // Initialize with null
+          cabImage: null,
+          area:"",
+          manufacturingYear:"",
         }}
         onSubmit={async (values) => {
           try {
@@ -29,6 +31,8 @@ export function CabRegister() {
             formData.append("perKmRate", values.perKmRate);
             formData.append("currLocation", values.currLocation);
             formData.append("cabCurrStatus", values.cabCurrStatus);
+            formData.append("area", values.area);
+            formData.append("manufacturingYear",values.manufacturingYear)
             if (values.cabImage) {
               formData.append("file", values.cabImage); // Append the file
             }
@@ -40,7 +44,7 @@ export function CabRegister() {
 
             if (response.ok) {
               alert("Cab registration successful!");
-              navigate("/login");
+              navigate("/cabs");
             } else {
               alert("Registration failed. Please try again.");
             }
@@ -57,17 +61,33 @@ export function CabRegister() {
             .required("Per km rate is required")
             .positive("Rate must be a positive number")
             .typeError("Rate must be a number"),
+            manufacturingYear: yup
+            .number()
+            .required("Manufacturing Year is required")
+            .positive("Manufacturing Year must be a positive number")
+            .integer("Manufacturing Year must be an integer")
+            .test(
+              "len",
+              "Please enter a valid manufacturing year (yyyy)",
+              (val) => val && val.toString().length === 4
+            )
+          
+           
+            ,
+            
           currLocation: yup.string().required("Current location is required"),
+          area: yup.string().required("Current area is required"),
           cabCurrStatus: yup
             .string()
-            .required("Cab status is required")
-            .oneOf(["Active", "Inactive"], "Invalid status"),
+            .required("Cab status is required"),
+            
           cabImage: yup
             .mixed()
             .required("Cab image is required")
             .test("fileSize", "The file is too large", (value) => {
               return !value || (value && value.size <= 2 * 1024 * 1024); // 2MB
             }),
+
         })}
       >
         {({ isSubmitting, setFieldValue }) => (
@@ -154,6 +174,21 @@ export function CabRegister() {
                         />
                       </div>
                       <div className="mb-3">
+                        <label htmlFor="manufacturingYear" className="form-label fs-5">
+                          Manufacturing Year
+                        </label>
+                        <Field
+                          type="number"
+                          name="manufacturingYear"
+                          className="form-control"
+                        />
+                        <ErrorMessage
+                          name="manufacturingYear"
+                          component="div"
+                          className="text-danger"
+                        />
+                      </div>
+                      <div className="mb-3">
                         <label htmlFor="currLocation" className="form-label fs-5">
                           Current Location
                         </label>
@@ -164,6 +199,21 @@ export function CabRegister() {
                         />
                         <ErrorMessage
                           name="currLocation"
+                          component="div"
+                          className="text-danger"
+                        />
+                      </div>
+                      <div className="mb-3">
+                        <label htmlFor="area" className="form-label fs-5">
+                          Area
+                        </label>
+                        <Field
+                          type="text"
+                          name="area"
+                          className="form-control"
+                        />
+                        <ErrorMessage
+                          name="area"
                           component="div"
                           className="text-danger"
                         />
