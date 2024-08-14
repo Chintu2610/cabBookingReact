@@ -6,10 +6,12 @@ import { Button } from "../styles/Button";
 
 const FilterSection = () => {
   const {
-    filters: { text, category, price, maxPrice, minPrice },
+    filters: { text, category, price, maxPrice, minPrice,currLocation, area },
     updateFilterValue,
     all_products,
     clearFilters,
+    sorting,
+    availableAreas,
   } = useFilterContext();
 
   // get the unique values of each property
@@ -24,24 +26,27 @@ const FilterSection = () => {
   };
 
   // we need to have the individual data of each in an array format
-  const categoryData = getUniqueData(all_products, "category");
+  const categoryData = getUniqueData(all_products, "carName");
   const companyData = getUniqueData(all_products, "currLocation");
-  
-  const colorsData = getUniqueData(all_products, "colors");
-
-
+  const areaData = getUniqueData(all_products, "area");
   return (
     <Wrapper>
-      <div className="filter-search">
-        <form onSubmit={(e) => e.preventDefault()}>
-          <input
-            type="text"
-            name="text"
-            placeholder="Search By Car Name"
-            value={text}
-            onChange={updateFilterValue}
-          />
-        </form>
+      <div className="filter-company">
+       
+        <h3>Car Names</h3>
+        <select
+            name="carName"
+            id="carName"
+            className="filter-city--select"
+            onClick={updateFilterValue}>
+            {categoryData.map((curElem, index) => {
+              return (
+                <option key={index} value={curElem} name="carName">
+                  {curElem}
+                </option>
+              );
+            })}
+          </select>
       </div>
 
       {/* <div className="filter-category">
@@ -82,6 +87,34 @@ const FilterSection = () => {
           </select>
         </form>
       </div>
+      <div className="filter-company">
+        <h3>Area</h3>
+
+        <form action="#">
+        <select
+  name="area"
+  id="area"
+  className="filter-city--select"
+  onChange={updateFilterValue}
+  disabled={currLocation === "all"}
+>
+  {(availableAreas || []).map((curElem, index) => (
+    <option key={index} value={curElem} name="area">
+      {curElem}
+    </option>
+  ))}
+</select>
+
+        </form>
+      </div>
+      <select className="filter-city--select" onChange={sorting}>
+  <option value="lowest">Price: Low to High</option>
+  <option value="highest">Price: High to Low</option>
+ 
+  <option value="year-asc">Year: Old to New</option>
+  <option value="year-desc">Year: New to Old</option>
+</select>
+
 
       <div className="filter_price">
         <h3>Price / KM</h3>

@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import MapComponent from '../components/mapComponent';
 import { useCookies } from 'react-cookie';
-import { useParams } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 
 const BookingPage = () => {
+  const location = useLocation();
+  const perKmRate = location.state?.perKmRate || 0; 
   const params=useParams();
   const [cookies,setCookie,removeCookie]=useCookies();
   const [pickupLocation, setPickupLocation] = useState('');
@@ -75,6 +77,7 @@ const BookingPage = () => {
 
         const result = await response.json();
         console.log('Booking confirmed:', result);
+        alert('Booking confirmed.');
         // Handle successful booking
       } catch (error) {
         console.error('Error confirming booking:', error);
@@ -84,22 +87,11 @@ const BookingPage = () => {
       console.log('Please fill in all required fields');
     }
   };
-
   return (
     <div className="container mt-4">
       <h2>Select Pickup Location</h2>
       <MapComponent onLocationSelect={handleLocationSelect} />
-      <form>
-        {/* <div className="mb-3">
-          <label htmlFor="dropLocation" className="form-label">Drop Location</label>
-          <input
-            type="text"
-            className="form-control"
-            id="dropLocation"
-            value={dropLocation}
-            onChange={(e) => setDropLocation(e.target.value)}
-          />
-        </div> */}
+      <form>      
         <div className="mb-3">
           <label htmlFor="fromDateTime" className="form-label">From Date & Time</label>
           <input
@@ -130,18 +122,6 @@ const BookingPage = () => {
             onChange={(e) => setPrice(e.target.value)}
           />
         </div>
-        
-        {/* <div className="mb-3">
-          <label htmlFor="currStatus" className="form-label">Current Status</label>
-          <input
-            type="text"
-            className="form-control"
-            id="currStatus"
-            value={currStatus}
-            onChange={(e) => setCurrStatus(e.target.value)}
-          />
-        </div> */}
-       
         <div className="d-flex align-items-center justify-content-center">
           <button
             type="button"

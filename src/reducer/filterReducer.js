@@ -50,35 +50,64 @@ const filterReducer = (state, action) => {
         if (state.sorting_value === "z-a") {
           return b.carName.localeCompare(a.carName);
         }
+        if (state.sorting_value === "year-asc") {
+          return a.manufacturingYear - b.manufacturingYear;  // Sort by year ascending
+        }
+        if (state.sorting_value === "year-desc") {
+          return b.manufacturingYear - a.manufacturingYear;  // Sort by year descending
+        }
       };
       return {
         ...state,
         filter_products: tempSortProduct.sort(sortingProducts),
       };
 
-    case "UPDATE_FILTERS_VALUE":
-      const { name, value } = action.payload;
-      return {
-        ...state,
-        filters: {
-          ...state.filters,
-          [name]: value,
-        },
-      };
+      case "UPDATE_FILTERS_VALUE":
+        const { name, value } = action.payload;
+  
+        if (name === "currLocation") {
+          // Update the available areas based on the selected city
+          const selectedCity = value;
+          const filteredAreas = state.all_products
+            .filter((product) => product.currLocation === selectedCity)
+            .map((product) => product.area);
+  
+          const uniqueAreas = ["all", ...new Set(filteredAreas)];
+  
+          return {
+            ...state,
+            filters: {
+              ...state.filters,
+              [name]: value,
+              area: "all", // Reset area filter when city changes
+            },
+            availableAreas: uniqueAreas,
+          };
+        }
+  
+        return {
+          ...state,
+          filters: {
+            ...state.filters,
+            [name]: value,
+          },
+        };
 
     case "FILTER_PRODUCTS":
       let { all_products } = state;
       let tempFilterProduct = [...all_products];
-      const { text, category, currLocation, color, price } = state.filters;
+      const { text, carName, currLocation, color, price,manufacturingYear } = state.filters;
 
       if (text) {
         tempFilterProduct = tempFilterProduct.filter((curElem) =>
           curElem.carName.toLowerCase().includes(text.toLowerCase())
         );
       }
-      if (category !== "all") {
+      if (carName !== "all") {
+        
+        console.log(carName);
         tempFilterProduct = tempFilterProduct.filter(
-          (curElem) => curElem.carType === category
+          (curElem) => curElem.carName === carName
         );
       }
       if (currLocation !== "all") {
@@ -86,6 +115,7 @@ const filterReducer = (state, action) => {
           (curElem) => curElem.currLocation.toLowerCase() === currLocation.toLowerCase()
         );
       }
+      
       if (color !== "all") {
         tempFilterProduct = tempFilterProduct.filter((curElem) =>
           curElem.colors.includes(color)
