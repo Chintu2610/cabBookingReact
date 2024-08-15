@@ -96,7 +96,7 @@ const filterReducer = (state, action) => {
     case "FILTER_PRODUCTS":
       let { all_products } = state;
       let tempFilterProduct = [...all_products];
-      const { text, carName, currLocation, color, price,manufacturingYear } = state.filters;
+      const { text, carName, currLocation, color, price,manufacturingYear,area } = state.filters;
 
       if (text) {
         tempFilterProduct = tempFilterProduct.filter((curElem) =>
@@ -113,6 +113,11 @@ const filterReducer = (state, action) => {
       if (currLocation !== "all") {
         tempFilterProduct = tempFilterProduct.filter(
           (curElem) => curElem.currLocation.toLowerCase() === currLocation.toLowerCase()
+        );
+      }
+      if (area !== "all") {
+        tempFilterProduct = tempFilterProduct.filter(
+          (curElem) => curElem.area.toLowerCase() === area.toLowerCase()
         );
       }
       
