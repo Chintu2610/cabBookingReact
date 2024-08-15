@@ -1,74 +1,96 @@
 import styled from "styled-components";
 import { useFilterContext } from "../context/filter_context";
-import { FaCheck } from "react-icons/fa";
 import FormatPrice from "../Helpers/FormatPrice";
 import { Button } from "../styles/Button";
 
 const FilterSection = () => {
-  const {
-    filters: {
-      text,
-      category,
-      price,
-      maxPrice,
-      minPrice,
-      currLocation,
-      area,
-      modelName,
-    },
-    updateFilterValue,
-    all_products,
-    clearFilters,
-    sorting,
-    availableAreas,
-    availableModels,
-  } = useFilterContext();
+  // In FilterSection component
+const {
+  filters: {
+    carName,
+    modelName,
+    price,
+    maxPrice,
+    minPrice,
+    currLocation,
+    area,
+  },
+  updateFilterValue,
+  all_products,
+  clearFilters,
+  sorting,
+  availableAreas,
+  availableModels,
+} = useFilterContext();
 
-  // get the unique values of each property
+
+  // Get the unique values of each property
   const getUniqueData = (data, attr) => {
-    let newVal = data.map((curElem) => {
-      return curElem[attr];
-    });
-
-    return (newVal = ["all", ...new Set(newVal)]);
+    const newVal = data.map((curElem) => curElem[attr]);
+    return ["all", ...new Set(newVal)];
   };
 
-  // we need to have the individual data of each in an array format
+  // Get unique data arrays
   const categoryData = getUniqueData(all_products, "carName");
   const companyData = getUniqueData(all_products, "currLocation");
   const areaData = getUniqueData(all_products, "area");
+  const handleSelectAllBrands = (event) => {
+    const { checked } = event.target;
+    const value = checked ? categoryData : []; // Select all or deselect all
+    updateFilterValue({ target: { name: "carName", value } });
+  };
   return (
     <Wrapper>
       <div className="filter-company">
         <h3>Brand Name</h3>
-        <select
-          name="carName"
-          id="carName"
-          className="filter-city--select"
-          onClick={updateFilterValue}
-        >
-          {categoryData.map((curElem, index) => {
-            return (
-              <option key={index} value={curElem} name="carName">
-                {curElem}
-              </option>
-            );
-          })}
-        </select>
+        <form>
+          {categoryData.map((curElem, index) => (
+            <div key={index}>
+              <input
+                type="checkbox"
+                id={`carName-${curElem}`}
+                name="carName"
+                value={curElem}
+                onChange={updateFilterValue}
+                checked={carName.includes(curElem)}
+              />
+              <label htmlFor={`carName-${curElem}`}>{curElem}</label>
+            </div>
+          ))}
+        </form>
       </div>
+
       <div className="filter-company">
         <h3>Model Name</h3>
+        <form>
+          {availableModels.map((curElem, index) => (
+            <div key={index}>
+              <input
+                type="checkbox"
+                id={`modelName-${curElem}`}
+                name="modelName"
+                value={curElem}
+                onChange={updateFilterValue}
+                checked={modelName.includes(curElem)}
+                disabled={carName.length === 0 || carName.includes('all')}
+              />
+              <label htmlFor={`modelName-${curElem}`}>{curElem}</label>
+            </div>
+          ))}
+        </form>
+      </div>
 
-        <form action="#">
+      <div className="filter-company">
+        <h3>City</h3>
+        <form>
           <select
-            name="modelName"
-            id="modelName"
+            name="currLocation"
+            id="currLocation"
             className="filter-city--select"
             onChange={updateFilterValue}
-            
           >
-            {(availableModels || []).map((curElem, index) => (
-              <option key={index} value={curElem} name="modelName">
+            {companyData.map((curElem, index) => (
+              <option key={index} value={curElem}>
                 {curElem}
               </option>
             ))}
@@ -77,29 +99,8 @@ const FilterSection = () => {
       </div>
 
       <div className="filter-company">
-        <h3>City</h3>
-
-        <form action="#">
-          <select
-            name="currLocation"
-            id="currLocation"
-            className="filter-city--select"
-            onClick={updateFilterValue}
-          >
-            {companyData.map((curElem, index) => {
-              return (
-                <option key={index} value={curElem} name="currLocation">
-                  {curElem}
-                </option>
-              );
-            })}
-          </select>
-        </form>
-      </div>
-      <div className="filter-company">
         <h3>Area</h3>
-
-        <form action="#">
+        <form>
           <select
             name="area"
             id="area"
@@ -107,18 +108,18 @@ const FilterSection = () => {
             onChange={updateFilterValue}
             disabled={currLocation === "all"}
           >
-            {(availableAreas || []).map((curElem, index) => (
-              <option key={index} value={curElem} name="area">
+            {availableAreas.map((curElem, index) => (
+              <option key={index} value={curElem}>
                 {curElem}
               </option>
             ))}
           </select>
         </form>
       </div>
+
       <select className="filter-city--select" onChange={sorting}>
         <option value="lowest">Price: Low to High</option>
         <option value="highest">Price: High to Low</option>
-
         <option value="year-asc">Year: Old to New</option>
         <option value="year-desc">Year: New to Old</option>
       </select>
@@ -153,41 +154,10 @@ const Wrapper = styled.section`
   flex-direction: column;
   gap: 3rem;
   margin-top: 100px;
+
   h3 {
     padding: 2rem 0;
     font-size: bold;
-  }
-
-  .filter-search {
-    input {
-      padding: 0.6rem 1rem;
-      width: 80%;
-    }
-  }
-
-  .filter-category {
-    div {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 1.4rem;
-
-      button {
-        border: none;
-        background-color: ${({ theme }) => theme.colors.white};
-        text-transform: capitalize;
-        cursor: pointer;
-
-        &:hover {
-          color: ${({ theme }) => theme.colors.btn};
-        }
-      }
-
-      .active {
-        border-bottom: 1px solid #000;
-        color: ${({ theme }) => theme.colors.btn};
-      }
-    }
   }
 
   .filter-city--select {
@@ -197,40 +167,20 @@ const Wrapper = styled.section`
     text-transform: capitalize;
   }
 
-  .filter-color-style {
+  form {
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    gap: 0.5rem;
   }
 
-  .color-all--style {
-    background-color: transparent;
-    text-transform: capitalize;
-    border: none;
-    cursor: pointer;
-  }
-  .btnStyle {
-    width: 2rem;
-    height: 2rem;
-    background-color: #000;
-    border-radius: 50%;
-    margin-left: 1rem;
-    border: none;
-    outline: none;
-    opacity: 0.5;
-    cursor: pointer;
+  .filter-company div {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
 
-    &:hover {
-      opacity: 1;
+    input[type="checkbox"] {
+      cursor: pointer;
     }
-  }
-
-  .active {
-    opacity: 1;
-  }
-
-  .checkStyle {
-    font-size: 1rem;
-    color: #fff;
   }
 
   .filter_price {
@@ -240,12 +190,6 @@ const Wrapper = styled.section`
       box-shadow: none;
       cursor: pointer;
     }
-  }
-
-  .filter-shipping {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
   }
 
   .filter-clear .btn {
