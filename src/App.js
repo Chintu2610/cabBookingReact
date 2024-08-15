@@ -28,6 +28,8 @@ import BookingPage from './components/BookingPage';
 import { useCookies } from 'react-cookie';
 import PasswordResetForm from './components/forgot-password';
 import ResetPassword from './components/forgot-password';
+import EnterOTP from './components/EnterOTP';
+import PasswordReset from './components/PasswordReset';
 
 const App = () => {
   const theme = {
@@ -76,6 +78,10 @@ const App = () => {
             <Route path="contact" element={<Contact />} />
             <Route path="login" element={<Login />} />
             <Route path="forgot-password" element={<ResetPassword />} />
+            <Route path="PasswordReset" element={<PasswordReset />} />
+            
+            <Route path="EnterOTP" element={<EnterOTP />} />
+            
             <Route path="singleproduct/:id" element={<SingleProduct />} />
             <Route path="cart" element={<Cart />} />
             <Route path="register" element={<UserRegister />} />
