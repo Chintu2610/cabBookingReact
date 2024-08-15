@@ -17,6 +17,7 @@ const initialState = {
     maxPrice: 0,
     price: 0,
     area:"all",
+    modelName:"all",
     minPrice: 0,
   },
 };

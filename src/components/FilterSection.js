@@ -6,12 +6,22 @@ import { Button } from "../styles/Button";
 
 const FilterSection = () => {
   const {
-    filters: { text, category, price, maxPrice, minPrice,currLocation, area },
+    filters: {
+      text,
+      category,
+      price,
+      maxPrice,
+      minPrice,
+      currLocation,
+      area,
+      modelName,
+    },
     updateFilterValue,
     all_products,
     clearFilters,
     sorting,
     availableAreas,
+    availableModels,
   } = useFilterContext();
 
   // get the unique values of each property
@@ -19,8 +29,6 @@ const FilterSection = () => {
     let newVal = data.map((curElem) => {
       return curElem[attr];
     });
-
-    
 
     return (newVal = ["all", ...new Set(newVal)]);
   };
@@ -32,41 +40,41 @@ const FilterSection = () => {
   return (
     <Wrapper>
       <div className="filter-company">
-       
-        <h3>Car Names</h3>
+        <h3>Brand Name</h3>
         <select
-            name="carName"
-            id="carName"
-            className="filter-city--select"
-            onClick={updateFilterValue}>
-            {categoryData.map((curElem, index) => {
-              return (
-                <option key={index} value={curElem} name="carName">
-                  {curElem}
-                </option>
-              );
-            })}
-          </select>
-      </div>
-
-      {/* <div className="filter-category">
-        <h3>Category</h3>
-        <div>
+          name="carName"
+          id="carName"
+          className="filter-city--select"
+          onClick={updateFilterValue}
+        >
           {categoryData.map((curElem, index) => {
             return (
-              <button
-                key={index}
-                type="button"
-                name="category"
-                value={curElem}
-                className={curElem === category ? "active" : ""}
-                onClick={updateFilterValue}>
+              <option key={index} value={curElem} name="carName">
                 {curElem}
-              </button>
+              </option>
             );
           })}
-        </div>
-      </div> */}
+        </select>
+      </div>
+      <div className="filter-company">
+        <h3>Model Name</h3>
+
+        <form action="#">
+          <select
+            name="modelName"
+            id="modelName"
+            className="filter-city--select"
+            onChange={updateFilterValue}
+            
+          >
+            {(availableModels || []).map((curElem, index) => (
+              <option key={index} value={curElem} name="modelName">
+                {curElem}
+              </option>
+            ))}
+          </select>
+        </form>
+      </div>
 
       <div className="filter-company">
         <h3>City</h3>
@@ -76,7 +84,8 @@ const FilterSection = () => {
             name="currLocation"
             id="currLocation"
             className="filter-city--select"
-            onClick={updateFilterValue}>
+            onClick={updateFilterValue}
+          >
             {companyData.map((curElem, index) => {
               return (
                 <option key={index} value={curElem} name="currLocation">
@@ -91,30 +100,28 @@ const FilterSection = () => {
         <h3>Area</h3>
 
         <form action="#">
-        <select
-  name="area"
-  id="area"
-  className="filter-city--select"
-  onChange={updateFilterValue}
-  disabled={currLocation === "all"}
->
-  {(availableAreas || []).map((curElem, index) => (
-    <option key={index} value={curElem} name="area">
-      {curElem}
-    </option>
-  ))}
-</select>
-
+          <select
+            name="area"
+            id="area"
+            className="filter-city--select"
+            onChange={updateFilterValue}
+            disabled={currLocation === "all"}
+          >
+            {(availableAreas || []).map((curElem, index) => (
+              <option key={index} value={curElem} name="area">
+                {curElem}
+              </option>
+            ))}
+          </select>
         </form>
       </div>
       <select className="filter-city--select" onChange={sorting}>
-  <option value="lowest">Price: Low to High</option>
-  <option value="highest">Price: High to Low</option>
- 
-  <option value="year-asc">Year: Old to New</option>
-  <option value="year-desc">Year: New to Old</option>
-</select>
+        <option value="lowest">Price: Low to High</option>
+        <option value="highest">Price: High to Low</option>
 
+        <option value="year-asc">Year: Old to New</option>
+        <option value="year-desc">Year: New to Old</option>
+      </select>
 
       <div className="filter_price">
         <h3>Price / KM</h3>
@@ -145,7 +152,7 @@ const Wrapper = styled.section`
   display: flex;
   flex-direction: column;
   gap: 3rem;
-  margin-top:100px;
+  margin-top: 100px;
   h3 {
     padding: 2rem 0;
     font-size: bold;
