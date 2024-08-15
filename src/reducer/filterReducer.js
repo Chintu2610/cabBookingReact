@@ -65,6 +65,26 @@ const filterReducer = (state, action) => {
       case "UPDATE_FILTERS_VALUE":
         const { name, value } = action.payload;
   
+        if (name === "carName") {
+          // Update the available models based on the selected car brand
+          const selectedBrand = value;
+          const filteredModels = state.all_products
+            .filter((product) => product.carName === selectedBrand)
+            .map((product) => product.modelName);
+  
+          const uniqueModels = ["all", ...new Set(filteredModels)];
+  
+          return {
+            ...state,
+            filters: {
+              ...state.filters,
+              [name]: value,
+              modelName: "all", // Reset model filter when brand changes
+            },
+            availableModels: uniqueModels,
+          };
+        }
+  
         if (name === "currLocation") {
           // Update the available areas based on the selected city
           const selectedCity = value;
@@ -92,68 +112,64 @@ const filterReducer = (state, action) => {
             [name]: value,
           },
         };
+  
+  
 
-    case "FILTER_PRODUCTS":
-      let { all_products } = state;
-      let tempFilterProduct = [...all_products];
-      const { text, carName, currLocation, color, price,manufacturingYear,area } = state.filters;
-
-      if (text) {
-        tempFilterProduct = tempFilterProduct.filter((curElem) =>
-          curElem.carName.toLowerCase().includes(text.toLowerCase())
-        );
-      }
-      if (carName !== "all") {
+        case "FILTER_PRODUCTS":
+          let { all_products } = state;
+          let tempFilterProduct = [...all_products];
+          const { text, carName, currLocation, color, price, manufacturingYear, area, modelName } = state.filters;
+    
+          // Only apply filters if they have a meaningful value
         
-        console.log(carName);
-        tempFilterProduct = tempFilterProduct.filter(
-          (curElem) => curElem.carName === carName
-        );
-      }
-      if (currLocation !== "all") {
-        tempFilterProduct = tempFilterProduct.filter(
-          (curElem) => curElem.currLocation.toLowerCase() === currLocation.toLowerCase()
-        );
-      }
-      if (area !== "all") {
-        tempFilterProduct = tempFilterProduct.filter(
-          (curElem) => curElem.area.toLowerCase() === area.toLowerCase()
-        );
-      }
-      
-      if (color !== "all") {
-        tempFilterProduct = tempFilterProduct.filter((curElem) =>
-          curElem.colors.includes(color)
-        );
-      }
-      if (price === 0) {
-        tempFilterProduct = tempFilterProduct.filter(
-          (curElem) => curElem.perKmRate === price
-        );
-      } else {
-        tempFilterProduct = tempFilterProduct.filter(
-          (curElem) => curElem.perKmRate <= price
-        );
-      }
-      return {
-        ...state,
-        filter_products: tempFilterProduct,
-      };
+          if (carName !== "all" && carName) {
+            tempFilterProduct = tempFilterProduct.filter(
+              (curElem) => curElem.carName === carName
+            );
+          }
+          if (currLocation !== "all" && currLocation) {
+            tempFilterProduct = tempFilterProduct.filter(
+              (curElem) => curElem.currLocation.toLowerCase() === currLocation.toLowerCase()
+            );
+          }
+          if (area !== "all" && area) {
+            tempFilterProduct = tempFilterProduct.filter(
+              (curElem) => curElem.area.toLowerCase() === area.toLowerCase()
+            );
+          }
+          if (modelName !== "all" && modelName) {
+            tempFilterProduct = tempFilterProduct.filter(
+              (curElem) => curElem.modelName.toLowerCase() === modelName.toLowerCase()
+            );
+          }
+         
+          if (price > 0) {
+            tempFilterProduct = tempFilterProduct.filter(
+              (curElem) => curElem.perKmRate <= price
+            );
+          }
+    
+          return {
+            ...state,
+            filter_products: tempFilterProduct,
+          };
 
-    case "CLEAR_FILTERS":
-      return {
-        ...state,
-        filters: {
-          ...state.filters,
-          text: "",
-          category: "all",
-          company: "all",
-          color: "all",
-          maxPrice: 0,
-          price: state.filters.maxPrice,
-          minPrice: state.filters.maxPrice,
-        },
-      };
+      case "CLEAR_FILTERS":
+        return {
+          ...state,
+          filters: {
+            ...state.filters,
+            text: "",
+            carName: "all", // Reset this correctly
+            currLocation: "all",
+            color: "all",
+            maxPrice: 0,
+            price: state.filters.maxPrice,
+            minPrice: state.filters.maxPrice,
+            area: "all",
+            modelName: "all",
+          },
+        };
 
     default:
       return state;

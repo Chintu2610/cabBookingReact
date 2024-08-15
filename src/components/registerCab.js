@@ -13,6 +13,7 @@ export function CabRegister() {
         initialValues={{
           carType: "",
           carName: "",
+          modelName:"",
           carNumber: "",
           perKmRate: "",
           currLocation: "",
@@ -28,6 +29,7 @@ export function CabRegister() {
             formData.append("carType", values.carType);
             formData.append("carName", values.carName);
             formData.append("carNumber", values.carNumber);
+            formData.append("modelName",values.modelName);
             formData.append("perKmRate", values.perKmRate);
             formData.append("currLocation", values.currLocation);
             formData.append("cabCurrStatus", values.cabCurrStatus);
@@ -54,7 +56,8 @@ export function CabRegister() {
         }}
         validationSchema={yup.object({
           carType: yup.string().required("Car type is required"),
-          carName: yup.string().required("Car name is required"),
+          carName: yup.string().required("Brand name is required"),
+          modelName:yup.string().required("Model Name is required"),
           carNumber: yup.string().required("Car number is required"),
           perKmRate: yup
             .number()
@@ -130,7 +133,7 @@ export function CabRegister() {
 
                       <div className="mb-3">
                         <label htmlFor="carName" className="form-label fs-5">
-                          Car Name
+                          Brand Name
                         </label>
                         <Field
                           type="text"
@@ -139,6 +142,21 @@ export function CabRegister() {
                         />
                         <ErrorMessage
                           name="carName"
+                          component="div"
+                          className="text-danger"
+                        />
+                      </div>
+                      <div className="mb-3">
+                        <label htmlFor="modelName" className="form-label fs-5">
+                          Model Name
+                        </label>
+                        <Field
+                          type="text"
+                          name="modelName"
+                          className="form-control"
+                        />
+                        <ErrorMessage
+                          name="modelName"
                           component="div"
                           className="text-danger"
                         />
