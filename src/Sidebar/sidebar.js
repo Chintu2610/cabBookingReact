@@ -14,7 +14,7 @@ const Sidebar = () => {
             <img src="dist/img/user2-160x160.jpg" className="img-circle elevation-2" alt="User" />
           </div>
           <div className="info">
-            <a href="#" className="d-block">{cookies.currRole}</a>
+            <a href="AdminProfile" className="d-block">{cookies.currRole}</a>
           </div>
         </div>
         <nav className="mt-2">

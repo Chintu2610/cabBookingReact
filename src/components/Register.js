@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import ferariImage from './images/cabImages/ferari.jpeg'; // Renamed the imported image for clarity
 
 
 const Register = () => {
@@ -12,6 +13,7 @@ const Register = () => {
     userRole: 'Customer'
   });
   const navigate = useNavigate();
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({
@@ -43,7 +45,17 @@ const Register = () => {
   };
 
   return (
-    <div className="container" style={{marginTop:"100px"}}>
+    <div 
+      className="container" 
+      style={{
+        marginTop: "100px",
+        backgroundImage: `url(${ferariImage})`, // Use the imported variable
+        backgroundSize: 'cover', 
+        backgroundPosition: 'center', 
+        padding: '50px', 
+        height: '100vh'
+      }}
+    >
       <div className="row justify-content-center">
         <div className="col-md-5">
           <div className="card">
@@ -63,7 +75,9 @@ const Register = () => {
                   />
                 </div>
                 <div className="mb-3">
-                  <label htmlFor="password" className="form-label">Password <span className="text-danger">*</span></label>
+                  <label htmlFor="password" className="form-label">
+                    Password <span className="text-danger">*</span>
+                  </label>
                   <input
                     required
                     pattern="(?=.*[A-Za-z])(?=.*\d).{8,}"
@@ -121,7 +135,6 @@ const Register = () => {
                 <div className="col text-end">
                   <Link className="text-muted" to="/login">Login</Link>
                 </div>
-               
               </div>
             </div>
           </div>
