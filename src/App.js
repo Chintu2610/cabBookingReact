@@ -30,6 +30,8 @@ import PasswordResetForm from './components/forgot-password';
 import ResetPassword from './components/forgot-password';
 import EnterOTP from './components/EnterOTP';
 import PasswordReset from './components/PasswordReset';
+import ContextDemo from './components/context-demo/context-demo';
+import { ReducerDemo } from './components/reducerDemo/reducer-demo';
 
 const App = () => {
   const theme = {
@@ -70,10 +72,13 @@ const App = () => {
       <BrowserRouter>
         <GlobalStyle />
         <Header currentRole={{"userRole":userRole}} />
+        <div style={{marginTop:'100px'}}>
         <Routes>
           <Route path="/" element={<WithFooter showFooter={true} />}>
             <Route index element={<Home />} />
             <Route path="about" element={<About />} />
+            <Route path="contextdemo" element={<ContextDemo />} />
+            <Route path="reducerdemo" element={<ReducerDemo />} />
             <Route path="cabs" element={<Cabs />} />
             <Route path="contact" element={<Contact />} />
             <Route path="login" element={<Login />} />
@@ -110,6 +115,7 @@ const App = () => {
           </Route>
           <Route path="*" element={<ErrorPage />} />
         </Routes>
+        </div>
       </BrowserRouter>
     </ThemeProvider>
   );

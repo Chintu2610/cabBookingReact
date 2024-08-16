@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
 import DataTable from "react-data-table-component";
 import Sidebar from "../Sidebar/sidebar";
-
+import { useCookies } from "react-cookie";
 
 function BookingHistory() {
+  const [cookies] = useCookies();
   const columns = [
     {
       name: "Pickup Location",
@@ -13,11 +14,6 @@ function BookingHistory() {
     {
       name: "From DateTime",
       selector: (row) => row.fromDateTime,
-      sortable: true,
-    },
-    {
-      name: "Drop Location",
-      selector: (row) => row.dropLocation,
       sortable: true,
     },
     {
@@ -40,19 +36,31 @@ function BookingHistory() {
       selector: (row) => row.currStatus,
       sortable: true,
     },
+    {
+      name: "Actions",
+      cell: (row) => (
+        <button
+          className="btn btn-primary"
+          onClick={() => handleCompleteTrip(row.tripBookingId)}
+          disabled={row.currStatus.toLowerCase() === "completed"}
+        >
+          {row.currStatus.toLowerCase() === "completed" ? "Completed" : "Complete Trip"}
+        </button>
+      ),
+    },
+    
   ];
-
 
   const [originalRecords, setOriginalRecords] = useState([]);
   const [filteredRecords, setFilteredRecords] = useState([]);
+  
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const uuid=sessionStorage.getItem("uuid");
+        const uuid = cookies.uuid;
         const response = await fetch(`http://localhost:1995/admin/getAllTrips?uuid=${uuid}`);
         if (response.ok) {
           const data = await response.json();
-          
           setOriginalRecords(data);
           setFilteredRecords(data);
         } else {
@@ -64,51 +72,66 @@ function BookingHistory() {
     };
 
     fetchData();
-  }, []);
+  }, [cookies.uuid]);
 
   function handleFilter(e) {
     const searchValue = e.target.value.toLowerCase();
-    if(searchValue==='')
-    {
-        setFilteredRecords(originalRecords);
-    }else{
-        const newData = originalRecords.filter((row) => {
-            return row.pickupLocation.toLowerCase().includes(e.target.value.toLowerCase());
-          });
-          setFilteredRecords(newData);
+    if (searchValue === '') {
+      setFilteredRecords(originalRecords);
+    } else {
+      const newData = originalRecords.filter((row) =>
+        row.pickupLocation.toLowerCase().includes(searchValue)
+      );
+      setFilteredRecords(newData);
     }
-    
-    
   }
 
+  async function handleCompleteTrip(tripBookingId) {
+    console.log("Marking TripBookingId:", tripBookingId); // Log the TripBookingId
+    try {
+      const uuid = cookies.uuid;
+      const response = await fetch(
+        `http://localhost:1995/tripBooking/markCompleteTrip?TripBookingId=${tripBookingId}&uuid=${uuid}`
+      );
+      if (response.ok) {
+        const responseText = await response.text(); // Get the response as text
+      alert(responseText);
+      } else {
+        console.error("Failed to mark trip as complete");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  }
+  
   return (
     <>
-   <Sidebar/>
-    <div className="content-wrapper">
-      <div className="container" style={{marginTop:"100px"}}>
-        <div className="row mb-3">
-          <div className="col-12 text-end">
-            <input 
-              type="text" 
-              onChange={handleFilter} 
-              className="form-control" 
-              placeholder="Filter by pickup location" 
-              style={{ maxWidth: "300px", display: "inline-block" }} 
-            />
+      <Sidebar />
+      <div className="content-wrapper">
+        <div className="container" style={{ marginTop: "100px" }}>
+          <div className="row mb-3">
+            <div className="col-12 text-end">
+              <input
+                type="text"
+                onChange={handleFilter}
+                className="form-control"
+                placeholder="Filter by pickup location"
+                style={{ maxWidth: "300px", display: "inline-block" }}
+              />
+            </div>
+          </div>
+          <div className="row">
+            <div className="col-12">
+              <DataTable
+                columns={columns}
+                data={filteredRecords}
+                fixedHeader
+                pagination
+                className="table table-striped table-bordered"
+              />
+            </div>
           </div>
         </div>
-        <div className="row">
-          <div className="col-12">
-            <DataTable 
-              columns={columns} 
-              data={filteredRecords} 
-              fixedHeader 
-              pagination 
-              className="table table-striped table-bordered"
-            />
-          </div>
-        </div>
-      </div>
       </div>
     </>
   );

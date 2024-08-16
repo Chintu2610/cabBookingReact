@@ -27,7 +27,7 @@ const {
   // Get the unique values of each property
   const getUniqueData = (data, attr) => {
     const newVal = data.map((curElem) => curElem[attr]);
-    return ["all", ...new Set(newVal)];
+    return ["All", ...new Set(newVal)];
   };
 
   // Get unique data arrays
@@ -72,7 +72,7 @@ const {
                 value={curElem}
                 onChange={updateFilterValue}
                 checked={modelName.includes(curElem)}
-                disabled={carName.length === 0 || carName.includes('all')}
+                //disabled={carName.length === 0 || carName.includes('All')}
               />
               <label htmlFor={`modelName-${curElem}`}>{curElem}</label>
             </div>
@@ -106,7 +106,7 @@ const {
             id="area"
             className="filter-city--select"
             onChange={updateFilterValue}
-            disabled={currLocation === "all"}
+            disabled={currLocation === "All"}
           >
             {availableAreas.map((curElem, index) => (
               <option key={index} value={curElem}>
@@ -118,8 +118,8 @@ const {
       </div>
 
       <select className="filter-city--select" onChange={sorting}>
-        <option value="lowest">Price: Low to High</option>
-        <option value="highest">Price: High to Low</option>
+        {/* <option value="lowest">Price: Low to High</option>
+        <option value="highest">Price: High to Low</option> */}
         <option value="year-asc">Year: Old to New</option>
         <option value="year-desc">Year: New to Old</option>
       </select>
@@ -149,11 +149,11 @@ const {
 };
 
 const Wrapper = styled.section`
-  padding: 5rem 0;
+ 
   display: flex;
   flex-direction: column;
   gap: 3rem;
-  margin-top: 100px;
+ 
 
   h3 {
     padding: 2rem 0;
