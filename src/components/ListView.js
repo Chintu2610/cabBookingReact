@@ -1,16 +1,25 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
+import { Navigate, NavLink, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import FormatPrice from "../Helpers/FormatPrice";
 import { Button } from "../styles/Button";
 import PropTypes from "prop-types";
 
 const ListView = ({ products }) => {
+  const navigate = useNavigate();
   return (
     <Wrapper className="section">
       <div className="container grid">
         {products.map((curElem) => {
-          const { cabId, carName, cabImage, perKmRate, currLocation } = curElem;
+          const { cabId, carName, cabImage, perKmRate, currLocation,area } = curElem;
+          const handleBookingClick = () => {
+            // if (currentRole !== 'admin') {
+            //   navigate(`/booking/${cabId}`);
+            // } else {
+            //   alert("Admin users cannot book a cab.");
+            // }
+            navigate(`/booking/${cabId}`, { state: { perKmRate } });
+          };
           return (
             <div className="card grid grid-two-column" key={cabId}>
               <figure>
@@ -23,11 +32,8 @@ const ListView = ({ products }) => {
                 <p>
                   <FormatPrice price={perKmRate} />
                 </p>
-                <p>{currLocation.slice(0, 90)}...</p>
-
-                <NavLink to={`/singleproduct/${cabId}`} className="btn-main">
-                  <Button className="btn">Read More</Button>
-                </NavLink>
+                <p>{currLocation},{area}</p>
+                  <Button onClick={handleBookingClick} style={{color:"black"}} className="btn">Book Now</Button>                
               </div>
             </div>
           );

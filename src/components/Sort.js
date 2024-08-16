@@ -24,7 +24,7 @@ const Sort = () => {
       </div>
       {/* 2nd column  */}
       <div className="product-data">
-        <p>{`${filter_products.length} Product Available`}</p>
+        <p>{`${filter_products.length} Cabs Available`}</p>
       </div>
 
       {/* 3rd column  */}
@@ -40,9 +40,9 @@ const Sort = () => {
             <option value="#" disabled></option>
             <option value="highest">Price(highest)</option>
             <option value="#" disabled></option>
-            <option value="a-z">Price(a-z)</option>
+            <option value="a-z">Brand Name(a-z)</option>
             <option value="#" disabled></option>
-            <option value="z-a">Price(z-a)</option>
+            <option value="z-a">Brand Name(z-a)</option>
           </select>
         </form>
       </div>

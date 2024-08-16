@@ -11,22 +11,36 @@ const initialState = {
   sorting_value: "lowest",
   filters: {
     text: "",
-    category: "all",
-    currLocation: "all",
-    color: "all",
+    carName: [], // Change to an array
+    currLocation: "All",
+    color: "All",
     maxPrice: 0,
     price: 0,
-    area:"all",
-    modelName:"all",
+    area: "All",
+    modelName: [], // Change to an array
     minPrice: 0,
   },
+  availableModels: [],
+  availableAreas: [], // Add this to the initial state
 };
 
 export const FilterContextProvider = ({ children }) => {
   
   const { products } = useProductContext();
-
   const [state, dispatch] = useReducer(reducer, initialState);
+
+  // Update available models and areas based on all_products
+  useEffect(() => {
+    if (state.all_products.length > 0) {
+      const uniqueModels = ["All", ...new Set(state.all_products.map(product => product.modelName))];
+      const uniqueAreas = ["All", ...new Set(state.all_products.map(product => product.area))];
+
+      dispatch({
+        type: "UPDATE_AVAILABLE_FILTERS",
+        payload: { availableModels: uniqueModels, availableAreas: uniqueAreas }
+      });
+    }
+  }, [state.all_products]);
 
   // to set the grid view
   const setGridView = () => {

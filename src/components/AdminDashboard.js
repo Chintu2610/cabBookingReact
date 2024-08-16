@@ -21,7 +21,7 @@ const Dashboard = () => {
 
   return (
     <div className="d-flex flex-column bg-dark text-light">
-      <Wrapper>
+      
         
       <SidebarWrapper>
           <Sidebar />
@@ -30,13 +30,11 @@ const Dashboard = () => {
       <Col xs={12} className="min-vh-100 p-4">
       <AdminDashboard/>
       </Col>
-      </Wrapper>
+      
     </div>
   );
 };
-const Wrapper = styled.section`
-  padding: 10rem 0;
-`;
+
 const SidebarWrapper = styled.div`
  
   top: 10rem;
