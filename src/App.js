@@ -30,6 +30,7 @@ import PasswordResetForm from './components/forgot-password';
 import ResetPassword from './components/forgot-password';
 import EnterOTP from './components/EnterOTP';
 import PasswordReset from './components/PasswordReset';
+import AdminProfile from './components/Profile';
 
 const App = () => {
   const theme = {
@@ -79,7 +80,7 @@ const App = () => {
             <Route path="login" element={<Login />} />
             <Route path="forgot-password" element={<ResetPassword />} />
             <Route path="PasswordReset" element={<PasswordReset />} />
-            
+            <Route path="AdminProfile" element={<AdminProfile />} />
             <Route path="EnterOTP" element={<EnterOTP />} />
             
             <Route path="singleproduct/:id" element={<SingleProduct />} />
