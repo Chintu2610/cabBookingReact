@@ -12,11 +12,11 @@ const initialState = {
   filters: {
     text: "",
     carName: [], // Change to an array
-    currLocation: "all",
-    color: "all",
+    currLocation: "All",
+    color: "All",
     maxPrice: 0,
     price: 0,
-    area: "all",
+    area: "All",
     modelName: [], // Change to an array
     minPrice: 0,
   },
@@ -32,8 +32,8 @@ export const FilterContextProvider = ({ children }) => {
   // Update available models and areas based on all_products
   useEffect(() => {
     if (state.all_products.length > 0) {
-      const uniqueModels = ["all", ...new Set(state.all_products.map(product => product.modelName))];
-      const uniqueAreas = ["all", ...new Set(state.all_products.map(product => product.area))];
+      const uniqueModels = ["All", ...new Set(state.all_products.map(product => product.modelName))];
+      const uniqueAreas = ["All", ...new Set(state.all_products.map(product => product.area))];
 
       dispatch({
         type: "UPDATE_AVAILABLE_FILTERS",

@@ -73,14 +73,14 @@ const filterReducer = (state, action) => {
             .filter((product) => selectedBrands.includes(product.carName))
             .map((product) => product.modelName);
         
-          const uniqueModels = ["all", ...new Set(filteredModels)];
+          const uniqueModels = ["All", ...new Set(filteredModels)];
           
           // Update available areas based on selected brands
           const filteredAreas = state.all_products
             .filter((product) => selectedBrands.includes(product.carName))
             .map((product) => product.area);
         
-          const uniqueAreas = ["all", ...new Set(filteredAreas)];
+          const uniqueAreas = ["All", ...new Set(filteredAreas)];
         
           return {
             ...state,
@@ -114,14 +114,14 @@ const filterReducer = (state, action) => {
             .filter((product) => product.currLocation === selectedCity)
             .map((product) => product.area);
   
-          const uniqueAreas = ["all", ...new Set(filteredAreas)];
+          const uniqueAreas = ["All", ...new Set(filteredAreas)];
   
           return {
             ...state,
             filters: {
               ...state.filters,
               [name]: value,
-              area: "all", // Reset area filter when city changes
+              area: "All", // Reset area filter when city changes
             },
             availableAreas: uniqueAreas,
           };
@@ -137,7 +137,7 @@ const filterReducer = (state, action) => {
       
 
         case "FILTER_PRODUCTS":
-          let { all_products } = state;
+          let { all_products } = state; // Corrected variable name
           let tempFilterProduct = [...all_products];
           const {
             carName,
@@ -147,25 +147,25 @@ const filterReducer = (state, action) => {
             price
           } = state.filters;
         
-          if (carName.length > 0 && !carName.includes('all')) {
+          if (carName.length > 0 && !carName.includes('All')) {
             tempFilterProduct = tempFilterProduct.filter(
               (curElem) => carName.includes(curElem.carName)
             );
           }
         
-          if (currLocation !== "all") {
+          if (currLocation !== "All") {
             tempFilterProduct = tempFilterProduct.filter(
               (curElem) => curElem.currLocation.toLowerCase() === currLocation.toLowerCase()
             );
           }
         
-          if (area !== "all") {
+          if (area !== "All") {
             tempFilterProduct = tempFilterProduct.filter(
               (curElem) => curElem.area.toLowerCase() === area.toLowerCase()
             );
           }
         
-          if (modelName.length > 0 && !modelName.includes('all')) {
+          if (modelName.length > 0 && !modelName.includes('All')) {
             tempFilterProduct = tempFilterProduct.filter(
               (curElem) => modelName.includes(curElem.modelName)
             );
@@ -189,14 +189,14 @@ const filterReducer = (state, action) => {
               filters: {
                 ...state.filters,
                 text: "",
-                carName: ["all"], // Reset to array
-                currLocation: "all",
-                color: "all",
+                carName: ["All"], // Reset to array
+                currLocation: "All",
+                color: "All",
                 maxPrice: state.filters.maxPrice, // Use existing maxPrice
                 price: state.filters.maxPrice,
                 minPrice: state.filters.minPrice, // Ensure minPrice is also reset
-                area: "all",
-                modelName: ["all"], // Reset to array
+                area: "All",
+                modelName: ["All"], // Reset to array
               },
               availableModels: [], // Clear available models
               availableAreas: [], // Clear available areas
