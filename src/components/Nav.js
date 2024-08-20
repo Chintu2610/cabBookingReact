@@ -1,20 +1,18 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { Cookies,useCookies,removeCookie } from 'react-cookie';
+import { useCookies } from 'react-cookie';
+import { Dropdown } from 'react-bootstrap';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
-
-const Nav = ({role}) => {
-  const [cookies,setCookie,removeCookie]=useCookies();
-  console.log("in Nav.js"+role.userRole);
-  const [menuIcon, setMenuIcon] = useState(false);
- 
+const Nav = ({ role }) => {
+  const [cookies, , removeCookie] = useCookies();
   const navigate = useNavigate();
+
   const handleLogout = () => {
     const uuId = cookies.uuid;
     if (uuId) {
       console.log(uuId);
-      // Check if uuid exists in local storage
       const url = `http://localhost:1995/Userlogin/logout?uuid=${uuId}`;
 
       fetch(url, {
@@ -31,16 +29,6 @@ const Nav = ({role}) => {
             removeCookie("currStatus");
             removeCookie("userName");
             removeCookie("email");
-
-            sessionStorage.removeItem("currUserId");
-            sessionStorage.removeItem("uuid");
-            sessionStorage.removeItem("currRole");
-            sessionStorage.removeItem("currStatus");
-            sessionStorage.removeItem("userName");
-            sessionStorage.removeItem("email");
-           
-
-            
             navigate("/login"); // Redirect to login page
           } else if (response.status === 401) {
             alert("Invalid uuid. Please try again.");
@@ -56,11 +44,8 @@ const Nav = ({role}) => {
     }
   };
 
-  useEffect(() => {
-    // Retrieve user role from local storage or API
-    // const role = sessionStorage.getItem("currRole");
-    // setUserRole(role);
-  }, []);
+  const [menuIcon, setMenuIcon] = useState(false);
+
   const Nav = styled.nav`
     .navbar-lists {
       display: flex;
@@ -93,47 +78,6 @@ const Nav = ({role}) => {
       border: none;
     }
 
-    .mobile-nav-icon[name="close-outline"] {
-      display: none;
-    }
-
-    .close-outline {
-      display: none;
-    }
-
-    .cart-trolley--link {
-      position: relative;
-
-      .cart-trolley {
-        position: relative;
-        font-size: 3.2rem;
-      }
-
-      .cart-total--item {
-        width: 2.4rem;
-        height: 2.4rem;
-        position: absolute;
-        background-color: #000;
-        color: #000;
-        border-radius: 50%;
-        display: grid;
-        place-items: center;
-        top: -20%;
-        left: 70%;
-        background-color: ${({ theme }) => theme.colors.helper};
-      }
-    }
-
-    .user-login--name {
-      text-transform: capitalize;
-    }
-
-    .user-logout,
-    .user-login {
-      font-size: 1.4rem;
-      padding: 0.8rem 1.4rem;
-    }
-
     @media (max-width: ${({ theme }) => theme.media.mobile}) {
       .mobile-navbar-btn {
         display: inline-block;
@@ -144,20 +88,6 @@ const Nav = ({role}) => {
           font-size: 4.2rem;
           color: ${({ theme }) => theme.colors.black};
         }
-      }
-
-      .active .mobile-nav-icon {
-        display: none;
-        font-size: 4.2rem;
-        position: absolute;
-        top: 30%;
-        right: 10%;
-        color: ${({ theme }) => theme.colors.black};
-        z-index: 9999;
-      }
-
-      .active .close-outline {
-        display: inline-block;
       }
 
       .navbar-lists {
@@ -176,7 +106,6 @@ const Nav = ({role}) => {
         visibility: hidden;
         opacity: 0;
         transform: translateX(100%);
-        /* transform-origin: top; */
         transition: all 3s linear;
       }
 
@@ -191,26 +120,6 @@ const Nav = ({role}) => {
         .navbar-link {
           font-size: 4.2rem;
         }
-      }
-      .cart-trolley--link {
-        position: relative;
-
-        .cart-trolley {
-          position: relative;
-          font-size: 5.2rem;
-        }
-
-        .cart-total--item {
-          width: 4.2rem;
-          height: 4.2rem;
-          font-size: 2rem;
-        }
-      }
-
-      .user-logout,
-      .user-login {
-        font-size: 2.2rem;
-        padding: 0.8rem 1.4rem;
       }
     }
   `;
@@ -266,34 +175,42 @@ const Nav = ({role}) => {
                   Dashboard
                 </NavLink>
               </li>
-             
               <li>
-                <NavLink
-                  className="navbar-link"
-                  onClick={() => {
-                    setMenuIcon(false);
-                    handleLogout(); // Call handleLogout function
-                  }}
-                >
-                  LogOut
-                </NavLink>
+                <Dropdown>
+                  <Dropdown.Toggle
+                    variant="link"
+                    id="dropdown-custom-components"
+                    className="navbar-link"
+                  >
+                    <i className="bi bi-gear fs-5"></i>
+                  </Dropdown.Toggle>
+
+                  <Dropdown.Menu>
+                    <Dropdown.Item
+                      as={NavLink}
+                      to="/profile"
+                      onClick={() => setMenuIcon(false)}
+                    >
+                      Profile
+                    </Dropdown.Item>
+                    <Dropdown.Item
+                      onClick={() => {
+                        setMenuIcon(false);
+                        handleLogout(); // Call handleLogout function
+                      }}
+                    >
+                      Logout
+                    </Dropdown.Item>
+                  </Dropdown.Menu>
+                </Dropdown>
               </li>
             </>
           )}
-          {(role.userRole === "Customer") && (
+          {role.userRole === "Customer" && (
             <>
-              <li>
+            <li>
                 <NavLink
-                  to="/customer-dashboard"
-                  className="navbar-link"
-                  onClick={() => setMenuIcon(false)}
-                >
-                  Dashboard
-                </NavLink>
-              </li>
-              <li>
-                <NavLink
-                  to="/customer-orders"
+                  to="/booking-history-customer"
                   className="navbar-link"
                   onClick={() => setMenuIcon(false)}
                 >
@@ -301,16 +218,35 @@ const Nav = ({role}) => {
                 </NavLink>
               </li>
               <li>
-                <NavLink
-                  className="navbar-link"
-                  onClick={() => {
-                    setMenuIcon(false);
-                    handleLogout(); // Call handleLogout function
-                  }}
-                >
-                  LogOut
-                </NavLink>
+                <Dropdown>
+                  <Dropdown.Toggle
+                    variant="link"
+                    id="dropdown-custom-components"
+                    className="navbar-link"
+                  >
+                    <i className="bi bi-gear fs-5"></i>
+                  </Dropdown.Toggle>
+
+                  <Dropdown.Menu>
+                    <Dropdown.Item
+                      as={NavLink}
+                      to="/profile"
+                      onClick={() => setMenuIcon(false)}
+                    >
+                      Profile
+                    </Dropdown.Item>
+                    <Dropdown.Item
+                      onClick={() => {
+                        setMenuIcon(false);
+                        handleLogout(); // Call handleLogout function
+                      }}
+                    >
+                      Logout
+                    </Dropdown.Item>
+                  </Dropdown.Menu>
+                </Dropdown>
               </li>
+              
             </>
           )}
           {!role.userRole && (
@@ -325,8 +261,6 @@ const Nav = ({role}) => {
             </li>
           )}
         </ul>
-
-       
       </div>
     </Nav>
   );

@@ -2,8 +2,8 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
 const Sidebar = () => {
-  //const role = sessionStorage.getItem("currRole");
-  const [cookies,setCookie,removeCookie]=useCookies();
+ 
+  const [cookies]=useCookies();
   return (
     <aside className="main-sidebar sidebar-dark-primary elevation-4 position-fixed" style={{marginTop:'100px',backgroundColor:'#F6F8FA'}} >
      
@@ -21,19 +21,27 @@ const Sidebar = () => {
           <ul className="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">          
             <li className="nav-item">
               <Link to="/registerDriver" className="nav-link">
-                <i className="nav-icon fas fa-th"></i>
+              <i class="bi bi-person fs-5"></i>
                 <p>
                 Register Driver
-                  <span className="right badge badge-danger">New</span>
+                 
                 </p>
               </Link>
             </li>
             <li className="nav-item">
               <Link to="/registerCab" className="nav-link">
-                <i className="nav-icon fas fa-th"></i>
+              <i class="bi bi-car-front fs-5"></i>
                 <p>
                 Register Cab
-                  <span className="right badge badge-danger">New</span>
+                  
+                </p>
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link to="/register-admin" className="nav-link">
+              <i class="bi bi-person fs-5"></i>
+                <p>
+                Register Vendor
                 </p>
               </Link>
             </li>

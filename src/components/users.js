@@ -3,18 +3,45 @@ import DataTable from "react-data-table-component";
 import Sidebar from "../Sidebar/sidebar";
 import styled from "styled-components";
 import { useCookies } from "react-cookie";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 function Users() {
+ const navigate=useNavigate();
+  async function deleteCustomer(customerId) {
+    try {
+      const response = await axios.delete(
+        `http://localhost:1995/customer/delete?uuid=${cookie.uuid}&customerId=${customerId}`,
+        {
+          headers: {
+            "Content-Type": "application/json"
+          }
+        }
+      );
+      if (response.status === 200) {
+        alert("customer deleted successfully.");
+        window.location.reload();
+        
+       
+      } else {
+        alert(response.text());
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    
+    }
+  }
+  
   const [cookie,removeCookie,setCookie]=useCookies();
   const columns = [
     
     {
-      name: "customerId",
+      name: "Customer Id",
       selector: (row) => row.customerId,
       sortable: true,
     },
     {
-      name: "userName",
+      name: "User Name",
       selector: (row) => row.userName,
       sortable: true,
     },
@@ -24,14 +51,27 @@ function Users() {
       sortable: true,
     },
     {
-      name: "mobileNumber",
+      name: "Mobile Number",
       selector: (row) => row.mobileNumber,
       sortable: true,
     },
     {
-      name: "email",
+      name: "Email",
       selector: (row) => row.email,
       sortable: true,
+    },
+    {
+      name:"Action",
+      cell: (row)=>
+      (
+        <>
+        
+
+        <button className="btn btn-danger"
+        onClick={()=>deleteCustomer(row.customerId)}
+        >Delete Driver</button>
+        </>
+      )
     }
   ];
 
@@ -86,7 +126,7 @@ function Users() {
           <Sidebar />
           </SidebarWrapper>
     <div className="content-wrapper">
-      <div className="container" style={{marginTop:"100px"}}>
+      <div className="container" >
         <div className="row mb-3">
           <div className="col-12 text-end">
             <input 

@@ -63,25 +63,34 @@ const filterReducer = (state, action) => {
 
       case "UPDATE_FILTERS_VALUE":
         const { name, value } = action.payload;
-        
+      
+        if (name === "carType") {
+          return {
+            ...state,
+            filters: {
+              ...state.filters,
+              carType: value,
+            },
+          };
+        }
+      
         if (name === "carName") {
           const selectedBrands = state.filters.carName.includes(value)
             ? state.filters.carName.filter((brand) => brand !== value)
             : [...state.filters.carName, value];
-        
+      
           const filteredModels = state.all_products
             .filter((product) => selectedBrands.includes(product.carName))
             .map((product) => product.modelName);
-        
+      
           const uniqueModels = ["All", ...new Set(filteredModels)];
-          
-          // Update available areas based on selected brands
+      
           const filteredAreas = state.all_products
             .filter((product) => selectedBrands.includes(product.carName))
             .map((product) => product.area);
-        
+      
           const uniqueAreas = ["All", ...new Set(filteredAreas)];
-        
+      
           return {
             ...state,
             filters: {
@@ -90,7 +99,7 @@ const filterReducer = (state, action) => {
               modelName: [], // Reset model filter when brand changes
             },
             availableModels: uniqueModels,
-            availableAreas: uniqueAreas, // Update available areas
+            availableAreas: uniqueAreas,
           };
         }
       
@@ -107,15 +116,15 @@ const filterReducer = (state, action) => {
             },
           };
         }
+      
         if (name === "currLocation") {
-          // Update the available areas based on the selected city
           const selectedCity = value;
           const filteredAreas = state.all_products
             .filter((product) => product.currLocation === selectedCity)
             .map((product) => product.area);
-  
+      
           const uniqueAreas = ["All", ...new Set(filteredAreas)];
-  
+      
           return {
             ...state,
             filters: {
@@ -126,6 +135,7 @@ const filterReducer = (state, action) => {
             availableAreas: uniqueAreas,
           };
         }
+      
         return {
           ...state,
           filters: {
@@ -135,17 +145,25 @@ const filterReducer = (state, action) => {
         };
       
       
+      
 
         case "FILTER_PRODUCTS":
-          let { all_products } = state; // Corrected variable name
+          let { all_products } = state;
           let tempFilterProduct = [...all_products];
           const {
             carName,
             currLocation,
             area,
             modelName,
-            price
+            price,
+            carType,
           } = state.filters;
+        
+          if (carType !== "All") {
+            tempFilterProduct = tempFilterProduct.filter(
+              (curElem) => curElem.carType === carType
+            );
+          }
         
           if (carName.length > 0 && !carName.includes('All')) {
             tempFilterProduct = tempFilterProduct.filter(
@@ -189,18 +207,19 @@ const filterReducer = (state, action) => {
               filters: {
                 ...state.filters,
                 text: "",
-                carName: ["All"], // Reset to array
+                carName: [],
                 currLocation: "All",
                 color: "All",
-                maxPrice: state.filters.maxPrice, // Use existing maxPrice
+                maxPrice: state.filters.maxPrice,
                 price: state.filters.maxPrice,
-                minPrice: state.filters.minPrice, // Ensure minPrice is also reset
                 area: "All",
-                modelName: ["All"], // Reset to array
+                modelName: [],
+                carType: "All",
               },
-              availableModels: [], // Clear available models
-              availableAreas: [], // Clear available areas
+              availableModels: ["All"],
+              availableAreas: ["All"],
             };
+          
           
 
     default:

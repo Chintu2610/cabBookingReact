@@ -17,7 +17,8 @@ const AdminDashboard = () => {
 	 noOfBookings:0,
 	 noOfBookingsLastMonth:0,
 	 noOfDrivers:0,
-   noOfCab:0
+   noOfCab:0,
+   noOfVendors:0,
   });
   const fetchData = async () => {
     
@@ -38,7 +39,8 @@ const AdminDashboard = () => {
           noOfBookings: data.noOfBookings,
           noOfBookingsLastMonth: data.noOfBookingsLastMonth,
           noOfDrivers: data.noOfDrivers,
-          noOfCab:data.noOfCab
+          noOfCab:data.noOfCab,
+          noOfVendors:data.noOfVendors,
           });
       } else {
        
@@ -120,6 +122,24 @@ const AdminDashboard = () => {
               </div>
             </div>
           </div>
+          {(cookies.currRole==="Admin") &&
+            <div className="row">
+            <div className="col-lg-3 col-6">
+                <div className="small-box bg-primary">
+                  <div className="inner">
+                    <h3>{countdata.noOfVendors}</h3>
+                    <p>No Of Vendors</p>
+                  </div>
+                  <div className="icon">
+                    <i className="ion ion-pie-graph"></i>
+                  </div>
+                  <a href="/drivers" className="small-box-footer">More info <i className="fas fa-arrow-circle-right"></i></a>
+                </div>
+              </div>
+  
+            </div>
+          }
+          
           {/* Main row */}
           <div className="row">
             {/* Left col */}

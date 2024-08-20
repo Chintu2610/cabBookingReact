@@ -5,7 +5,7 @@ import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useCookies } from "react-cookie";
-function Drivers() {
+function Vendors() {
   const navigate=useNavigate();
   const [cookie]=useCookies();
   function updateDriver(driverId)
@@ -171,4 +171,4 @@ function Drivers() {
   );
 }
 
-export default Drivers;
+export default Vendors;

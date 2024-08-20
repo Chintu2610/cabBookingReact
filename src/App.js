@@ -35,7 +35,11 @@ import AdminProfile from './components/Profile';
 
 import ContextDemo from './components/context-demo/context-demo';
 import { ReducerDemo } from './components/reducerDemo/reducer-demo';
-
+import { DriverUpdate } from './components/updateDriver';
+import { CabUpdate } from './components/updateCab';
+import BookingHistoryCustomer from './components/bookingHistory-customer';
+import 'bootstrap-icons/font/bootstrap-icons.css';
+import { AdminRegister } from './components/adminRegister';
 
 const App = () => {
   const theme = {
@@ -81,6 +85,8 @@ const App = () => {
           <Route path="/" element={<WithFooter showFooter={true} />}>
             <Route index element={<Home />} />
             <Route path="about" element={<About />} />
+            <Route path="/updatedriver/:driverId" element={<DriverUpdate />} />
+            <Route path="/updatecab/:cabId" element={<CabUpdate />} />
             <Route path="contextdemo" element={<ContextDemo />} />
             <Route path="reducerdemo" element={<ReducerDemo />} />
             <Route path="cabs" element={<Cabs />} />
@@ -88,12 +94,13 @@ const App = () => {
             <Route path="login" element={<Login />} />
             <Route path="forgot-password" element={<ResetPassword />} />
             <Route path="PasswordReset" element={<PasswordReset />} />
-            <Route path="AdminProfile" element={<AdminProfile />} />
+            <Route path="/profile" element={<AdminProfile />} />
             <Route path="EnterOTP" element={<EnterOTP />} />
             
             <Route path="singleproduct/:id" element={<SingleProduct />} />
             <Route path="cart" element={<Cart />} />
             <Route path="register" element={<UserRegister />} />
+            <Route path="/register-admin" element={<AdminRegister />} />
             <Route path="formiK-demo" element={<FormicDemo />} />
             <Route path="yup-demo" element={<YupDemo />} />
             <Route path="formik-component" element={<FormikComponent />} />
@@ -105,11 +112,17 @@ const App = () => {
           <Route path="/booking-history" element={<WithFooter showFooter={false} />}>
             <Route index element={<BookingHistory />} />
           </Route>
+          <Route path="/booking-history-customer" element={<WithFooter showFooter={false} />}>
+            <Route index element={<BookingHistoryCustomer />} />
+          </Route>
           <Route path="/users" element={<WithFooter showFooter={false} />}>
             <Route index element={<Users />} />
           </Route>
           <Route path="/drivers" element={<WithFooter showFooter={false} />}>
             <Route index element={<Drivers />} />
+          </Route>
+          <Route path="/vendors" element={<WithFooter showFooter={false} />}>
+            <Route index element={<Vendors />} />
           </Route>
           <Route path="/registerDriver" element={<WithFooter showFooter={false} />}>
             <Route index element={<DriverRegister />} />

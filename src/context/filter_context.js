@@ -19,6 +19,7 @@ const initialState = {
     area: "All",
     modelName: [], // Change to an array
     minPrice: 0,
+    carType:"All",
   },
   availableModels: [],
   availableAreas: [], // Add this to the initial state
