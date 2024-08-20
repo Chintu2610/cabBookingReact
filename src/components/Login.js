@@ -1,11 +1,16 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
+import {useCaptcha} from '../components/custom-hooks/captcha';
+import { useSentenseCase } from './custom-hooks/changeCase';
 const Login = () => {
+  let code=useCaptcha();
+  let title=useSentenseCase('user LoGiN');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
   const [cookies,setCookie,removeCookie]=useCookies();
+
   const handleSubmit = async (event) => {
     event.preventDefault();
 
@@ -28,17 +33,13 @@ const Login = () => {
         setCookie('currStatus', data.currStatus,{expires:new Date('2025-05-06')});
         setCookie('userName', data.userName,{expires:new Date('2025-05-06')});
         setCookie('email', data.email,{expires:new Date('2025-05-06')});
-        
-        // sessionStorage.setItem('currUserId', data.currUserId);
-        // sessionStorage.setItem('uuid', data.uuid);
-        // sessionStorage.setItem('currRole', data.currRole);
-        // sessionStorage.setItem('currStatus', data.currStatus);
-        // sessionStorage.setItem('userName', data.userName);
-        // sessionStorage.setItem('email', data.email);
-
         switch (data.currRole) {
           case 'Admin':
+            navigate('/admin-dashboard'); // Redirect to dashboard
+            break;
           case 'Customer':
+            navigate('/cabs'); // Redirect to dashboard
+            break;
           case 'Driver':
             navigate('/admin-dashboard'); // Redirect to dashboard
             break;
@@ -64,6 +65,7 @@ const Login = () => {
           <div className="card">
             <div className="card-body">
             <h3 className="text-center mb-4">Welcome Back! Please Log In</h3>
+           
               <form onSubmit={handleSubmit}>
                 <div className="mb-3">
                   <label htmlFor="email" className="form-label fs-5">Email</label>
@@ -89,13 +91,13 @@ const Login = () => {
                     required 
                   />
                 </div>
+               
                 <button type="submit" className="btn btn-primary w-100 fs-5">Login</button>
               </form>
               <div className="row mt-3">
               <div className="col text-start fs-5 ">
                   <Link className="text-danger" to="/forgot-password">Forgot password?</Link>
                 </div>
-
                 <div className="col text-end fs-5">
                   <Link className="text-success" to="/register">Register</Link>
                 </div>

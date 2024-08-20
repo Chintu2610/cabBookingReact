@@ -2,11 +2,12 @@ import React from "react";
 //import { NavLink } from "react-router-dom";
 import FormatPrice from "../Helpers/FormatPrice";
 import { useNavigate } from "react-router-dom";
-
+import axios from "axios";
+import { useCookies } from "react-cookie";
 const Product = ({ cabId, currLocation, cabCurrStatus, carName, cabImage, perKmRate,manufacturingYear }) => {
   const currentRole = sessionStorage.getItem("currRole");
   const navigate = useNavigate();
-
+  const [cookies]=useCookies();
   const handleBookingClick = () => {
     // if (currentRole !== 'admin') {
     //   navigate(`/booking/${cabId}`);
@@ -15,6 +16,30 @@ const Product = ({ cabId, currLocation, cabCurrStatus, carName, cabImage, perKmR
     // }
     navigate(`/booking/${cabId}`, { state: { perKmRate } });
   };
+  const updateCab = () => {
+    // if (currentRole !== 'admin') {
+    //   navigate(`/booking/${cabId}`);
+    // } else {
+    //   alert("Admin users cannot book a cab.");
+    // }
+    navigate(`/updatecab/${cabId}`);
+  };
+ async function deleteCab() {
+      try {
+        const response = await  axios.delete(
+          `http://localhost:1995/cab/delete?cabId=${cabId}&uuid=${cookies.uuid}`
+        );
+        if (response.status===200) {
+          alert("cab deleted successfully.");
+         window.location.reload();
+        } else {
+          alert("Failed to delete cab. Please try again.");
+        }
+      } catch (error) {
+        console.error("Error:", error);
+        alert("An error occurred while fetching the cab details.");
+      }
+  }
   return (
     // <NavLink to={`/singleproduct/${cabId}`}>
       <div className="card">
@@ -38,9 +63,32 @@ const Product = ({ cabId, currLocation, cabCurrStatus, carName, cabImage, perKmR
           </div>
         </div>
           <button onClick={handleBookingClick} style={{color:"black"}} class="btn btn-primary btn-block btn-lg mt-3">Book Now</button>
+          {cookies.currRole.toLowerCase() === 'admin' && (
+  <div className="row">
+    <div className="col-md-6">
+      <button 
+        onClick={updateCab} 
+        style={{ color: "black", backgroundColor: "green" }} 
+        className="btn btn-primary btn-block btn-md mt-3"
+      >
+        Update Cab
+      </button>
+    </div>
+    <div className="col-md-6">
+      <button 
+        onClick={deleteCab} 
+        style={{ color: "black", backgroundColor: "red" }} 
+        className="btn btn-danger btn-block btn-md mt-3"
+      >
+        Delete Cab
+      </button>
+    </div>
+  </div>
+)}
+
         </div>
       </div>
-    // </NavLink>
+   
   );
 };
 

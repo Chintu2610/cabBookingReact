@@ -76,8 +76,20 @@ const BookingPage = () => {
         }
       } catch (error) {
         console.error('Error confirming booking:', error);
-        // Handle errors
+        // Accessing the error message from Axios response
+        if (error.response) {
+          // Server responded with a status other than 2xx
+          const errorMessage = error.response.data.message || 'An error occurred while confirming the booking.';
+          alert(`Error: ${errorMessage}`);
+        } else if (error.request) {
+          // The request was made but no response was received
+          alert('No response received from the server.');
+        } else {
+          // Something else happened in setting up the request
+          alert(`Error: ${error.message}`);
+        }
       }
+      
     } else {
       console.log('Please fill in all required fields');
     }

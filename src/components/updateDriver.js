@@ -1,46 +1,81 @@
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as yup from "yup";
 import { useNavigate } from "react-router-dom";
-import "bootstrap/dist/css/bootstrap.min.css"; // Import Bootstrap CSS
+import "bootstrap/dist/css/bootstrap.min.css";
+import { useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useCookies } from "react-cookie";
+import axios from "axios";
 
-export function DriverRegister() {
+export function DriverUpdate() {
+  const params = useParams();
+  const [cookie] = useCookies();
   const navigate = useNavigate();
+  const [driverDetails, setDriverDetails] = useState(null);
+  const [showPassword, setShowPassword] = useState(false); // State to manage password visibility
+
+  useEffect(() => {
+    const fetchDriverDetails = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:1995/driver/viewDriver?driverId=${params.driverId}&uuid=${cookie.uuid}`
+        );
+        if (response) {
+          setDriverDetails(response.data);
+        } else {
+          alert("Failed to fetch driver details. Please try again.");
+        }
+      } catch (error) {
+        console.error("Error:", error);
+      }
+    };
+    fetchDriverDetails();
+  }, [params.driverId, cookie.uuid]);
+
+  if (!driverDetails) {
+    return <div>Loading...</div>; // Show a loading indicator while data is being fetched
+  }
+
+  const togglePasswordVisibility = () => {
+    setShowPassword((prevState) => !prevState);
+  };
 
   return (
     <div className="container" style={{ marginTop: "100px" }}>
       <Formik
-      
         initialValues={{
-          userName: "",
-          age: 0,
-          address: "",
-          mobileNumber: "",
-          email: "",
-          password: "",
+          driverId: driverDetails.driverId || "",
+          userName: driverDetails.userName || "",
+          address: driverDetails.address || "",
+          mobileNumber: driverDetails.mobileNumber || "",
+          email: driverDetails.email || "",
+          password: driverDetails.password || "",
           userRole: "Driver",
-          licenceNo: "",
-          rating: 0,
-          currLocation: "",
-          currDriverStatus: "",
+          licenceNo: driverDetails.licenceNo || "",
+          rating: driverDetails.rating || 0,
+          currLocation: driverDetails.currLocation || "",
+          currDriverStatus: driverDetails.currDriverStatus || "",
         }}
+        enableReinitialize={true} // Reinitialize form values when `driverDetails` changes
         onSubmit={async (values) => {
           try {
-            const response = await fetch(
-              "http://localhost:1995/driver/register",
+            const response = await axios.put(
+              "http://localhost:1995/driver/update",
+              values,
               {
-                method: "POST",
+                params:{
+                    uuid:cookie.uuid
+                },
                 headers: {
                   "Content-Type": "application/json",
                 },
-                body: JSON.stringify(values),
               }
             );
-
-            if (response.ok) {
-              alert("Registration successful!");
+            if (response.status === 200) {
+              alert("Driver updated successfully.");
               navigate("/drivers");
             } else {
-              alert("Registration failed. Please try again.");
+              alert("Update failed. Please try again.");
             }
           } catch (error) {
             console.error("Error:", error);
@@ -52,11 +87,11 @@ export function DriverRegister() {
             .required("Username is required")
             .min(4, "Minimum length should be 4")
             .max(10, "Length should not exceed 10"),
-            mobileNumber: yup
-            .string() // Ensures the input is treated as a string
-            .required("Mobile number is required") // Makes the field mandatory
-            .matches(/^\d{10}$/, "Please enter a valid 10-digit mobile number"), // Validates exactly 10 digits
-            email: yup
+          mobileNumber: yup
+            .string()
+            .required("Mobile number is required")
+            .matches(/^\d{10}$/, "Please enter a valid 10-digit mobile number"),
+          email: yup
             .string()
             .required("Email is required")
             .email("Invalid email format"),
@@ -65,31 +100,13 @@ export function DriverRegister() {
             .string()
             .required("Password is required")
             .min(8, "Password must be at least 8 characters")
-            .matches(
-              /[A-Z]/,
-              "Password must contain at least one uppercase letter"
-            )
-            .matches(
-              /[a-z]/,
-              "Password must contain at least one lowercase letter"
-            )
+            .matches(/[A-Z]/, "Password must contain at least one uppercase letter")
+            .matches(/[a-z]/, "Password must contain at least one lowercase letter")
             .matches(/[0-9]/, "Password must contain at least one digit")
-            .matches(
-              /[\W_]/,
-              "Password must contain at least one special character"
-            ),
-            age: yup
-            .number()
-            .required("Age is required")
-            .positive("Age must be a positive number")
-            .integer("Age must be an integer")
-            .min(18, "Age must be greater than or equal to 18")
-          ,
-
-          licenceNo: yup.string().required("licence is required"),
-
-          currLocation: yup.string().required("please provide a valid location."),
-          currDriverStatus: yup.string().nonNullable().required("status is required."),
+            .matches(/[\W_]/, "Password must contain at least one special character"),
+          licenceNo: yup.string().required("Licence number is required"),
+          currLocation: yup.string().required("Please provide a valid location."),
+          currDriverStatus: yup.string().required("Status is required."),
         })}
       >
         {({ isSubmitting }) => (
@@ -99,8 +116,21 @@ export function DriverRegister() {
                 <div className="col-md-5">
                   <div className="card">
                     <div className="card-body">
-                      <h5 className="text-center mb-4">Register Driver</h5>
-                      <div className="mb-3 align-items-center">
+                      <h5 className="text-center mb-4">Update Driver</h5>
+
+                      <div className="mb-3">
+                        <label htmlFor="driverId" className="form-label">
+                          Driver ID
+                        </label>
+                        <Field
+                          type="text"
+                          name="driverId"
+                          className="form-control"
+                          disabled
+                        />
+                      </div>
+
+                      <div className="mb-3">
                         <label htmlFor="userName" className="form-label">
                           User Name
                         </label>
@@ -115,21 +145,33 @@ export function DriverRegister() {
                           className="text-danger"
                         />
                       </div>
+
                       <div className="mb-3">
                         <label htmlFor="password" className="form-label">
                           Password
                         </label>
-                        <Field
-                          type="password"
-                          name="password"
-                          className="form-control"
-                        />
+                        <div className="input-group">
+                          <Field
+                            type={showPassword ? "text" : "password"}
+                            name="password"
+                            className="form-control"
+                            id="password"
+                          />
+                          <button
+                            type="button"
+                            className="btn btn-outline-secondary"
+                            onClick={togglePasswordVisibility}
+                          >
+                            <i className={`fa ${showPassword ? "fa-eye-slash" : "fa-eye"}`}></i>
+                          </button>
+                        </div>
                         <ErrorMessage
                           name="password"
                           component="div"
                           className="text-danger"
                         />
                       </div>
+
                       <div className="mb-3">
                         <label htmlFor="address" className="form-label">
                           Address
@@ -145,6 +187,7 @@ export function DriverRegister() {
                           className="text-danger"
                         />
                       </div>
+
                       <div className="mb-3">
                         <label htmlFor="mobileNumber" className="form-label">
                           Mobile
@@ -160,6 +203,7 @@ export function DriverRegister() {
                           className="text-danger"
                         />
                       </div>
+
                       <div className="mb-3">
                         <label htmlFor="email" className="form-label">
                           Email
@@ -175,23 +219,9 @@ export function DriverRegister() {
                           className="text-danger"
                         />
                       </div>
+
                       <div className="mb-3">
-                        <label htmlFor="age" className="form-label">
-                          Age
-                        </label>
-                        <Field
-                          type="number"
-                          name="age"
-                          className="form-control"
-                        />
-                        <ErrorMessage
-                          name="age"
-                          component="div"
-                          className="text-danger"
-                        />
-                      </div>
-                      <div className="mb-3">
-                        <label htmlFor="licence" className="form-label">
+                        <label htmlFor="licenceNo" className="form-label">
                           Licence Number
                         </label>
                         <Field
@@ -205,8 +235,9 @@ export function DriverRegister() {
                           className="text-danger"
                         />
                       </div>
+
                       <div className="mb-3">
-                        <label htmlFor="email" className="form-label">
+                        <label htmlFor="currLocation" className="form-label">
                           Current Location
                         </label>
                         <Field
@@ -220,8 +251,9 @@ export function DriverRegister() {
                           className="text-danger"
                         />
                       </div>
+
                       <div className="mb-3">
-                        <label htmlFor="status" className="form-label">
+                        <label htmlFor="currDriverStatus" className="form-label">
                           Driver Status
                         </label>
                         <Field
@@ -232,7 +264,6 @@ export function DriverRegister() {
                           <option value="">Select status</option>
                           <option value="Available">Active</option>
                           <option value="Not Available">Inactive</option>
-                          
                         </Field>
                         <ErrorMessage
                           name="currDriverStatus"
@@ -240,13 +271,16 @@ export function DriverRegister() {
                           className="text-danger"
                         />
                       </div>
-                      <button
-                        type="submit"
-                        className="btn btn-primary form-control"
-                        disabled={isSubmitting}
-                      >
-                        Register
-                      </button>
+
+                      <div className="text-center">
+                        <button
+                          type="submit"
+                          className="btn btn-primary"
+                          disabled={isSubmitting}
+                        >
+                          Update Driver
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </div>
