@@ -2,10 +2,11 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as yup from "yup";
 import { useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css"; // Import Bootstrap CSS
+import {  useCookies } from "react-cookie";
 
-export function AdminRegister() {
+export function VendorRegister() {
   const navigate = useNavigate();
-
+  const [cookie]=useCookies();
   return (
     <div className="container" style={{ marginTop: "100px" }}>
       <Formik
@@ -21,7 +22,7 @@ export function AdminRegister() {
         onSubmit={async (values) => {
           try {
             const response = await fetch(
-              "http://localhost:1995/admin/register",
+              `http://localhost:1995/admin/register/${cookie.currRole}`,
               {
                 method: "POST",
                 headers: {
