@@ -133,7 +133,7 @@ const AdminDashboard = () => {
                   <div className="icon">
                     <i className="ion ion-pie-graph"></i>
                   </div>
-                  <a href="/drivers" className="small-box-footer">More info <i className="fas fa-arrow-circle-right"></i></a>
+                  <a href="/vendors" className="small-box-footer">More info <i className="fas fa-arrow-circle-right"></i></a>
                 </div>
               </div>
   

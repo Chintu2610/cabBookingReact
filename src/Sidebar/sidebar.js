@@ -38,7 +38,7 @@ const Sidebar = () => {
               </Link>
             </li>
             <li className="nav-item">
-              <Link to="/register-admin" className="nav-link">
+              <Link to="/register-vendor" className="nav-link">
               <i class="bi bi-person fs-5"></i>
                 <p>
                 Register Vendor

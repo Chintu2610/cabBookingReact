@@ -8,14 +8,14 @@ import { useCookies } from "react-cookie";
 function Vendors() {
   const navigate=useNavigate();
   const [cookie]=useCookies();
-  function updateDriver(driverId)
+  function updateVendor(adminId)
   {
-      navigate(`/updatedriver/${driverId}`);
+      navigate(`/updateVendor/${adminId}`);
   }
-  async function deleteDriver(driverId) {
+  async function deleteVendor(driverId) {
     try {
       const response = await axios.delete(
-        `http://localhost:1995/driver/delete?uuid=${cookie.uuid}&driverId=${driverId}`,
+        `http://localhost:1995/vendor/delete?uuid=${cookie.uuid}&vendorId=${driverId}`,
         {
          
           headers: {
@@ -24,7 +24,7 @@ function Vendors() {
         }
       );
       if (response.status === 200) {
-        alert("driver deleted successfully.");
+        alert("vendor deleted successfully.");
         window.location.reload();
       } else {
         alert(response.text());
@@ -36,9 +36,10 @@ function Vendors() {
   }
   
   const columns = [
+   
     {
-      name: "Driver Id",
-      selector: (row) => row.driverId,
+      name: "Admin Id",
+      selector: (row) => row.adminId,
       sortable: true,
     },
     {
@@ -64,28 +65,20 @@ function Vendors() {
     }
     ,
     
-    {
-      name: "Location",
-      selector: (row) => row.currLocation,
-      sortable: true,
-    },
-    {
-      name: "Status",
-      selector: (row) => row.currDriverStatus,
-      sortable: true,
-    },
+   
+    
     {
       name:"Action",
       cell: (row)=>
       (
         <>
         <button className="btn btn-primary me-2"
-        onClick={()=>updateDriver(row.driverId)}
-        >Update Driver</button>
+        onClick={()=>updateVendor(row.adminId)}
+        >Update Vendor</button>
 
         <button className="btn btn-danger"
-        onClick={()=>deleteDriver(row.driverId)}
-        >Delete Driver</button>
+        onClick={()=>deleteVendor(row.adminId)}
+        >Delete Vendor</button>
         </>
       )
     }
@@ -96,8 +89,8 @@ function Vendors() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const uuid=sessionStorage.getItem("uuid");
-        const response = await fetch(`http://localhost:1995/driver/AllDriver?uuid=${uuid}`);
+        const uuid=cookie.uuid;
+        const response = await fetch(`http://localhost:1995/vendor/AllVendor?uuid=${uuid}`);
         if (response.ok) {
           const data = await response.json();
           setOriginalRecords(data);
@@ -127,7 +120,6 @@ function Vendors() {
     
   }
   const SidebarWrapper = styled.div`
- 
   top: 10rem;
   left: 0;
   width: 20%;

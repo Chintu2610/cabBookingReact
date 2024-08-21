@@ -39,7 +39,9 @@ import { DriverUpdate } from './components/updateDriver';
 import { CabUpdate } from './components/updateCab';
 import BookingHistoryCustomer from './components/bookingHistory-customer';
 import 'bootstrap-icons/font/bootstrap-icons.css';
-import { AdminRegister } from './components/adminRegister';
+import {  VendorRegister } from './components/vendorRegister';
+import Vendors from './components/vendors';
+import { VendorUpdate, VewndorUpdate } from './components/updateVendor';
 
 const App = () => {
   const theme = {
@@ -86,6 +88,7 @@ const App = () => {
             <Route index element={<Home />} />
             <Route path="about" element={<About />} />
             <Route path="/updatedriver/:driverId" element={<DriverUpdate />} />
+            <Route path="/updateVendor/:vendorId" element={<VendorUpdate />} />
             <Route path="/updatecab/:cabId" element={<CabUpdate />} />
             <Route path="contextdemo" element={<ContextDemo />} />
             <Route path="reducerdemo" element={<ReducerDemo />} />
@@ -100,7 +103,7 @@ const App = () => {
             <Route path="singleproduct/:id" element={<SingleProduct />} />
             <Route path="cart" element={<Cart />} />
             <Route path="register" element={<UserRegister />} />
-            <Route path="/register-admin" element={<AdminRegister />} />
+            <Route path="/register-vendor" element={<VendorRegister />} />
             <Route path="formiK-demo" element={<FormicDemo />} />
             <Route path="yup-demo" element={<YupDemo />} />
             <Route path="formik-component" element={<FormikComponent />} />
