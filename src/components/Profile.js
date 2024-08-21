@@ -17,15 +17,20 @@ const AdminProfile = () => {
   const [cookies] = useCookies();
   const [showPassword, setShowPassword] = useState(false); // State for password visibility
 
-  useEffect(() => {
-    setUuid(cookies.uuid);
-    setAdminId(cookies.currUserId);
-    fetchAdminDetails();
-  }, [cookies]);
+  
 
   const fetchAdminDetails = async () => {
+    var URL="";
+    if(cookies.currRole==='Admin'){
+      URL=`http://localhost:1995/admin/viewAdminProfile?adminId=${cookies.currUserId}&uuid=${cookies.uuid}`;
+    }else if(cookies.currRole==='Customer') {
+      URL=`http://localhost:1995/customer/viewCustomerProfile?customerId=${cookies.currUserId}&uuid=${cookies.uuid}`;
+    }else{
+      URL=`http://localhost:1995/driver/viewDriverProfile?driverId=${cookies.currUserId}&uuid=${cookies.uuid}`;
+    }
     try {
-      const response = await fetch(`http://localhost:1995/admin/viewAdminProfile?adminId=${adminId}&uuid=${uuid}`);
+      
+      const response = await fetch(URL);
       
       if (!response.ok) {
         throw new Error('Network response was not ok');
@@ -42,10 +47,10 @@ const AdminProfile = () => {
 
   // Update adminDetails when adminId or uuid changes
   useEffect(() => {
-    if (adminId && uuid) {
+    
       fetchAdminDetails();
-    }
-  }, [adminId, uuid]);
+    
+  }, []);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -58,7 +63,15 @@ const AdminProfile = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch(`http://localhost:1995/admin/Update?adminId=${adminId}&uuid=${uuid}`
+      var URL="";
+      if(cookies.currRole==="Admin"){
+        URL=`http://localhost:1995/admin/Update?adminId=${cookies.currUserId}&uuid=${cookies.uuid}`;
+      }else if(cookies.currRole==='Customer') {
+        URL=`http://localhost:1995/customer/update?customerId=${cookies.currUserId}&uuid=${cookies.uuid}`;
+      }else{
+        URL=`http://localhost:1995/driver/update?driverId=${cookies.currUserId}&uuid=${cookies.uuid}`;
+      }
+      const response = await fetch(URL
         
        , {method: 'PUT',
         headers: {
@@ -97,7 +110,7 @@ const AdminProfile = () => {
         <div className="col-md-5">
           <div className="card">
             <div className="card-body">
-              <h2 className="card-title text-center mb-4">Admin Profile</h2>
+             
 
               {error && <p className="text-danger mt-3">{error}</p>}
 

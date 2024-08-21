@@ -121,9 +121,7 @@ const App = () => {
           <Route path="/drivers" element={<WithFooter showFooter={false} />}>
             <Route index element={<Drivers />} />
           </Route>
-          <Route path="/vendors" element={<WithFooter showFooter={false} />}>
-            <Route index element={<Vendors />} />
-          </Route>
+          
           <Route path="/registerDriver" element={<WithFooter showFooter={false} />}>
             <Route index element={<DriverRegister />} />
           </Route>
