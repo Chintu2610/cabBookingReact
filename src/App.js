@@ -43,6 +43,7 @@ import {  VendorRegister } from './components/vendorRegister';
 import Vendors from './components/vendors';
 import { VendorUpdate, VewndorUpdate } from './components/updateVendor';
 import VendorDashboard from './components/VendorDashBoard';
+import DriverDashboard from './components/DriverDashboard';
 
 const App = () => {
   const theme = {
@@ -115,6 +116,9 @@ const App = () => {
           </Route>
           <Route path="/vendor-dashboard" element={<WithFooter showFooter={false} />}>
             <Route index element={<VendorDashboard />} />
+          </Route>
+          <Route path="/driver-dashboard" element={<WithFooter showFooter={false} />}>
+            <Route index element={<DriverDashboard />} />
           </Route>
           <Route path="/booking-history" element={<WithFooter showFooter={false} />}>
             <Route index element={<BookingHistory />} />

@@ -43,7 +43,7 @@ const Login = () => {
             window.location.reload();
             break;
           case 'Driver':
-            navigate('/admin-dashboard'); // Redirect to dashboard
+            navigate('/driver-dashboard'); // Redirect to dashboard
             window.location.reload();
             break;
           case 'Vendor':
