@@ -4,18 +4,35 @@ import styled from "styled-components";
 import FormatPrice from "../Helpers/FormatPrice";
 import { Button } from "../styles/Button";
 import PropTypes from "prop-types";
+import axios from "axios";
+import { useCookies } from "react-cookie";
 
 const ListView = ({ products }) => {
   const navigate = useNavigate();
-
+const [cookies] = useCookies();
   const handleBookingClick = (cabId, perKmRate) => {
     navigate(`/booking/${cabId}`, { state: { perKmRate } });
   };
 
   const handleUpdateClick = (cabId) => {
-    navigate(`/update/${cabId}`);
+    navigate(`/updatecab/${cabId}`);
   };
-
+  async function deleteCab(cabId) {
+    try {
+      const response = await  axios.delete(
+        `http://localhost:1995/cab/delete?cabId=${cabId}&uuid=${cookies.uuid}`
+      );
+      if (response.status===200) {
+        alert("cab deleted successfully.");
+       window.location.reload();
+      } else {
+        alert("Failed to delete cab. Please try again.");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      alert("An error occurred while fetching the cab details.");
+    }
+}
   return (
     <Wrapper className="section">
       <div className="container grid">
@@ -37,6 +54,7 @@ const ListView = ({ products }) => {
                 <div className="button-container">
                   <Button onClick={() => handleBookingClick(cabId, perKmRate)} style={{ color: "black" }} className="btn">Book Now</Button>
                   <Button onClick={() => handleUpdateClick(cabId)} className="btn btn-update">Update</Button>
+                  <Button onClick={() => deleteCab(cabId)} className="btn btn-update">Delete</Button>
                 </div>
               </div>
             </div>
