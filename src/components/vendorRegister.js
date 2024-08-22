@@ -130,20 +130,23 @@ export function VendorRegister() {
                        />
                      </div>
                      <div className="mb-3">
-                       <label htmlFor="mobileNumber" className="form-label">
-                         Mobile
-                       </label>
-                       <Field
-                         type="text"
-                         name="mobileNumber"
-                         className="form-control"
-                       />
-                       <ErrorMessage
-                         name="mobileNumber"
-                         component="div"
-                         className="text-danger"
-                       />
-                     </div>
+                        <label htmlFor="mobileNumber" className="form-label">
+                          Mobile
+                        </label>
+                        <Field
+                          type="text"
+                          name="mobileNumber"
+                          className="form-control"
+                          maxLength="10" // Restrict the input to a maximum of 10 characters
+                          pattern="\d*" // Ensures that only digits are entered
+                        />
+                        <ErrorMessage
+                          name="mobileNumber"
+                          component="div"
+                          className="text-danger"
+                        />
+                      </div>
+
                      <div className="mb-3">
                        <label htmlFor="email" className="form-label">
                          Email

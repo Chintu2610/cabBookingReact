@@ -45,7 +45,7 @@ const Sidebar = () => {
                 </p>
               </Link>
             </li>
-            <li className="nav-item">
+            {/* <li className="nav-item">
               <a href="#" className="nav-link">
                 <i className="nav-icon fas fa-copy"></i>
                 <p>
@@ -95,7 +95,7 @@ const Sidebar = () => {
                   <Link to="/fixed-footer" className="nav-link">
                     <i className="far fa-circle nav-icon"></i>
                     <p>Fixed Footer</p>
-                  </Link>
+                  </Link> 
                 </li>
                 <li className="nav-item">
                   <Link to="/collapsed-sidebar" className="nav-link">
@@ -104,8 +104,8 @@ const Sidebar = () => {
                   </Link>
                 </li>
               </ul>
-            </li>
-            <li className="nav-item">
+            </li> */}
+            {/* <li className="nav-item">
               <a href="#" className="nav-link">
                 <i className="nav-icon fas fa-chart-pie"></i>
                 <p>
@@ -139,8 +139,8 @@ const Sidebar = () => {
                   </Link>
                 </li>
               </ul>
-            </li>
-            <li className="nav-item">
+            </li> */}
+            {/* <li className="nav-item">
               <a href="#" className="nav-link">
                 <i className="nav-icon fas fa-tree"></i>
                 <p>
@@ -198,8 +198,8 @@ const Sidebar = () => {
                   </Link>
                 </li>
               </ul>
-            </li>
-            <li className="nav-item">
+            </li> */}
+            {/* <li className="nav-item">
               <a href="#" className="nav-link">
                 <i className="nav-icon fas fa-edit"></i>
                 <p>
@@ -365,8 +365,8 @@ const Sidebar = () => {
                   </Link>
                 </li>
               </ul>
-            </li>
-            <li className="nav-item">
+            </li> */}
+            {/* <li className="nav-item">
               <a href="#" className="nav-link">
                 <i className="nav-icon far fa-plus-square"></i>
                 <p>
@@ -508,8 +508,8 @@ const Sidebar = () => {
                   </a>
                 </li>
               </ul>
-            </li>
-            <li className="nav-item">
+            </li> */} 
+            {/* <li className="nav-item">
               <a href="#" className="nav-link">
                 <i className="fas fa-circle nav-icon"></i>
                 <p>Level 1</p>
@@ -533,7 +533,7 @@ const Sidebar = () => {
                 <i className="nav-icon far fa-circle text-info"></i>
                 <p>Informational</p>
               </a>
-            </li>
+            </li> */}
           </ul>
         </nav>
         {/* /.sidebar-menu */}
