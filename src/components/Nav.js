@@ -30,12 +30,15 @@ const Nav = ({ role }) => {
             removeCookie("userName");
             removeCookie("email");
             navigate("/login"); // Redirect to login page
+            window.location.reload();
           } else if (response.status === 401) {
             alert("Invalid uuid. Please try again.");
             navigate("/login"); // Redirect to login page
+            window.location.reload();
           } else {
             alert("An unexpected error occurred. Please try again later.");
             navigate("/login"); // Redirect to login page
+            window.location.reload();
           }
         })
         .catch((error) => {
@@ -169,6 +172,48 @@ const Nav = ({ role }) => {
               <li>
                 <NavLink
                   to="/admin-dashboard"
+                  className="navbar-link"
+                  onClick={() => setMenuIcon(false)}
+                >
+                  Dashboard
+                </NavLink>
+              </li>
+              <li>
+                <Dropdown>
+                  <Dropdown.Toggle
+                    variant="link"
+                    id="dropdown-custom-components"
+                    className="navbar-link"
+                  >
+                    <i className="bi bi-gear fs-5"></i>
+                  </Dropdown.Toggle>
+
+                  <Dropdown.Menu>
+                    <Dropdown.Item
+                      as={NavLink}
+                      to="/profile"
+                      onClick={() => setMenuIcon(false)}
+                    >
+                      Profile
+                    </Dropdown.Item>
+                    <Dropdown.Item
+                      onClick={() => {
+                        setMenuIcon(false);
+                        handleLogout(); // Call handleLogout function
+                      }}
+                    >
+                      Logout
+                    </Dropdown.Item>
+                  </Dropdown.Menu>
+                </Dropdown>
+              </li>
+            </>
+          )}
+           {role.userRole === "Vendor" && (
+            <>
+              <li>
+                <NavLink
+                  to="/vendor-dashboard"
                   className="navbar-link"
                   onClick={() => setMenuIcon(false)}
                 >

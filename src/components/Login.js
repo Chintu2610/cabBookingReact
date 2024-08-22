@@ -36,15 +36,23 @@ const Login = () => {
         switch (data.currRole) {
           case 'Admin':
             navigate('/admin-dashboard'); // Redirect to dashboard
+            window.location.reload();
             break;
           case 'Customer':
             navigate('/cabs'); // Redirect to dashboard
+            window.location.reload();
             break;
           case 'Driver':
             navigate('/admin-dashboard'); // Redirect to dashboard
+            window.location.reload();
+            break;
+          case 'Vendor':
+            navigate('/vendor-dashboard'); // Redirect to dashboard
+            window.location.reload();
             break;
           default:
             navigate('/login'); // Redirect to login if role is unknown
+
             break;
         }
       } else if (response.status === 401) {

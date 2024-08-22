@@ -42,6 +42,7 @@ import 'bootstrap-icons/font/bootstrap-icons.css';
 import {  VendorRegister } from './components/vendorRegister';
 import Vendors from './components/vendors';
 import { VendorUpdate, VewndorUpdate } from './components/updateVendor';
+import VendorDashboard from './components/VendorDashBoard';
 
 const App = () => {
   const theme = {
@@ -112,6 +113,9 @@ const App = () => {
           <Route path="/admin-dashboard" element={<WithFooter showFooter={false} />}>
             <Route index element={<Dashboard />} />
           </Route>
+          <Route path="/vendor-dashboard" element={<WithFooter showFooter={false} />}>
+            <Route index element={<VendorDashboard />} />
+          </Route>
           <Route path="/booking-history" element={<WithFooter showFooter={false} />}>
             <Route index element={<BookingHistory />} />
           </Route>
@@ -124,7 +128,9 @@ const App = () => {
           <Route path="/drivers" element={<WithFooter showFooter={false} />}>
             <Route index element={<Drivers />} />
           </Route>
-          
+          <Route path="/vendors" element={<WithFooter showFooter={false} />}>
+            <Route index element={<Vendors />} />
+          </Route>
           <Route path="/registerDriver" element={<WithFooter showFooter={false} />}>
             <Route index element={<DriverRegister />} />
           </Route>

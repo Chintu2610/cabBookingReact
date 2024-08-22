@@ -17,7 +17,7 @@ export function VendorRegister() {
           mobileNumber: "",
           email: "",
           password: "",
-          userRole:"vendor",
+          userRole:"Vendor",
         }}
         onSubmit={async (values) => {
           try {

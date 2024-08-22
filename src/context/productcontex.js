@@ -1,7 +1,7 @@
 import { createContext, useContext, useEffect, useReducer } from "react";
 import axios from "axios";
 import reducer from "../reducer/productReducer";
-
+import { useCookies } from "react-cookie";
 const AppContext = createContext();
 
 const API = "http://localhost:1995/cab/getAllAvailableCab"; // Ensure the correct protocol
@@ -23,12 +23,14 @@ const initialState = {
 };
 
 const AppProvider = ({ children }) => {
-  const [state, dispatch] = useReducer(reducer, initialState);
 
+  const [state, dispatch] = useReducer(reducer, initialState);
+  const [cookies]=useCookies();
   const getProducts = async (url) => {
     dispatch({ type: "SET_LOADING" });
     try {
-      const res = await axios.get(url);
+      const url1=`${url}?uuid=${cookies.uuid}`;
+      const res = await axios.get(url1);
       const products = res.data;
       console.log("Fetched products:", products);
       dispatch({ type: "SET_API_DATA", payload: products });

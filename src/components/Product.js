@@ -63,7 +63,7 @@ const Product = ({ cabId, currLocation, cabCurrStatus, carName, cabImage, perKmR
           </div>
         </div>
           <button onClick={handleBookingClick} style={{color:"black"}} class="btn btn-primary btn-block btn-lg mt-3">Book Now</button>
-          {cookies.currRole.toLowerCase() === 'admin' && (
+          {cookies.currRole && (cookies.currRole.toLowerCase() === 'admin' || cookies.currRole.toLowerCase('vendor')) && (
   <div className="row">
     <div className="col-md-6">
       <button 
