@@ -21,7 +21,7 @@ const AdminProfile = () => {
 
   const fetchAdminDetails = async () => {
     var URL="";
-    if(cookies.currRole==='Admin'){
+    if(cookies.currRole==='Admin' || cookies.currRole==='Vendor'){
       URL=`http://localhost:1995/admin/viewAdminProfile?adminId=${cookies.currUserId}&uuid=${cookies.uuid}`;
     }else if(cookies.currRole==='Customer') {
       URL=`http://localhost:1995/customer/viewCustomerProfile?customerId=${cookies.currUserId}&uuid=${cookies.uuid}`;
@@ -64,7 +64,7 @@ const AdminProfile = () => {
     e.preventDefault();
     try {
       var URL="";
-      if(cookies.currRole==="Admin"){
+      if(cookies.currRole==="Admin" || cookies.currRole==='Vendor'){
         URL=`http://localhost:1995/admin/Update?adminId=${cookies.currUserId}&uuid=${cookies.uuid}`;
       }else if(cookies.currRole==='Customer') {
         URL=`http://localhost:1995/customer/update?customerId=${cookies.currUserId}&uuid=${cookies.uuid}`;
