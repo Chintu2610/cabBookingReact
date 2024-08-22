@@ -4,7 +4,7 @@ import { Button } from "../styles/Button";
 
 const HeroSection = ({ myData }) => {
   const { name } = myData;
-
+  
   return (
     <Wrapper>
       <div className="container">
@@ -23,8 +23,8 @@ const HeroSection = ({ myData }) => {
               experience every time. Book now and experience convenience like
               never before.
             </p>
-            <NavLink>
-              <Button>Book now</Button>
+            <NavLink to="/cabs">
+              <Button >Book now</Button>
             </NavLink>
           </div>
           {/* our homepage image  */}

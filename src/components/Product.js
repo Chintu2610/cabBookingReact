@@ -9,12 +9,12 @@ const Product = ({ cabId, currLocation, cabCurrStatus, carName, cabImage, perKmR
   const navigate = useNavigate();
   const [cookies]=useCookies();
   const handleBookingClick = () => {
-    // if (currentRole !== 'admin') {
-    //   navigate(`/booking/${cabId}`);
-    // } else {
-    //   alert("Admin users cannot book a cab.");
-    // }
-    navigate(`/booking/${cabId}`, { state: { perKmRate } });
+    if (cookies.currRole !== 'Admin' || cookies.currRole !== 'Venor' || cookies.currRole !== 'Driver') {
+      navigate(`/booking/${cabId}`, { state: { perKmRate } });
+    } else {
+      alert("Admin users cannot book a cab.");
+    }
+   
   };
   const updateCab = () => {
     // if (currentRole !== 'admin') {
@@ -37,7 +37,7 @@ const Product = ({ cabId, currLocation, cabCurrStatus, carName, cabImage, perKmR
         }
       } catch (error) {
         console.error("Error:", error);
-        alert("An error occurred while fetching the cab details.");
+        alert("Cab is on the service you cant delete it now, please try after some time.");
       }
   }
   return (
@@ -63,7 +63,7 @@ const Product = ({ cabId, currLocation, cabCurrStatus, carName, cabImage, perKmR
           </div>
         </div>
           <button onClick={handleBookingClick} style={{color:"black"}} class="btn btn-primary btn-block btn-lg mt-3">Book Now</button>
-          {cookies.currRole && (cookies.currRole.toLowerCase() === 'admin' || cookies.currRole.toLowerCase('vendor')) && (
+          {cookies.currRole && (cookies.currRole.toLowerCase() === 'admin' || cookies.currRole.toLowerCase()==='vendor') && 
   <div className="row">
     <div className="col-md-6">
       <button 
@@ -84,7 +84,7 @@ const Product = ({ cabId, currLocation, cabCurrStatus, carName, cabImage, perKmR
       </button>
     </div>
   </div>
-)}
+}
 
         </div>
       </div>

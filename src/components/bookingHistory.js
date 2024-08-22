@@ -58,7 +58,12 @@ function BookingHistory() {
     const fetchData = async () => {
       try {
         const uuid = cookies.uuid;
-        const response = await fetch(`http://localhost:1995/admin/getAllTrips?uuid=${uuid}`);
+        var URL=`http://localhost:1995/admin/getAllTrips?uuid=${uuid}`;
+        if(cookies.currRole==='Driver')
+        {
+          URL=`http://localhost:1995/admin/getTripsDriverwise?driverId=${cookies.currUserId}&uuid=${uuid}`;
+        }
+        const response = await fetch(URL);
         if (response.ok) {
           const data = await response.json();
           setOriginalRecords(data);
