@@ -253,7 +253,15 @@ const Nav = ({ role }) => {
           )}
            {role.userRole === "Driver" && (
             <>
-              
+              <li>
+               <NavLink
+                  to="/driver-dashboard"
+                  className="navbar-link"
+                  onClick={() => setMenuIcon(false)}
+                >
+                  Dashboard
+                </NavLink>
+                </li>
               <li>
                 <Dropdown>
                   <Dropdown.Toggle

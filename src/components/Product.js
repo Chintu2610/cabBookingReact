@@ -15,27 +15,40 @@ const Product = ({ cabId, currLocation, cabCurrStatus, carName, cabImage, perKmR
   }, [cookies.currRole, cabId, currLocation, cabCurrStatus, carName, cabImage, perKmRate, manufacturingYear]);
 
   const handleBookingClick = () => {
-    if (!cookies.uuid) {
+
+     if (!cookies.uuid) {
       navigate("/register");
-    } else {
+    }else
+    if (cookies.currRole !== 'Admin' || cookies.currRole !== 'Venor' || cookies.currRole !== 'Driver') {
       navigate(`/booking/${cabId}`, { state: { perKmRate } });
+    } else {
+      alert("Admin users cannot book a cab.");
     }
+   
+
   };
 
   const updateCab = () => {
     navigate(`/updatecab/${cabId}`);
   };
 
-  async function deleteCab() {
-    try {
-      const response = await axios.delete(
-        `http://localhost:1995/cab/delete?cabId=${cabId}&uuid=${cookies.uuid}`
-      );
-      if (response.status === 200) {
-        alert("Cab deleted successfully.");
-        window.location.reload();
-      } else {
-        alert("Failed to delete cab. Please try again.");
+ async function deleteCab() {
+      try {
+        const response = await  axios.delete(
+          `http://localhost:1995/cab/delete?cabId=${cabId}&uuid=${cookies.uuid}`
+        );
+        if (response.status===200) {
+          alert("cab deleted successfully.");
+         window.location.reload();
+        } else {
+          alert("Failed to delete cab. Please try again.");
+        }
+      } catch (error) {
+        console.error("Error:", error);
+        alert("Cab is on the service you cant delete it now, please try after some time.");
+
+
+
       }
     } catch (error) {
       console.error("Error:", error);
@@ -64,35 +77,33 @@ const Product = ({ cabId, currLocation, cabCurrStatus, carName, cabImage, perKmR
             <p className="card-text">{manufacturingYear}</p>
           </div>
         </div>
-        <button 
-          onClick={handleBookingClick} 
-          style={{ color: "black" }} 
-          className="btn btn-primary btn-block btn-lg mt-3"
-        >
-          Book Now
-        </button>
-        {(cookies.currRole && (cookies.currRole.toLowerCase() === 'admin' || cookies.currRole.toLowerCase() === 'vendor')) && (
-          <div className="row">
-            <div className="col-md-6">
-              <button 
-                onClick={updateCab} 
-                style={{ color: "black", backgroundColor: "green" }} 
-                className="btn btn-primary btn-block btn-md mt-3"
-              >
-                Update Cab
-              </button>
-            </div>
-            <div className="col-md-6">
-              <button 
-                onClick={deleteCab} 
-                style={{ color: "black", backgroundColor: "red" }} 
-                className="btn btn-danger btn-block btn-md mt-3"
-              >
-                Delete Cab
-              </button>
-            </div>
-          </div>
-        )}
+
+          <button onClick={handleBookingClick} style={{color:"black"}} class="btn btn-primary btn-block btn-lg mt-3">Book Now</button>
+          {cookies.currRole && (cookies.currRole.toLowerCase() === 'admin' || cookies.currRole.toLowerCase()==='vendor') && 
+  <div className="row">
+    <div className="col-md-6">
+      <button 
+        onClick={updateCab} 
+        style={{ color: "black", backgroundColor: "green" }} 
+        className="btn btn-primary btn-block btn-md mt-3"
+      >
+        Update Cab
+      </button>
+    </div>
+    <div className="col-md-6">
+      <button 
+        onClick={deleteCab} 
+        style={{ color: "black", backgroundColor: "red" }} 
+        className="btn btn-danger btn-block btn-md mt-3"
+      >
+        Delete Cab
+      </button>
+    </div>
+  </div>
+}
+
+        </div>
+
       </div>
     </div>
   );

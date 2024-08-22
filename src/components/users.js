@@ -69,7 +69,7 @@ function Users() {
 
         <button className="btn btn-danger"
         onClick={()=>deleteCustomer(row.customerId)}
-        >Delete Driver</button>
+        >Delete Customer</button>
         </>
       )
     }

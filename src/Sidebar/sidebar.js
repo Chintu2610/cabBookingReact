@@ -18,13 +18,14 @@ const Sidebar = () => {
           </div>
         </div>
         <nav className="mt-2">
-          <ul className="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">          
+          <ul className="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">    
+            {   (cookies.currRole==='Admin' || cookies.currRole==='Vendor') &&
+            <>  
             <li className="nav-item">
               <Link to="/registerDriver" className="nav-link">
               <i class="bi bi-person fs-5"></i>
                 <p>
                 Register Driver
-                 
                 </p>
               </Link>
             </li>
@@ -37,6 +38,8 @@ const Sidebar = () => {
                 </p>
               </Link>
             </li>
+            </> 
+            }
             { (cookies.currRole==='Admin') &&
             <li className="nav-item">
               <Link to="/register-vendor" className="nav-link">
