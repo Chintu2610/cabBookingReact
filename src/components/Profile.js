@@ -18,7 +18,7 @@ const AdminProfile = () => {
   const [showPassword, setShowPassword] = useState(false); // State for password visibility
 
   
-
+  
   const fetchAdminDetails = async () => {
     var URL="";
     if(cookies.currRole==='Admin' || cookies.currRole==='Vendor'){
@@ -26,7 +26,7 @@ const AdminProfile = () => {
     }else if(cookies.currRole==='Customer') {
       URL=`http://localhost:1995/customer/viewCustomerProfile?customerId=${cookies.currUserId}&uuid=${cookies.uuid}`;
     }else{
-      URL=`http://localhost:1995/driver/viewDriverProfile?driverId=${cookies.currUserId}&uuid=${cookies.uuid}`;
+      URL=`http://localhost:1995/driver/GetDriverDetails?driverid=${cookies.currUserId}&uuid=${cookies.uuid}`;
     }
     try {
       

@@ -153,6 +153,7 @@ export function DriverRegister() {
                           type="text"
                           name="mobileNumber"
                           className="form-control"
+                           maxLength="10"
                         />
                         <ErrorMessage
                           name="mobileNumber"
