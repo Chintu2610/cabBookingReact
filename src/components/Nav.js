@@ -251,6 +251,40 @@ const Nav = ({ role }) => {
               </li>
             </>
           )}
+           {role.userRole === "Driver" && (
+            <>
+              
+              <li>
+                <Dropdown>
+                  <Dropdown.Toggle
+                    variant="link"
+                    id="dropdown-custom-components"
+                    className="navbar-link"
+                  >
+                    <i className="bi bi-gear fs-5"></i>
+                  </Dropdown.Toggle>
+
+                  <Dropdown.Menu>
+                    <Dropdown.Item
+                      as={NavLink}
+                      to="/profile"
+                      onClick={() => setMenuIcon(false)}
+                    >
+                      Profile
+                    </Dropdown.Item>
+                    <Dropdown.Item
+                      onClick={() => {
+                        setMenuIcon(false);
+                        handleLogout(); // Call handleLogout function
+                      }}
+                    >
+                      Logout
+                    </Dropdown.Item>
+                  </Dropdown.Menu>
+                </Dropdown>
+              </li>
+            </>
+          )}
           {role.userRole === "Customer" && (
             <>
             <li>

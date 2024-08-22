@@ -37,6 +37,7 @@ const Sidebar = () => {
                 </p>
               </Link>
             </li>
+            { (cookies.currRole==='Admin') &&
             <li className="nav-item">
               <Link to="/register-vendor" className="nav-link">
               <i class="bi bi-person fs-5"></i>
@@ -45,6 +46,7 @@ const Sidebar = () => {
                 </p>
               </Link>
             </li>
+            }
             {/* <li className="nav-item">
               <a href="#" className="nav-link">
                 <i className="nav-icon fas fa-copy"></i>
