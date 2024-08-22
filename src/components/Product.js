@@ -1,29 +1,37 @@
-import React from "react";
-//import { NavLink } from "react-router-dom";
+import React, { useEffect } from "react";
 import FormatPrice from "../Helpers/FormatPrice";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useCookies } from "react-cookie";
-const Product = ({ cabId, currLocation, cabCurrStatus, carName, cabImage, perKmRate,manufacturingYear }) => {
-  const currentRole = sessionStorage.getItem("currRole");
+
+const Product = ({ cabId, currLocation, cabCurrStatus, carName, cabImage, perKmRate, manufacturingYear }) => {
   const navigate = useNavigate();
-  const [cookies]=useCookies();
+  const [cookies] = useCookies();
+
+  // Debugging logs to check the current role and other props
+  useEffect(() => {
+    console.log("Current Role:", cookies.currRole);
+    console.log("Cab Details:", { cabId, currLocation, cabCurrStatus, carName, cabImage, perKmRate, manufacturingYear });
+  }, [cookies.currRole, cabId, currLocation, cabCurrStatus, carName, cabImage, perKmRate, manufacturingYear]);
+
   const handleBookingClick = () => {
+
+     if (!cookies.uuid) {
+      navigate("/register");
+    }else
     if (cookies.currRole !== 'Admin' || cookies.currRole !== 'Venor' || cookies.currRole !== 'Driver') {
       navigate(`/booking/${cabId}`, { state: { perKmRate } });
     } else {
       alert("Admin users cannot book a cab.");
     }
    
+
   };
+
   const updateCab = () => {
-    // if (currentRole !== 'admin') {
-    //   navigate(`/booking/${cabId}`);
-    // } else {
-    //   alert("Admin users cannot book a cab.");
-    // }
     navigate(`/updatecab/${cabId}`);
   };
+
  async function deleteCab() {
       try {
         const response = await  axios.delete(
@@ -38,18 +46,25 @@ const Product = ({ cabId, currLocation, cabCurrStatus, carName, cabImage, perKmR
       } catch (error) {
         console.error("Error:", error);
         alert("Cab is on the service you cant delete it now, please try after some time.");
-      }
-  }
-  return (
-    // <NavLink to={`/singleproduct/${cabId}`}>
-      <div className="card">
-        <figure>
-          {/* <img src={cabImage} alt={carName} /> */}
-          <img src={`${process.env.PUBLIC_URL}/images/cabImages/${cabImage}`} alt={carName} />
-          <figcaption className="caption">{currLocation}</figcaption>
-        </figure>
 
-        <div className="card-data">
+
+
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      alert("An error occurred while deleting the cab.");
+    }
+  }
+
+  // Render the cab information
+  return (
+    <div className="card">
+      <figure>
+        <img src={`${process.env.PUBLIC_URL}/images/cabImages/${cabImage}`} alt={carName} />
+        <figcaption className="caption">{currLocation}</figcaption>
+      </figure>
+
+      <div className="card-data">
         <div className="d-flex justify-content-between align-items-center mb-3">
           <div>
             <h5 className="card-title mb-1">{carName}</h5>
@@ -62,6 +77,7 @@ const Product = ({ cabId, currLocation, cabCurrStatus, carName, cabImage, perKmR
             <p className="card-text">{manufacturingYear}</p>
           </div>
         </div>
+
           <button onClick={handleBookingClick} style={{color:"black"}} class="btn btn-primary btn-block btn-lg mt-3">Book Now</button>
           {cookies.currRole && (cookies.currRole.toLowerCase() === 'admin' || cookies.currRole.toLowerCase()==='vendor') && 
   <div className="row">
@@ -87,8 +103,9 @@ const Product = ({ cabId, currLocation, cabCurrStatus, carName, cabImage, perKmR
 }
 
         </div>
+
       </div>
-   
+    </div>
   );
 };
 
