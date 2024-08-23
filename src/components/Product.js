@@ -1,28 +1,26 @@
 import React from "react";
-//import { NavLink } from "react-router-dom";
+
 import FormatPrice from "../Helpers/FormatPrice";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useCookies } from "react-cookie";
-const Product = ({
-  cabId,
-  currLocation,
-  cabCurrStatus,
-  carName,
-  cabImage,
-  perKmRate,
-  manufacturingYear,
-}) => {
+
+
+const Product = ({ cabId, currLocation, cabCurrStatus, carName, cabImage, perKmRate, manufacturingYear }) => {
   const currentRole = sessionStorage.getItem("currRole");
   const navigate = useNavigate();
   const [cookies] = useCookies();
+
   const handleBookingClick = () => {
-    // if (currentRole !== 'admin') {
-    //   navigate(`/booking/${cabId}`);
-    // } else {
-    //   alert("Admin users cannot book a cab.");
-    // }
-    navigate(`/booking/${cabId}`, { state: { perKmRate } });
+    // Check if uuid cookie is present
+    if (!cookies.uuid) {
+      // If uuid is not present, redirect to the register/login page
+      navigate("/register");  // Adjust the path to your login or registration page
+    } else {
+      // If uuid is present, proceed with booking
+      navigate(`/booking/${cabId}`, { state: { perKmRate } });
+    }
+
   };
   const updateCab = () => {
     // if (currentRole !== 'admin') {
@@ -32,13 +30,16 @@ const Product = ({
     // }
     navigate(`/updatecab/${cabId}`);
   };
+
   async function deleteCab() {
     try {
       const response = await axios.delete(
         `http://localhost:1995/cab/delete?cabId=${cabId}&uuid=${cookies.uuid}`
       );
       if (response.status === 200) {
-        alert("cab deleted successfully.");
+
+        alert("Cab deleted successfully.");
+
         window.location.reload();
       } else {
         alert("Failed to delete cab. Please try again.");
@@ -48,6 +49,7 @@ const Product = ({
       alert("An error occurred while fetching the cab details.");
     }
   }
+
   return (
     // <NavLink to={`/singleproduct/${cabId}`}>
     <div className="card">
@@ -73,6 +75,7 @@ const Product = ({
             <p className="card-text">{manufacturingYear}</p>
           </div>
         </div>
+
         <button
           onClick={handleBookingClick}
           style={{ color: "black" }}
@@ -104,6 +107,7 @@ const Product = ({
               </div>
             </div>
           )}
+
       </div>
     </div>
   );

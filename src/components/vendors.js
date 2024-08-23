@@ -128,6 +128,15 @@ function Vendors() {
   overflow-x: auto;
   overflow-y: hidden;
 `;
+var redirect="";
+if(cookie.currRole==="Driver"){
+ redirect="/driver-dashboard";
+}else if(cookie.currRole==="Admin")
+{
+  redirect="/admin-dashboard";
+}else{
+  redirect="/vendor-dashboard";
+}
   return (
     <>
    <SidebarWrapper>
@@ -136,15 +145,31 @@ function Vendors() {
     <div className="content-wrapper">
       <div className="container" >
         <div className="row mb-3">
-          <div className="col-12 text-end">
-            <input 
-              type="text" 
-              onChange={handleFilter} 
-              className="form-control" 
-              placeholder="Filter by userName" 
-              style={{ maxWidth: "300px", display: "inline-block" }} 
-            />
-          </div>
+        <div className="container">
+            <div className="row">
+                {/* Centered Booking History */}
+                <div className="col-12 text-center">
+                    <h2>Vendor</h2>
+                </div>
+                {/* Breadcrumb Navigation */}
+                <div className="col-12">
+                    <ol className="breadcrumb float-sm-right">
+                        <li className="breadcrumb-item"><a href={redirect}>Home</a></li>
+                        <li className="breadcrumb-item active">Vendor</li>
+                    </ol>
+                </div>
+                <div className="col-12 text-end">
+              <input
+                type="text"
+                onChange={handleFilter}
+                className="form-control"
+                placeholder="Filter by pickup location"
+                style={{ maxWidth: "300px", display: "inline-block" }}
+              />
+            </div>
+
+            </div>
+        </div>
         </div>
         <div className="row">
           <div className="col-12">

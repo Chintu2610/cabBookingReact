@@ -18,8 +18,6 @@ const VendorDashboard = () => {
      
   }, []);
 
-  
-
   return (
     <div className="d-flex flex-column bg-dark text-light">
       

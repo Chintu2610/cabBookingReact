@@ -1,12 +1,20 @@
+import { useState } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as yup from "yup";
 import { useNavigate } from "react-router-dom";
-import "bootstrap/dist/css/bootstrap.min.css"; // Import Bootstrap CSS
-import {  useCookies } from "react-cookie";
+import "bootstrap/dist/css/bootstrap.min.css";
+import { useCookies } from "react-cookie";
+import { FaEye, FaEyeSlash } from "react-icons/fa"; // Import the eye icons
 
 export function VendorRegister() {
   const navigate = useNavigate();
-  const [cookie]=useCookies();
+  const [cookie] = useCookies();
+  const [showPassword, setShowPassword] = useState(false); // State to manage password visibility
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
   return (
     <div className="container" style={{ marginTop: "100px" }}>
       <Formik
@@ -17,7 +25,7 @@ export function VendorRegister() {
           mobileNumber: "",
           email: "",
           password: "",
-          userRole:"Vendor",
+          userRole: "Vendor",
         }}
         onSubmit={async (values) => {
           try {
@@ -56,7 +64,7 @@ export function VendorRegister() {
             .required("Email is required")
             .email("Invalid email format"),
           address: yup.string().required("Address is required"),
-          userRole:yup.string(),
+          userRole: yup.string(),
           password: yup
             .string()
             .required("Password is required")
@@ -77,59 +85,68 @@ export function VendorRegister() {
         })}
       >
         {({ isSubmitting }) => (
-           <Form>
-           <div className="container" style={{ marginTop: "150px" }}>
-             <div className="row justify-content-center">
-               <div className="col-md-5">
-                 <div className="card">
-                   <div className="card-body">
-                     <h5 className="text-center mb-4">Register a vendor</h5>
-                     <div className="mb-3 align-items-center">
-                       <label htmlFor="userName" className="form-label">
-                         User Name
-                       </label>
-                       <Field
-                         type="text"
-                         name="userName"
-                         className="form-control"
-                       />
-                       <ErrorMessage
-                         name="userName"
-                         component="div"
-                         className="text-danger"
-                       />
-                     </div>
-                     <div className="mb-3">
-                       <label htmlFor="password" className="form-label">
-                         Password
-                       </label>
-                       <Field
-                         type="password"
-                         name="password"
-                         className="form-control"
-                       />
-                       <ErrorMessage
-                         name="password"
-                         component="div"
-                         className="text-danger"
-                       />
-                     </div>
-                     <div className="mb-3">
-                       <label htmlFor="address" className="form-label">
-                         Address
-                       </label>
-                       <Field
-                         type="text"
-                         name="address"
-                         className="form-control"
-                       />
-                       <ErrorMessage
-                         name="address"
-                         component="div"
-                         className="text-danger"
-                       />
-                     </div>
-                     <div className="mb-3">
+          <Form>
+            <div className="container" style={{ marginTop: "150px" }}>
+              <div className="row justify-content-center">
+                <div className="col-md-5">
+                  <div className="card">
+                    <div className="card-body">
+                      <h5 className="text-center mb-4">Register a vendor</h5>
+                      <div className="mb-3 align-items-center">
+                        <label htmlFor="userName" className="form-label">
+                          User Name
+                        </label>
+                        <Field
+                          type="text"
+                          name="userName"
+                          className="form-control"
+                        />
+                        <ErrorMessage
+                          name="userName"
+                          component="div"
+                          className="text-danger"
+                        />
+                      </div>
+                      <div className="mb-3">
+                        <label htmlFor="password" className="form-label">
+                          Password
+                        </label>
+                        <div className="input-group">
+                          <Field
+                            type={showPassword ? "text" : "password"}
+                            name="password"
+                            className="form-control"
+                          />
+                          <button
+                            type="button"
+                            className="btn btn-outline-secondary"
+                            onClick={togglePasswordVisibility}
+                          >
+                            {showPassword ? <FaEyeSlash /> : <FaEye />}
+                          </button>
+                        </div>
+                        <ErrorMessage
+                          name="password"
+                          component="div"
+                          className="text-danger"
+                        />
+                      </div>
+                      <div className="mb-3">
+                        <label htmlFor="address" className="form-label">
+                          Address
+                        </label>
+                        <Field
+                          type="text"
+                          name="address"
+                          className="form-control"
+                        />
+                        <ErrorMessage
+                          name="address"
+                          component="div"
+                          className="text-danger"
+                        />
+                      </div>
+                      <div className="mb-3">
                         <label htmlFor="mobileNumber" className="form-label">
                           Mobile
                         </label>
@@ -137,8 +154,8 @@ export function VendorRegister() {
                           type="text"
                           name="mobileNumber"
                           className="form-control"
-                          maxLength="10" // Restrict the input to a maximum of 10 characters
-                          pattern="\d*" // Ensures that only digits are entered
+                          maxLength="10"
+                          pattern="\d*"
                         />
                         <ErrorMessage
                           name="mobileNumber"
@@ -146,51 +163,47 @@ export function VendorRegister() {
                           className="text-danger"
                         />
                       </div>
-
-                     <div className="mb-3">
-                       <label htmlFor="email" className="form-label">
-                         Email
-                       </label>
-                       <Field
-                         type="email"
-                         name="email"
-                         className="form-control"
-                         
-                       />
-                       <ErrorMessage
-                         name="email"
-                         component="div"
-                         className="text-danger"
-                       />
-                     </div>
-                     <div className="mb-3">
-                       
-                       <Field
-                       type="text"
-                       name="userRole"
-                       className="form-control"                                       
-                       style={{display:"none"}}
-                       />
-                      <ErrorMessage
-                         name="userRole"
-                         component="div"
-                         className="text-danger"
-                       />
-                     </div>
-                     <button
-                       type="submit"
-                       className="btn btn-primary form-control"
-                       disabled={isSubmitting}
-                     >
-                       Register
-                     </button>
-                     
-                   </div>
-                 </div>
-               </div>
-             </div>
-           </div>
-         </Form>
+                      <div className="mb-3">
+                        <label htmlFor="email" className="form-label">
+                          Email
+                        </label>
+                        <Field
+                          type="email"
+                          name="email"
+                          className="form-control"
+                        />
+                        <ErrorMessage
+                          name="email"
+                          component="div"
+                          className="text-danger"
+                        />
+                      </div>
+                      <div className="mb-3">
+                        <Field
+                          type="text"
+                          name="userRole"
+                          className="form-control"
+                          style={{ display: "none" }}
+                        />
+                        <ErrorMessage
+                          name="userRole"
+                          component="div"
+                          className="text-danger"
+                        />
+                      </div>
+                      <button
+                        type="submit"
+                        className="btn btn-primary form-control"
+                        disabled={isSubmitting}
+                      >
+                        Register
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </Form>
         )}
       </Formik>
     </div>
