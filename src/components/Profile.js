@@ -3,18 +3,21 @@ import { useCookies } from 'react-cookie';
 import { FaEye, FaEyeSlash } from 'react-icons/fa'; // Import eye icons
 
 const AdminProfile = () => {
+  const [cookies] = useCookies();
   const [adminDetails, setAdminDetails] = useState({
+    
     userName: '',
     password: '',
     address: '',
     mobileNumber: '',
     email: '',
-    userRole: ''
+    userRole: '',
+    currDriverStatus:'',
   });
   const [error, setError] = useState(null);
   const [adminId, setAdminId] = useState(''); // State for admin ID
   const [uuid, setUuid] = useState(''); // State for UUID
-  const [cookies] = useCookies();
+  
   const [showPassword, setShowPassword] = useState(false); // State for password visibility
 
   
@@ -83,7 +86,9 @@ const AdminProfile = () => {
           address: adminDetails.address,
           mobileNumber: adminDetails.mobileNumber,
           email: adminDetails.email,
-          userRole: adminDetails.userRole
+          userRole: adminDetails.userRole,
+          currDriverStatus:adminDetails.currDriverStatus,
+         
         })
        }
       );
@@ -218,8 +223,27 @@ const AdminProfile = () => {
                       value={adminDetails.userRole || ''}
                       onChange={handleInputChange}
                       required
+                      readOnly
                     />
                   </div>
+                  {(cookies.currRole==='Driver')&& 
+                  <div className="mb-3">
+                    <label htmlFor="userRole" className="form-label">Availability</label>
+                    <select
+                      type="select"
+                      className="form-control"
+                       id="currDriverStatus"
+                       name="currDriverStatus"
+                      value={adminDetails.currDriverStatus || ''}
+                      onChange={handleInputChange}
+                      required
+                      
+                    >
+                      <option value="Available">Available</option>
+                      <option value="Not Available">Not Available</option>
+                      </select>
+                  </div>
+                  }
                   <button type="submit" className="btn btn-primary w-100">Update Profile</button>
                 </form>
               ) : (

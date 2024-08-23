@@ -77,7 +77,7 @@ const DriverDash = () => {
               <div className="small-box bg-info">
                 <div className="inner">
                   <h3>{countdata.noOfBookingsLastMonth}</h3>
-                  <p>Booking Requests</p>
+                  <p>Ride Requests</p>
                 </div>
                 <div className="icon">
                   <i className="ion ion-bag"></i>
@@ -109,18 +109,7 @@ const DriverDash = () => {
                 <a href="/users" className="small-box-footer">More info <i className="fas fa-arrow-circle-right"></i></a>
               </div>
             </div>
-            <div className="col-lg-3 col-6">
-              <div className="small-box bg-danger">
-                <div className="inner">
-                  <h3>{countdata.noOfDrivers}</h3>
-                  <p>No Of drivers</p>
-                </div>
-                <div className="icon">
-                  <i className="ion ion-pie-graph"></i>
-                </div>
-                <a href="/drivers" className="small-box-footer">More info <i className="fas fa-arrow-circle-right"></i></a>
-              </div>
-            </div>
+           
           </div>
           {(cookies.currRole==="Admin") &&
             <div className="row">
