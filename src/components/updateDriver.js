@@ -60,7 +60,7 @@ export function DriverUpdate() {
         onSubmit={async (values) => {
           try {
             const response = await axios.put(
-              "http://localhost:1995/driver/update",
+              `http://localhost:1995/driver/update?driverId=${values.driverId}`,
               values,
               {
                 params:{

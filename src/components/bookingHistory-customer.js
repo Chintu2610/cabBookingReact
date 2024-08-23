@@ -41,17 +41,31 @@ function BookingHistoryCustomer() {
       sortable: true,
     },
     {
-      name: "Actions",
+      name: "",
       cell: (row) => (
-        <Button
-          variant="danger"
-          onClick={() => handleCancelTrip(row.tripBookingId)}
-          disabled={row.currStatus.toLowerCase() === "canceled"}
-        >
-          {row.currStatus.toLowerCase() === "canceled" ? "Canceled" : "Cancel Trip"}
-        </Button>
+        <>
+          {row.currStatus === 'Booked' && cookies.currRole==='Customer' && (
+            <Button
+              variant="danger"
+              onClick={() => handleCancelTrip(row.tripBookingId)}
+              disabled={row.currStatus.toLowerCase() === "canceled"}
+            >
+              {row.currStatus.toLowerCase() === "canceled" ? "Canceled" : "Cancel Trip"}
+            </Button>
+          )}
+          {row.currStatus === 'Completed' && (
+            <Button
+              variant="warning"
+              onClick={() => handleGiveRating(row.tripBookingId)}
+              disabled={row.currStatus.toLowerCase() === "pending" || row.currStatus.toLowerCase() === "cancelled"}
+            >
+              {row.currStatus.toLowerCase() === "canceled" ? "Canceled" : "Give Rating"}
+            </Button>
+          )}
+        </>
       ),
-    },
+    }
+    
   ];
 
   useEffect(() => {
@@ -87,6 +101,28 @@ function BookingHistoryCustomer() {
   }
 
   async function handleCancelTrip(tripBookingId) {
+    try {
+      const uuid = cookies.uuid;
+      const response = await fetch(
+        `http://localhost:1995/tripBooking/cancelTrip?TripBookingId=${tripBookingId}&uuid=${uuid}`,
+        { method: 'GET' }
+      );
+      if (response.ok) {
+        const responseText = await response.text(); // Get the response as text
+        setAlertMessage(responseText);
+        // Refresh the bookings
+        const updatedRecords = originalRecords.filter(record => record.tripBookingId !== tripBookingId);
+        setOriginalRecords(updatedRecords);
+        setFilteredRecords(updatedRecords);
+      } else {
+        setAlertMessage('Failed to cancel trip. Please try again.');
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      setAlertMessage('An error occurred while canceling the trip.');
+    }
+  }
+  async function handleGiveRating(tripBookingId) {
     try {
       const uuid = cookies.uuid;
       const response = await fetch(
