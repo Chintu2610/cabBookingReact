@@ -108,7 +108,15 @@ function BookingHistoryCustomer() {
       setAlertMessage('An error occurred while canceling the trip.');
     }
   }
-
+  var redirect="";
+  if(cookies.currRole==="Driver"){
+   redirect="/driver-dashboard";
+  }else if(cookies.currRole==="Admin")
+  {
+    redirect="/admin-dashboard";
+  }else if(cookies.currRole==="Customer"){
+    redirect="/";
+  }
   return (
     <Container fluid>
       <Row className="my-4">
@@ -125,17 +133,29 @@ function BookingHistoryCustomer() {
           </Col>
         </Row>
       )}
-      <Row className="mb-3">
-        <Col md={12} className="text-end">
-          <InputGroup className="mb-3" style={{ maxWidth: "300px" }}>
-            <FormControl
-              type="text"
-              onChange={handleFilter}
-              placeholder="Filter by pickup location"
-            />
-          </InputGroup>
-        </Col>
-      </Row>
+      <div className="container">
+            <div className="row">
+                {/* Centered Booking History */}
+                
+                {/* Breadcrumb Navigation */}
+                <div className="col-12">
+                    <ol className="breadcrumb float-sm-right">
+                        <li className="breadcrumb-item"><a href={redirect}>Home</a></li>
+                        <li className="breadcrumb-item active">Booking History</li>
+                    </ol>
+                </div>
+                <div className="col-12 text-end">
+              <input
+                type="text"
+                onChange={handleFilter}
+                className="form-control"
+                placeholder="Filter by pickup location"
+                style={{ maxWidth: "300px", display: "inline-block" }}
+              />
+            </div>
+
+            </div>
+        </div>
       <Row>
         <Col md={12}>
           <DataTable

@@ -30,7 +30,7 @@ import PasswordResetForm from './components/forgot-password';
 import ResetPassword from './components/forgot-password';
 import EnterOTP from './components/EnterOTP';
 import PasswordReset from './components/PasswordReset';
-
+import PaymentTransactions from './components/PaymentTransactions';
 import AdminProfile from './components/Profile';
 
 import ContextDemo from './components/context-demo/context-demo';

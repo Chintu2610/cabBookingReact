@@ -2,9 +2,12 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as yup from "yup";
 import { useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css"; // Import Bootstrap CSS
+import { FaEye, FaEyeSlash } from 'react-icons/fa'; // Import eye icons
+import { useState } from "react";
 
 export function DriverRegister() {
   const navigate = useNavigate();
+  const [showPassword, setShowPassword] = useState(false); // State for password visibility
 
   return (
     <div className="container" style={{ marginTop: "100px" }}>
@@ -119,11 +122,20 @@ export function DriverRegister() {
                         <label htmlFor="password" className="form-label">
                           Password
                         </label>
-                        <Field
-                          type="password"
-                          name="password"
-                          className="form-control"
-                        />
+                        <div className="input-group">
+                          <Field
+                            type={showPassword ? "text" : "password"} // Toggle between password and text
+                            name="password"
+                            className="form-control"
+                          />
+                          <button
+                            type="button"
+                            className="btn btn-outline-secondary"
+                            onClick={() => setShowPassword(!showPassword)} // Toggle password visibility
+                          >
+                            {showPassword ? <FaEyeSlash /> : <FaEye />}
+                          </button>
+                        </div>
                         <ErrorMessage
                           name="password"
                           component="div"
