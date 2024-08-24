@@ -246,8 +246,8 @@ export function CabRegister() {
                           className="form-control"
                         >
                           <option value="">Select status</option>
-                          <option value="Availabe">Active</option>
-                          <option value="Not Availabe">Inactive</option>
+                          <option value="Available">Active</option>
+                          <option value="Not Available">Inactive</option>
                         </Field>
                         <ErrorMessage
                           name="cabCurrStatus"

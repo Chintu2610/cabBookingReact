@@ -1,14 +1,19 @@
 import { useState, useEffect } from "react";
 import DataTable from "react-data-table-component";
 import { useCookies } from "react-cookie";
-import { Button, Container, Row, Col, InputGroup, FormControl, Alert } from "react-bootstrap";
+import { Button, Container, Row, Col, Form, Alert } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 function BookingHistoryCustomer() {
   const [cookies] = useCookies();
   const [originalRecords, setOriginalRecords] = useState([]);
   const [filteredRecords, setFilteredRecords] = useState([]);
   const [alertMessage, setAlertMessage] = useState("");
+  const [fromDate, setFromDate] = useState(null);
+  const [toDate, setToDate] = useState(null);
+  const [isDatePickerOpen, setIsDatePickerOpen] = useState(false);
 
   const columns = [
     {
@@ -50,7 +55,7 @@ function BookingHistoryCustomer() {
       name: "",
       cell: (row) => (
         <>
-          {(row.currStatus === 'Booked' || row.currStatus === 'Pending') && cookies.currRole==='Customer' && (
+          {(row.currStatus === 'Booked' || row.currStatus === 'Pending') && cookies.currRole === 'Customer' && (
             <Button
               variant="danger"
               onClick={() => handleCancelTrip(row.tripBookingId)}
@@ -62,7 +67,7 @@ function BookingHistoryCustomer() {
           {row.currStatus === 'Completed' && (
             <Button
               variant="warning"
-              onClick={() => handleGiveRating(row.tripBookingId,row.driver.driverId)}
+              onClick={() => handleGiveRating(row.tripBookingId, row.driver.driverId)}
               disabled={row.currStatus.toLowerCase() === "pending" || row.currStatus.toLowerCase() === "cancelled"}
             >
               {row.currStatus.toLowerCase() === "canceled" ? "Canceled" : "Give Rating"}
@@ -71,7 +76,6 @@ function BookingHistoryCustomer() {
         </>
       ),
     }
-    
   ];
 
   useEffect(() => {
@@ -96,14 +100,21 @@ function BookingHistoryCustomer() {
 
   function handleFilter(e) {
     const searchValue = e.target.value.toLowerCase();
-    if (searchValue === '') {
-      setFilteredRecords(originalRecords);
-    } else {
-      const newData = originalRecords.filter((row) =>
-        row.pickupLocation.toLowerCase().includes(searchValue)
-      );
-      setFilteredRecords(newData);
-    }
+    const filteredData = originalRecords.filter((row) =>
+      row.pickupLocation.toLowerCase().includes(searchValue) &&
+      (!fromDate || new Date(row.fromDateTime) >= fromDate) &&
+      (!toDate || new Date(row.toDateTime) <= toDate)
+    );
+    setFilteredRecords(filteredData);
+  }
+
+  function handleDateFilter() {
+    const filteredData = originalRecords.filter(
+      (row) =>
+        (!fromDate || new Date(row.fromDateTime) >= fromDate) &&
+        (!toDate || new Date(row.toDateTime) <= toDate)
+    );
+    setFilteredRecords(filteredData);
   }
 
   async function handleCancelTrip(tripBookingId) {
@@ -114,9 +125,8 @@ function BookingHistoryCustomer() {
         { method: 'GET' }
       );
       if (response.ok) {
-        const responseText = await response.text(); // Get the response as text
+        const responseText = await response.text();
         setAlertMessage(responseText);
-        // Refresh the bookings
         const updatedRecords = originalRecords.filter(record => record.tripBookingId !== tripBookingId);
         setOriginalRecords(updatedRecords);
         setFilteredRecords(updatedRecords);
@@ -129,20 +139,19 @@ function BookingHistoryCustomer() {
     }
   }
 
+  const navigate = useNavigate();
+
+  async function handleGiveRating(tripBookingId, driverId) {
+    navigate('/submit-rating', { state: { tripBookingId, driverId } });
+  }
   var redirect="";
   if(cookies.currRole==="Driver"){
    redirect="/driver-dashboard";
   }else if(cookies.currRole==="Admin")
   {
     redirect="/admin-dashboard";
-  }else if(cookies.currRole==="Customer"){
-    redirect="/";
-  }
-
-  const navigate = useNavigate();
-
-  async function handleGiveRating(tripBookingId,driverId) {
-    navigate('/submit-rating', { state: { tripBookingId,driverId } });
+  }else{
+    redirect="/vendor-dashboard";
   }
 
   return (
@@ -162,30 +171,73 @@ function BookingHistoryCustomer() {
         </Row>
       )}
       <div className="container">
-            <div className="row">
-                {/* Centered Booking History */}
-                
-                {/* Breadcrumb Navigation */}
-                <div className="col-12">
-                    <ol className="breadcrumb float-sm-right">
-                        <li className="breadcrumb-item"><a href={redirect}>Home</a></li>
-                        <li className="breadcrumb-item active">Booking History</li>
-                    </ol>
-                </div>
-                <div className="col-12 text-end">
-              <input
-                type="text"
-                onChange={handleFilter}
+        <div className="row">
+          <div className="col-12">
+            <ol className="breadcrumb float-sm-right">
+              <li className="breadcrumb-item"><a href={redirect}>Home</a></li>
+              <li className="breadcrumb-item active">Booking History</li>
+            </ol>
+          </div>
+          <div className="col-12 text-end mb-3">
+            <input
+              type="text"
+              onChange={handleFilter}
+              className="form-control"
+              placeholder="Filter by pickup location"
+              style={{ maxWidth: "300px", display: "inline-block" }}
+            />
+          </div>
+          <div className="col-md-6 mb-3" style={{ zIndex: isDatePickerOpen ? 9999 : 1 }}>
+            <Form.Group>
+              <Form.Label>From Date:</Form.Label>
+              <DatePicker
+                selected={fromDate}
+                onChange={(date) => setFromDate(date)}
+                onCalendarOpen={() => setIsDatePickerOpen(true)}
+                onCalendarClose={() => setIsDatePickerOpen(false)}
+                isClearable
                 className="form-control"
-                placeholder="Filter by pickup location"
-                style={{ maxWidth: "300px", display: "inline-block" }}
+                placeholderText="Select From Date"
+                popperPlacement="bottom-start"
+                popperModifiers={{
+                  preventOverflow: {
+                    enabled: true,
+                    escapeWithReference: false,
+                    boundariesElement: 'viewport'
+                  }
+                }}
               />
-            </div>
-
-            </div>
+            </Form.Group>
+          </div>
+          <div className="col-md-6 mb-3" style={{ zIndex: isDatePickerOpen ? 9999 : 1 }}>
+            <Form.Group>
+              <Form.Label>To Date:</Form.Label>
+              <DatePicker
+                selected={toDate}
+                onChange={(date) => setToDate(date)}
+                onCalendarOpen={() => setIsDatePickerOpen(true)}
+                onCalendarClose={() => setIsDatePickerOpen(false)}
+                isClearable
+                className="form-control"
+                placeholderText="Select To Date"
+                popperPlacement="bottom-start"
+                popperModifiers={{
+                  preventOverflow: {
+                    enabled: true,
+                    escapeWithReference: false,
+                    boundariesElement: 'viewport'
+                  }
+                }}
+              />
+            </Form.Group>
+          </div>
+          <div className="col-12 mb-3">
+            <Button onClick={handleDateFilter}>Filter by Date</Button>
+          </div>
         </div>
+      </div>
       <Row>
-        <Col md={12}>
+        <Col md={12} style={{ marginTop: isDatePickerOpen ? "200px" : "0" }}>
           <DataTable
             columns={columns}
             data={filteredRecords}
