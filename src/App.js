@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import About from './About';
 import Home from './Home';
-import Products from './Cabs';
+
 import Contact from './Contact';
 import Cart from './Cart';
 import SingleProduct from './SingleProduct';
@@ -26,12 +26,13 @@ import { CabRegister } from './components/registerCab';
 import Cabs from './Cabs';
 import BookingPage from './components/BookingPage';
 import { useCookies } from 'react-cookie';
-import PasswordResetForm from './components/forgot-password';
+
 import ResetPassword from './components/forgot-password';
 import EnterOTP from './components/EnterOTP';
 import PasswordReset from './components/PasswordReset';
-import PaymentTransactions from './components/PaymentTransactions';
+
 import AdminProfile from './components/Profile';
+
 
 import ContextDemo from './components/context-demo/context-demo';
 import { ReducerDemo } from './components/reducerDemo/reducer-demo';
@@ -41,10 +42,13 @@ import BookingHistoryCustomer from './components/bookingHistory-customer';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import {  VendorRegister } from './components/vendorRegister';
 import Vendors from './components/vendors';
-import { VendorUpdate, VewndorUpdate } from './components/updateVendor';
+import { VendorUpdate } from './components/updateVendor';
 import VendorDashboard from './components/VendorDashBoard';
 import DriverDashboard from './components/DriverDashboard';
 import SubmitRating from './components/SubmitRating';
+import Earnings from './components/Earnings';
+
+
 
 const App = () => {
   const theme = {
@@ -102,7 +106,7 @@ const App = () => {
             <Route path="PasswordReset" element={<PasswordReset />} />
             <Route path="/profile" element={<AdminProfile />} />
             <Route path="EnterOTP" element={<EnterOTP />} />
-            
+           
             <Route path="singleproduct/:id" element={<SingleProduct />} />
             <Route path="cart" element={<Cart />} />
             <Route path="register" element={<UserRegister />} />
@@ -126,6 +130,9 @@ const App = () => {
           </Route>
           <Route path="/submit-rating" element={<WithFooter showFooter={false} />}>
             <Route index element={<SubmitRating />} />
+          </Route>
+          <Route path="/earnings" element={<WithFooter showFooter={false} />}>
+          <Route  index element={<Earnings />} />
           </Route>
           <Route path="/booking-history-customer" element={<WithFooter showFooter={false} />}>
             <Route index element={<BookingHistoryCustomer />} />
