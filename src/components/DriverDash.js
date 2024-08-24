@@ -98,7 +98,7 @@ const DriverDash = () => {
               </div>
             </div>
             <div className="col-lg-3 col-6">
-              <div className="small-box bg-warning">
+              <div className="small-box bg-danger">
                 <div className="inner">
                   <h3>{countdata.noOfUserRegistered}</h3>
                   <p>User Registered</p>
@@ -110,7 +110,7 @@ const DriverDash = () => {
               </div>
             </div>
             <div className="col-lg-3 col-6">
-              <div className="small-box bg-warning">
+              <div className="small-box bg-secondary">
                 <div className="inner">
                   <h3>{countdata.noOfUserRegistered}</h3>
                   <p>Rating & Feedback</p>
@@ -119,6 +119,18 @@ const DriverDash = () => {
                   <i className="ion ion-person-add"></i>
                 </div>
                 <a href="/ratings" className="small-box-footer">More info <i className="fas fa-arrow-circle-right"></i></a>
+              </div>
+            </div>
+            <div className="col-lg-3 col-6">
+              <div className="small-box bg-warning">
+                <div className="inner">
+                  <h3>{countdata.noOfUserRegistered}</h3>
+                  <p>Earnings Amount</p>
+                </div>
+                <div className="icon">
+                  <i className="ion ion-person-add"></i>
+                </div>
+                <a href="/earnings" className="small-box-footer">More info <i className="fas fa-arrow-circle-right"></i></a>
               </div>
             </div>
            
