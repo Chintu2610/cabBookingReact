@@ -118,7 +118,7 @@ const DriverDash = () => {
                 <div className="icon">
                   <i className="ion ion-person-add"></i>
                 </div>
-                <a href="/users" className="small-box-footer">More info <i className="fas fa-arrow-circle-right"></i></a>
+                <a href="/ratings" className="small-box-footer">More info <i className="fas fa-arrow-circle-right"></i></a>
               </div>
             </div>
            

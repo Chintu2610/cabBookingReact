@@ -45,6 +45,7 @@ import { VendorUpdate, VewndorUpdate } from './components/updateVendor';
 import VendorDashboard from './components/VendorDashBoard';
 import DriverDashboard from './components/DriverDashboard';
 import SubmitRating from './components/SubmitRating';
+import Ratings from './components/Ratings';
 
 const App = () => {
   const theme = {
@@ -132,6 +133,9 @@ const App = () => {
           </Route>
           <Route path="/users" element={<WithFooter showFooter={false} />}>
             <Route index element={<Users />} />
+          </Route>
+          <Route path="/ratings" element={<WithFooter showFooter={false} />}>
+            <Route index element={<Ratings />} />
           </Route>
           <Route path="/drivers" element={<WithFooter showFooter={false} />}>
             <Route index element={<Drivers />} />

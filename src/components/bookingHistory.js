@@ -27,8 +27,8 @@ function BookingHistory() {
       sortable: true,
     },
     {
-      name: "Distance (Km)",
-      selector: (row) => row.distanceInKm,
+      name: "Driver mobile No.",
+      selector: (row) => row.driver.mobileNumber,
       sortable: true,
     },
     {
@@ -38,16 +38,72 @@ function BookingHistory() {
     },
     {
       name: "Actions",
-      cell: (row) => (
-        <button
-          className="btn btn-primary"
-          onClick={() => handleCompleteTrip(row.tripBookingId)}
-          disabled={row.currStatus.toLowerCase() === "completed"}
-        >
-          {row.currStatus.toLowerCase() === "completed" ? "Completed" : "Complete Trip"}
-        </button>
-      ),
-    },
+      cell: (row) => {
+        if (cookies.currRole === 'Driver') {
+          if (row.currStatus === 'Accepted' ) {
+            return (
+              <button
+                className="btn btn-primary"
+                onClick={() => handleCompleteTrip(row.tripBookingId)}
+                disabled={row.currStatus === "completed"}
+              >
+                {row.currStatus === "completed" ? "Completed" : "Complete Trip"}
+              </button>
+            );
+          } else if (row.currStatus === 'Declined' ) {
+            return (
+              <>
+              <button
+                className="btn btn-success me-2"
+                onClick={() => handleAcceptDeclineTrip(row.tripBookingId,"Accepted")}
+                disabled={row.currStatus === "Declined"}
+              >
+                Accept
+              </button>
+              <button
+                className="btn btn-danger"
+                onClick={() => handleAcceptDeclineTrip(row.tripBookingId,"Declined")}
+                disabled={row.currStatus === "Declined"}
+              >
+                Decline
+              </button>
+            </>
+            );
+          }else {
+          return (
+            <>
+              <button
+                className="btn btn-success me-2"
+                onClick={() => handleAcceptDeclineTrip(row.tripBookingId,"Accepted")}
+                disabled={row.currStatus.toLowerCase() === "completed"}
+              >
+                Accept
+              </button>
+              <button
+                className="btn btn-danger"
+                onClick={() => handleAcceptDeclineTrip(row.tripBookingId,"Declined")}
+                disabled={row.currStatus.toLowerCase() === "completed"}
+              >
+                Decline
+              </button>
+            </>
+          );
+        }
+        
+        } else {
+          return (
+            <button
+              className="btn btn-primary"
+              onClick={() => handleCompleteTrip(row.tripBookingId)}
+              disabled={row.currStatus.toLowerCase() === "completed"}
+            >
+              {row.currStatus.toLowerCase() === "completed" ? "Completed" : "Complete Trip"}
+            </button>
+          );
+        }
+      },
+    }
+    
     
   ];
 
@@ -101,8 +157,27 @@ function BookingHistory() {
       if (response.ok) {
         const responseText = await response.text(); // Get the response as text
       alert(responseText);
+      window.location.reload();
       } else {
         console.error("Failed to mark trip as complete");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  }
+ 
+  async function handleAcceptDeclineTrip(tripBookingId,status) {
+    
+    try {
+      const uuid = cookies.uuid;
+      const response = await fetch(
+        `http://localhost:1995/tripBooking/handleAcceptDeclineTrip?TripBookingId=${tripBookingId}&status=${status}&uuid=${uuid}`
+      );
+      if (response.ok) {
+        const responseText = await response.text(); // Get the response as text
+      alert(responseText);
+      } else {
+        alert(`Failed to ${status} trip`);
       }
     } catch (error) {
       console.error("Error:", error);
