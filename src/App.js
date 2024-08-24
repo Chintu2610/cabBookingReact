@@ -46,10 +46,8 @@ import { VendorUpdate } from './components/updateVendor';
 import VendorDashboard from './components/VendorDashBoard';
 import DriverDashboard from './components/DriverDashboard';
 import SubmitRating from './components/SubmitRating';
+
 import Earnings from './components/Earnings';
-
-
-
 const App = () => {
   const theme = {
     colors: {
@@ -139,6 +137,9 @@ const App = () => {
           </Route>
           <Route path="/users" element={<WithFooter showFooter={false} />}>
             <Route index element={<Users />} />
+          </Route>
+          <Route path="/ratings" element={<WithFooter showFooter={false} />}>
+            <Route index element={<Ratings />} />
           </Route>
           <Route path="/drivers" element={<WithFooter showFooter={false} />}>
             <Route index element={<Drivers />} />
