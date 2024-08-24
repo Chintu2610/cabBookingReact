@@ -61,18 +61,22 @@ function Users() {
       selector: (row) => row.email,
       sortable: true,
     },
-    {
-      name:"Action",
-      cell: (row)=>
-      (
-        <>
-        <button className="btn btn-danger"
-        onClick={()=>deleteCustomer(row.customerId)}
-        >Delete Customer</button>
-        </>
-      )
-    }
+    
+    ...(cookie.currRole === 'Admin'
+      ? [{
+          name: "Action",
+          cell: (row) => (
+            <button
+              className="btn btn-danger"
+              onClick={() => deleteCustomer(row.customerId)}
+            >
+              Delete Customer
+            </button>
+          )
+        }]
+      : [])
   ];
+  
 
   const [originalRecords, setOriginalRecords] = useState([]);
   const [filteredRecords, setFilteredRecords] = useState([]);

@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import DataTable from "react-data-table-component";
 import { useCookies } from "react-cookie";
 import { Button, Container, Row, Col, InputGroup, FormControl, Alert } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 
 function BookingHistoryCustomer() {
   const [cookies] = useCookies();
@@ -41,10 +42,15 @@ function BookingHistoryCustomer() {
       sortable: true,
     },
     {
+      name: "Driver Id",
+      selector: (row) => row.driver.driverId,
+      sortable: true,
+    },
+    {
       name: "",
       cell: (row) => (
         <>
-          {row.currStatus === 'Booked' && cookies.currRole==='Customer' && (
+          {(row.currStatus === 'Booked' || row.currStatus === 'Pending') && cookies.currRole==='Customer' && (
             <Button
               variant="danger"
               onClick={() => handleCancelTrip(row.tripBookingId)}
@@ -56,7 +62,7 @@ function BookingHistoryCustomer() {
           {row.currStatus === 'Completed' && (
             <Button
               variant="warning"
-              onClick={() => handleGiveRating(row.tripBookingId)}
+              onClick={() => handleGiveRating(row.tripBookingId,row.driver.driverId)}
               disabled={row.currStatus.toLowerCase() === "pending" || row.currStatus.toLowerCase() === "cancelled"}
             >
               {row.currStatus.toLowerCase() === "canceled" ? "Canceled" : "Give Rating"}
@@ -133,27 +139,10 @@ function BookingHistoryCustomer() {
     redirect="/";
   }
 
-  async function handleGiveRating(tripBookingId) {
-    try {
-      const uuid = cookies.uuid;
-      const response = await fetch(
-        `http://localhost:1995/tripBooking/cancelTrip?TripBookingId=${tripBookingId}&uuid=${uuid}`,
-        { method: 'GET' }
-      );
-      if (response.ok) {
-        const responseText = await response.text(); // Get the response as text
-        setAlertMessage(responseText);
-        // Refresh the bookings
-        const updatedRecords = originalRecords.filter(record => record.tripBookingId !== tripBookingId);
-        setOriginalRecords(updatedRecords);
-        setFilteredRecords(updatedRecords);
-      } else {
-        setAlertMessage('Failed to cancel trip. Please try again.');
-      }
-    } catch (error) {
-      console.error("Error:", error);
-      setAlertMessage('An error occurred while canceling the trip.');
-    }
+  const navigate = useNavigate();
+
+  async function handleGiveRating(tripBookingId,driverId) {
+    navigate('/submit-rating', { state: { tripBookingId,driverId } });
   }
 
   return (

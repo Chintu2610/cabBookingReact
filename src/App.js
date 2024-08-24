@@ -44,6 +44,7 @@ import Vendors from './components/vendors';
 import { VendorUpdate, VewndorUpdate } from './components/updateVendor';
 import VendorDashboard from './components/VendorDashBoard';
 import DriverDashboard from './components/DriverDashboard';
+import SubmitRating from './components/SubmitRating';
 
 const App = () => {
   const theme = {
@@ -122,6 +123,9 @@ const App = () => {
           </Route>
           <Route path="/booking-history" element={<WithFooter showFooter={false} />}>
             <Route index element={<BookingHistory />} />
+          </Route>
+          <Route path="/submit-rating" element={<WithFooter showFooter={false} />}>
+            <Route index element={<SubmitRating />} />
           </Route>
           <Route path="/booking-history-customer" element={<WithFooter showFooter={false} />}>
             <Route index element={<BookingHistoryCustomer />} />

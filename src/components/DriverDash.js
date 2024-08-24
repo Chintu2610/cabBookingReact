@@ -109,8 +109,21 @@ const DriverDash = () => {
                 <a href="/users" className="small-box-footer">More info <i className="fas fa-arrow-circle-right"></i></a>
               </div>
             </div>
+            <div className="col-lg-3 col-6">
+              <div className="small-box bg-warning">
+                <div className="inner">
+                  <h3>{countdata.noOfUserRegistered}</h3>
+                  <p>Rating & Feedback</p>
+                </div>
+                <div className="icon">
+                  <i className="ion ion-person-add"></i>
+                </div>
+                <a href="/users" className="small-box-footer">More info <i className="fas fa-arrow-circle-right"></i></a>
+              </div>
+            </div>
            
           </div>
+
           {(cookies.currRole==="Admin") &&
             <div className="row">
             <div className="col-lg-3 col-6">
