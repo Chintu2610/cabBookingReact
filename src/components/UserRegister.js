@@ -2,10 +2,11 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as yup from "yup";
 import { useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css"; // Import Bootstrap CSS
+import { useCookies } from "react-cookie";
 
 export function UserRegister() {
   const navigate = useNavigate();
-
+  const [cookie]=useCookies();
   return (
     <div className="container" style={{ marginTop: "100px" }}>
       <Formik
@@ -149,6 +150,20 @@ export function UserRegister() {
                          type="email"
                          name="email"
                          className="form-control"
+                       />
+                       <ErrorMessage
+                         name="email"
+                         component="div"
+                         className="text-danger"
+                       />
+                     </div>
+                     <div className="mb-3">
+                      
+                       <Field
+                         type="email"
+                         name="email"
+                         className="form-control"
+                         value={cookie.email}
                        />
                        <ErrorMessage
                          name="email"

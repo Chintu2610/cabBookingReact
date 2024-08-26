@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import MapComponent from '../components/mapComponent';
 import { useCookies } from 'react-cookie';
-import { useLocation, useParams } from 'react-router-dom';
+import { Navigate, useLocation, useParams } from 'react-router-dom';
 
 const BookingPage = () => {
   const location = useLocation();
@@ -15,7 +15,7 @@ const BookingPage = () => {
   const [price, setPrice] = useState(0);
   const [distanceInKm, setDistanceInKm] = useState(0);
   const [currStatus, setCurrStatus] = useState('');
-  const [gender, setGender] = useState(''); // Gender state
+  const [preferredGender, setpreferredGender] = useState(''); // preferredGender state
   const [driver, setDriver] = useState({
     userName: '',
     password: '',
@@ -62,7 +62,7 @@ const BookingPage = () => {
             price,
             distanceInKm,
             currStatus,
-            gender, // Include gender in the request
+            preferredGender, // Include preferredGender in the request
             driver,
           }),
         });
@@ -71,6 +71,7 @@ const BookingPage = () => {
           const result = await response.json();
           alert('Booking confirmed.');
           console.log('Booking confirmed:', result);
+          Navigate('/booking-history-customer');
           // Handle successful booking
         } else {
           throw new Error('Network response was not ok');
@@ -122,14 +123,14 @@ const BookingPage = () => {
           />
         </div>
         <div className="mb-3 col-md-5">
-          <label htmlFor="gender" className="form-label">Gender</label>
+          <label htmlFor="preferredGender" className="form-label">Preferred Gender of Driver</label>
           <select
             className="form-control"
-            id="gender"
-            value={gender}
-            onChange={(e) => setGender(e.target.value)}
+            id="preferredGender"
+            value={preferredGender}
+            onChange={(e) => setpreferredGender(e.target.value)}
           >
-            <option value="" disabled>Select Gender</option>
+            <option value="" disabled>Select Preferred Gender</option>
             <option value="male">Male</option>
             <option value="female">Female</option>
             <option value="other">Other</option>
