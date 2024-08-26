@@ -46,7 +46,7 @@ import { VendorUpdate } from './components/updateVendor';
 import VendorDashboard from './components/VendorDashBoard';
 import DriverDashboard from './components/DriverDashboard';
 import SubmitRating from './components/SubmitRating';
-
+import Ratings from './components/Ratings';
 import Earnings from './components/Earnings';
 const App = () => {
   const theme = {
