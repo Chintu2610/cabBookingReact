@@ -8,6 +8,12 @@ import { useNavigate } from "react-router-dom";
 
 function Users() {
  const navigate=useNavigate();
+ const [cookies, ] = useCookies();
+useEffect(() => {
+  if (!cookies.uuid) {
+    navigate("/login");
+  }
+}, [cookies.uuid, navigate]);
   async function deleteCustomer(customerId) {
     try {
       const response = await axios.delete(

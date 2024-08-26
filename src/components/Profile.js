@@ -1,9 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { useCookies } from 'react-cookie';
 import { FaEye, FaEyeSlash } from 'react-icons/fa'; // Import eye icons
+import { useNavigate } from 'react-router-dom';
 
 const AdminProfile = () => {
   const [cookies] = useCookies();
+  const Navigate = useNavigate();
+  
+useEffect(() => {
+  if (!cookies.uuid) {
+    Navigate("/login");
+  }
+}, [cookies.uuid, Navigate]);
   const [adminDetails, setAdminDetails] = useState({
     
     userName: '',

@@ -1,12 +1,33 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as yup from "yup";
 import { useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css"; // Import Bootstrap CSS
 import { useCookies } from "react-cookie";
+
+
 export function CabRegister() {
   const navigate = useNavigate();
-  const [cookie]=useCookies();
+  const [cookies, ] = useCookies();
+  useEffect(() => {
+    if (!cookies.uuid) {
+      navigate("/login");
+    }
+  }, [cookies.uuid, navigate]);
+  var redirect="";
+  if(cookies.currRole==="Driver"){
+   redirect="/driver-dashboard";
+  }else if(cookies.currRole==="Admin")
+  {
+    redirect="/admin-dashboard";
+  }else if(cookies.currRole==="Customer")
+    {
+      redirect="/";
+    }else
+    {
+    redirect="/vendor-dashboard";
+  }
+
   return (
     <div className="container" style={{ marginTop: "100px" }}>
       <Formik
@@ -98,6 +119,12 @@ export function CabRegister() {
         {({ isSubmitting, setFieldValue }) => (
           <Form>
             <div className="container" style={{ marginTop: "100px" }}>
+            <div className="col-12">
+                    <ol className="breadcrumb float-sm-right">
+                        <li className="breadcrumb-item"><a href={redirect}>Home</a></li>
+                        <li className="breadcrumb-item active">Register Cab</li>
+                    </ol>
+                </div>
               <div className="row justify-content-center">
                 <div className="col-md-5">
                   <div className="card">

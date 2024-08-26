@@ -14,6 +14,13 @@ function BookingHistoryCustomer() {
   const [fromDate, setFromDate] = useState(null);
   const [toDate, setToDate] = useState(null);
   const [isDatePickerOpen, setIsDatePickerOpen] = useState(false);
+  const Navigate = useNavigate();
+  
+useEffect(() => {
+  if (!cookies.uuid) {
+    Navigate("/login");
+  }
+}, [cookies.uuid, Navigate]);
 
   const columns = [
     {

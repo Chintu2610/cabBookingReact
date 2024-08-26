@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as yup from "yup";
 import { useNavigate } from "react-router-dom";
@@ -10,11 +10,28 @@ export function VendorRegister() {
   const navigate = useNavigate();
   const [cookie] = useCookies();
   const [showPassword, setShowPassword] = useState(false); // State to manage password visibility
-
+  const [cookies] = useCookies();
+  useEffect(() => {
+    if (!cookies.uuid) {
+      navigate("/login");
+    }
+  }, [cookies.uuid, navigate]);
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
-
+  var redirect="";
+  if(cookies.currRole==="Driver"){
+   redirect="/driver-dashboard";
+  }else if(cookies.currRole==="Admin")
+  {
+    redirect="/admin-dashboard";
+  }else if(cookies.currRole==="Customer")
+    {
+      redirect="/";
+    }else
+    {
+    redirect="/vendor-dashboard";
+  }
   return (
     <div className="container" style={{ marginTop: "100px" }}>
       <Formik
@@ -85,8 +102,15 @@ export function VendorRegister() {
         })}
       >
         {({ isSubmitting }) => (
+          
           <Form>
             <div className="container" style={{ marginTop: "150px" }}>
+            <div className="col-12">
+                    <ol className="breadcrumb float-sm-right">
+                        <li className="breadcrumb-item"><a href={redirect}>Home</a></li>
+                        <li className="breadcrumb-item active">Register Vendor</li>
+                    </ol>
+                </div>
               <div className="row justify-content-center">
                 <div className="col-md-5">
                   <div className="card">

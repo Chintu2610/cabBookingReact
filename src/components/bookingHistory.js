@@ -2,9 +2,15 @@ import { useState, useEffect } from "react";
 import DataTable from "react-data-table-component";
 import Sidebar from "../Sidebar/sidebar";
 import { useCookies } from "react-cookie";
-
+import { useNavigate } from "react-router-dom";
 function BookingHistory() {
   const [cookies] = useCookies();
+  const navigate = useNavigate();
+useEffect(() => {
+  if (!cookies.uuid) {
+    navigate("/login");
+  }
+}, [cookies.uuid, navigate]);
   const columns = [
     {
       name: "Pickup Location",

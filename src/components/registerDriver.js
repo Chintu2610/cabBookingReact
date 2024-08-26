@@ -3,12 +3,30 @@ import * as yup from "yup";
 import { useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css"; // Import Bootstrap CSS
 import { FaEye, FaEyeSlash } from 'react-icons/fa'; // Import eye icons
-import { useState } from "react";
-
+import { useEffect, useState } from "react";
+import { Cookies, useCookies } from "react-cookie";
 export function DriverRegister() {
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false); // State for password visibility
-
+  const [cookies, ] = useCookies();
+  useEffect(() => {
+    if (!cookies.uuid) {
+      navigate("/login");
+    }
+  }, [cookies.uuid, navigate]);
+  var redirect="";
+  if(cookies.currRole==="Driver"){
+   redirect="/driver-dashboard";
+  }else if(cookies.currRole==="Admin")
+  {
+    redirect="/admin-dashboard";
+  }else if(cookies.currRole==="Customer")
+    {
+      redirect="/";
+    }else
+    {
+    redirect="/vendor-dashboard";
+  }
   return (
     <div className="container" style={{ marginTop: "100px" }}>
       <Formik
@@ -50,6 +68,7 @@ export function DriverRegister() {
             console.error("Error:", error);
           }
         }}
+        
         validationSchema={yup.object({
           userName: yup
             .string()
@@ -99,6 +118,12 @@ export function DriverRegister() {
         {({ isSubmitting }) => (
           <Form>
             <div className="container" style={{ marginTop: "100px" }}>
+            <div className="col-12">
+                    <ol className="breadcrumb float-sm-right">
+                        <li className="breadcrumb-item"><a href={redirect}>Home</a></li>
+                        <li className="breadcrumb-item active">Register Driver</li>
+                    </ol>
+                </div>
               <div className="row justify-content-center">
                 <div className="col-md-5">
                   <div className="card">

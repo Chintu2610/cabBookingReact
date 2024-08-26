@@ -7,7 +7,13 @@ import axios from "axios";
 import { useCookies } from "react-cookie";
 function Drivers() {
   const navigate=useNavigate();
-  const [cookie]=useCookies();
+  const [cookies]=useCookies();
+  
+useEffect(() => {
+  if (!cookies.uuid) {
+    navigate("/login");
+  }
+}, [cookies.uuid, navigate]);
   function updateDriver(driverId)
   {
       navigate(`/updatedriver/${driverId}`);
@@ -15,7 +21,7 @@ function Drivers() {
   async function deleteDriver(driverId) {
     try {
       const response = await axios.delete(
-        `http://localhost:1995/driver/delete?uuid=${cookie.uuid}&driverId=${driverId}`,
+        `http://localhost:1995/driver/delete?uuid=${cookies.uuid}&driverId=${driverId}`,
         {
          
           headers: {
@@ -137,9 +143,9 @@ function Drivers() {
   overflow-y: hidden;
 `;
 var redirect="";
-if(cookie.currRole==="Driver"){
+if(cookies.currRole==="Driver"){
  redirect="/driver-dashboard";
-}else if(cookie.currRole==="Admin")
+}else if(cookies.currRole==="Admin")
 {
   redirect="/admin-dashboard";
 }else{
