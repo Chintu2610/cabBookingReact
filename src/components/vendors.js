@@ -7,7 +7,13 @@ import axios from "axios";
 import { useCookies } from "react-cookie";
 function Vendors() {
   const navigate=useNavigate();
-  const [cookie]=useCookies();
+  const [cookies]=useCookies();
+  
+useEffect(() => {
+  if (!cookies.uuid) {
+    navigate("/login");
+  }
+}, [cookies.uuid, navigate]);
   function updateVendor(adminId)
   {
       navigate(`/updateVendor/${adminId}`);
@@ -15,7 +21,7 @@ function Vendors() {
   async function deleteVendor(driverId) {
     try {
       const response = await axios.delete(
-        `http://localhost:1995/vendor/delete?uuid=${cookie.uuid}&vendorId=${driverId}`,
+        `http://localhost:1995/vendor/delete?uuid=${cookies.uuid}&vendorId=${driverId}`,
         {
          
           headers: {
@@ -89,7 +95,7 @@ function Vendors() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const uuid=cookie.uuid;
+        const uuid=cookies.uuid;
         const response = await fetch(`http://localhost:1995/vendor/AllVendor?uuid=${uuid}`);
         if (response.ok) {
           const data = await response.json();
@@ -129,9 +135,9 @@ function Vendors() {
   overflow-y: hidden;
 `;
 var redirect="";
-if(cookie.currRole==="Driver"){
+if(cookies.currRole==="Driver"){
  redirect="/driver-dashboard";
-}else if(cookie.currRole==="Admin")
+}else if(cookies.currRole==="Admin")
 {
   redirect="/admin-dashboard";
 }else{

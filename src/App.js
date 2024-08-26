@@ -33,7 +33,6 @@ import PasswordReset from './components/PasswordReset';
 
 import AdminProfile from './components/Profile';
 
-
 import ContextDemo from './components/context-demo/context-demo';
 import { ReducerDemo } from './components/reducerDemo/reducer-demo';
 import { DriverUpdate } from './components/updateDriver';

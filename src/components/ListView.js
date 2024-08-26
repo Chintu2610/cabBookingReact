@@ -9,30 +9,45 @@ import { useCookies } from "react-cookie";
 
 const ListView = ({ products }) => {
   const navigate = useNavigate();
-const [cookies] = useCookies();
+  const [cookies] = useCookies();
+
   const handleBookingClick = (cabId, perKmRate) => {
-    navigate(`/booking/${cabId}`, { state: { perKmRate } });
+    if (!cookies.uuid) {
+      navigate("/register");
+    } else {
+      navigate(`/booking/${cabId}`, { state: { perKmRate } });
+    }
   };
 
   const handleUpdateClick = (cabId) => {
-    navigate(`/updatecab/${cabId}`);
-  };
-  async function deleteCab(cabId) {
-    try {
-      const response = await  axios.delete(
-        `http://localhost:1995/cab/delete?cabId=${cabId}&uuid=${cookies.uuid}`
-      );
-      if (response.status===200) {
-        alert("cab deleted successfully.");
-       window.location.reload();
-      } else {
-        alert("Failed to delete cab. Please try again.");
-      }
-    } catch (error) {
-      console.error("Error:", error);
-      alert("An error occurred while fetching the cab details.");
+    if (!cookies.uuid) {
+      navigate("/register");
+    } else {
+      navigate(`/updatecab/${cabId}`);
     }
-}
+  };
+
+  const handleDeleteClick = async (cabId) => {
+    if (!cookies.uuid) {
+      navigate("/register");
+    } else {
+      try {
+        const response = await axios.delete(
+          `http://localhost:1995/cab/delete?cabId=${cabId}&uuid=${cookies.uuid}`
+        );
+        if (response.status === 200) {
+          alert("Cab deleted successfully.");
+          window.location.reload();
+        } else {
+          alert("Failed to delete cab. Please try again.");
+        }
+      } catch (error) {
+        console.error("Error:", error);
+        alert("An error occurred while deleting the cab.");
+      }
+    }
+  };
+
   return (
     <Wrapper className="section">
       <div className="container grid">
@@ -42,7 +57,10 @@ const [cookies] = useCookies();
           return (
             <div className="card grid grid-two-column" key={cabId}>
               <figure>
-                <img src={`${process.env.PUBLIC_URL}/images/cabImages/${cabImage}`} alt={carName} />
+                <img
+                  src={`${process.env.PUBLIC_URL}/images/cabImages/${cabImage}`}
+                  alt={carName}
+                />
               </figure>
 
               <div className="card-data">
@@ -50,11 +68,29 @@ const [cookies] = useCookies();
                 <p>
                   <FormatPrice price={perKmRate} />
                 </p>
-                <p>{currLocation}, {area}</p>
+                <p>
+                  {currLocation}, {area}
+                </p>
                 <div className="button-container">
-                  <Button onClick={() => handleBookingClick(cabId, perKmRate)} style={{ color: "black" }} className="btn">Book Now</Button>
-                  <Button onClick={() => handleUpdateClick(cabId)} className="btn btn-update">Update</Button>
-                  <Button onClick={() => deleteCab(cabId)} className="btn btn-update">Delete</Button>
+                  <Button
+                    onClick={() => handleBookingClick(cabId, perKmRate)}
+                    style={{ color: "black" }}
+                    className="btn"
+                  >
+                    Book Now
+                  </Button>
+                  <Button
+                    onClick={() => handleUpdateClick(cabId)}
+                    className="btn btn-update"
+                  >
+                    Update
+                  </Button>
+                  <Button
+                    onClick={() => handleDeleteClick(cabId)}
+                    className="btn btn-update"
+                  >
+                    Delete
+                  </Button>
                 </div>
               </div>
             </div>
@@ -141,7 +177,7 @@ const Wrapper = styled.section`
           border: 0.1rem solid rgb(0 0 0 / 50%);
           color: rgb(0 0 0);
           background-color: rgb(255 255 255);
-          
+
           &:hover {
             background-color: rgb(0 0 0 / 10%);
             color: rgb(0 0 0);

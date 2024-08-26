@@ -4,7 +4,7 @@ import { useCookies } from "react-cookie";
 import axios from "axios";
 import { toast } from "react-toastify";
 import Loader from "./Loader";
-
+import { useNavigate } from "react-router-dom";
 function Earnings() {
   const [cookies] = useCookies();
   const [currentView, setCurrentView] = useState("daily"); // To track the current view
@@ -13,6 +13,7 @@ function Earnings() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  const navigate = useNavigate();
   // Mapping currentView to API response keys
   const earningsKeyMap = {
     daily: "todayEarnings",
@@ -20,11 +21,14 @@ function Earnings() {
     monthly: "monthlyEarnings",
     total: "totalEarnings",
   };
-
+ 
   useEffect(() => {
     fetchEarnings(); // Fetch earnings data on component mount
-    fetchTransactions(); // Fetch transaction details based on the current view
-  }, [currentView]); // Re-fetch transactions whenever currentView changes
+    fetchTransactions(); 
+    if (!cookies.uuid) {
+      navigate("/login");
+    }// Fetch transaction details based on the current view
+  }, [currentView,cookies.uuid,navigate]); // Re-fetch transactions whenever currentView changes
 
   const fetchEarnings = async () => {
     setLoading(true);

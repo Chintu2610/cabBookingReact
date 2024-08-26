@@ -5,11 +5,14 @@ import Sidebar from '../Sidebar/sidebar';
 import AdminDashboard from './Dashboard';
 import styled from "styled-components";
 import { useCookies } from 'react-cookie';
+import { useNavigate } from 'react-router-dom';
+
 const Dashboard = () => {
   const [role, setRole] = useState('');
   const [email, setEmail] = useState('');
   const [admin,setAdmin]= useState(false);
   const [cookies,setCookie,removeCookie]=useCookies();
+  const navigate = useNavigate();
   useEffect(() => {
     setRole(cookies.currRole);
     setEmail(cookies.email);
@@ -17,7 +20,11 @@ const Dashboard = () => {
      
   }, []);
 
-  
+  useEffect(() => {
+    if (!cookies.uuid) {
+      navigate("/login");
+    }
+  }, [cookies.uuid, navigate]);
 
   return (
     <div className="d-flex flex-column bg-dark text-light">

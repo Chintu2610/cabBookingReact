@@ -8,6 +8,13 @@ import { useNavigate } from "react-router-dom";
 
 function Ratings() {
  const navigate=useNavigate();
+ const [cookie,removeCookie,setCookie]=useCookies();
+useEffect(() => {
+  if (!cookie.uuid) {
+    navigate("/login");
+  }
+}, [cookie.uuid, navigate]);
+
   async function deleteCustomer(customerId) {
     try {
       const response = await axios.delete(
@@ -33,7 +40,7 @@ function Ratings() {
   }
  
   //id, feed_back, rating, trip_booking_id, driver_id
-  const [cookie,removeCookie,setCookie]=useCookies();
+ 
   const columns = [
     
     {
