@@ -2,14 +2,14 @@ import { useEffect, useState } from "react";
 import Sidebar from "../Sidebar/sidebar";
 import { useCookies } from "react-cookie";
 import axios from "axios";
-
-import { toast } from "react-toastify"; // For error notifications
+import { toast } from "react-toastify";
 import Loader from "./Loader";
 
 function Earnings() {
   const [cookies] = useCookies();
   const [currentView, setCurrentView] = useState("daily"); // To track the current view
   const [earnings, setEarnings] = useState({});
+  const [transactions, setTransactions] = useState([]); // State to store transactions
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -22,8 +22,9 @@ function Earnings() {
   };
 
   useEffect(() => {
-    fetchEarnings(); // Fetch data on component mount
-  }, []);
+    fetchEarnings(); // Fetch earnings data on component mount
+    fetchTransactions(); // Fetch transaction details based on the current view
+  }, [currentView]); // Re-fetch transactions whenever currentView changes
 
   const fetchEarnings = async () => {
     setLoading(true);
@@ -48,28 +49,32 @@ function Earnings() {
     }
   };
 
-  // Hardcoded payment list (Replace with API data when available)
-  const paymentList = {
-    daily: [
-      { id: 1, amount: 10, date: "2023-10-01" },
-      { id: 2, amount: 5, date: "2023-10-01" },
-    ],
-    weekly: [
-      { id: 3, amount: 50, date: "2023-09-25" },
-      { id: 4, amount: 30, date: "2023-09-27" },
-      { id: 5, amount: 20, date: "2023-09-29" },
-    ],
-    monthly: [
-      { id: 6, amount: 200, date: "2023-09-05" },
-      { id: 7, amount: 150, date: "2023-09-15" },
-      { id: 8, amount: 100, date: "2023-09-25" },
-    ],
-    total: [
-      { id: 9, amount: 500, date: "2023-08-01" },
-      { id: 10, amount: 400, date: "2023-08-15" },
-      { id: 11, amount: 300, date: "2023-09-01" },
-      { id: 12, amount: 200, date: "2023-09-15" },
-    ],
+  const fetchTransactions = async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const response = await axios.get(
+        `http://localhost:1995/driver/getTransactionDetails`,
+        {
+          params: {
+            driverid: cookies.currUserId,
+            uuid: cookies.uuid,
+            period: currentView, // Using currentView to determine the period
+          },
+        }
+      );
+      setTransactions(response.data[currentView]);
+    } catch (err) {
+      console.error("Error fetching transaction details:", err);
+      setError("Failed to fetch transaction details. Please try again later.");
+      toast.error("Failed to fetch transaction details. Please try again later.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleButtonClick = (period) => {
+    setCurrentView(period);
   };
 
   // Redirect path based on user role
@@ -79,10 +84,6 @@ function Earnings() {
     Vendor: "/vendor-dashboard",
   };
   const redirectPath = dashboardRedirects[cookies.currRole] || "/";
-
-  const handleButtonClick = (period) => {
-    setCurrentView(period);
-  };
 
   return (
     <>
@@ -143,7 +144,7 @@ function Earnings() {
               {/* Display Earnings */}
               <div className="col-12 text-center mb-4">
                 {loading ? (
-                  <Loader /> // Replace with your loader component or a simple loading text
+                  <Loader />
                 ) : error ? (
                   <div className="alert alert-danger" role="alert">
                     {error}
@@ -172,7 +173,7 @@ function Earnings() {
                   {`${currentView.charAt(0).toUpperCase() + currentView.slice(1)
                     } Payment List`}
                 </h4>
-                {paymentList[currentView] && paymentList[currentView].length > 0 ? (
+                {transactions.length > 0 ? (
                   <div className="table-responsive">
                     <table className="table table-bordered">
                       <thead className="thead-dark">
@@ -183,18 +184,18 @@ function Earnings() {
                         </tr>
                       </thead>
                       <tbody>
-                        {paymentList[currentView].map((payment, index) => (
-                          <tr key={payment.id}>
+                        {transactions.map((transaction, index) => (
+                          <tr key={index}>
                             <td>{index + 1}</td>
-                            <td>${payment.amount.toFixed(2)}</td>
-                            <td>{payment.date}</td>
+                            <td>${transaction.price.toFixed(2)}</td>
+                            <td>{transaction.toDateTime}</td>
                           </tr>
                         ))}
                       </tbody>
                     </table>
                   </div>
                 ) : (
-                  <p>No payments available for this period.</p>
+                  <p>No transactions available for this period.</p>
                 )}
               </div>
             </div>
@@ -203,6 +204,6 @@ function Earnings() {
       </div>
     </>
   );
-}   
+}
 
 export default Earnings;
