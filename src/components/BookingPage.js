@@ -15,6 +15,7 @@ const BookingPage = () => {
   const [price, setPrice] = useState(0);
   const [distanceInKm, setDistanceInKm] = useState(0);
   const [currStatus, setCurrStatus] = useState('');
+  const [gender, setGender] = useState(''); // Gender state
   const [driver, setDriver] = useState({
     userName: '',
     password: '',
@@ -47,7 +48,6 @@ const BookingPage = () => {
   };
 
   const handleConfirmBooking = async () => {
-    
     if (pickupLocation && fromDateTime && toDateTime) {
       try {
         const response = await fetch(`http://localhost:1995/tripBooking/BookRequest?cabId=${cabId}&uuid=${cookies.uuid}`, {
@@ -62,6 +62,7 @@ const BookingPage = () => {
             price,
             distanceInKm,
             currStatus,
+            gender, // Include gender in the request
             driver,
           }),
         });
@@ -119,6 +120,20 @@ const BookingPage = () => {
             value={toDateTime}
             onChange={(e) => setToDateTime(e.target.value)}
           />
+        </div>
+        <div className="mb-3 col-md-5">
+          <label htmlFor="gender" className="form-label">Gender</label>
+          <select
+            className="form-control"
+            id="gender"
+            value={gender}
+            onChange={(e) => setGender(e.target.value)}
+          >
+            <option value="" disabled>Select Gender</option>
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+            <option value="other">Other</option>
+          </select>
         </div>
         <div className="mb-3">
           <label htmlFor="price" className="form-label">Price</label>
