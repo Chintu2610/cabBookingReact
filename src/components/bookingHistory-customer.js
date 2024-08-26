@@ -43,19 +43,36 @@ useEffect(() => {
       selector: (row) => row.price,
       sortable: true,
     },
-    {
-      name: "Distance (Km)",
-      selector: (row) => row.distanceInKm,
-      sortable: true,
-    },
+    
     {
       name: "Current Status",
       selector: (row) => row.currStatus,
       sortable: true,
     },
     {
-      name: "Driver Id",
-      selector: (row) => row.driver.driverId,
+      name: "Driver Mobile",
+      selector: (row) => row.driver.mobileNumber,
+      sortable: true,
+    },
+    // ...(cookie.currRole === 'Admin'
+    //   ? [{
+    //       name: "Action",
+    //       cell: (row) => (
+    //         <button
+    //           className="btn btn-danger"
+    //           onClick={() => deleteCustomer(row.customerId)}
+    //         >
+    //           Delete Customer
+    //         </button>
+    //       )
+    //     }]
+    //   : [])
+    {
+      name: "Rating",
+      selector: (row) =>
+        row.rating !== null && row.rating !== undefined
+          ? row.rating
+          : "You have not given a rating yet",
       sortable: true,
     },
     {
@@ -75,9 +92,9 @@ useEffect(() => {
             <Button
               variant="warning"
               onClick={() => handleGiveRating(row.tripBookingId, row.driver.driverId)}
-              disabled={row.currStatus.toLowerCase() === "pending" || row.currStatus.toLowerCase() === "cancelled"}
+              disabled={row.currStatus.toLowerCase() === "pending" || row.currStatus.toLowerCase() === "cancelled" || row.rating!==null || row.rating!==undefined}
             >
-              {row.currStatus.toLowerCase() === "canceled" ? "Canceled" : "Give Rating"}
+              {row.currStatus.toLowerCase() === "cancelled" ? "Cancelled" : "Give Rating"}
             </Button>
           )}
         </>

@@ -1,8 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useCookies } from 'react-cookie';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Form, Button, Container, Row, Col, Alert } from 'react-bootstrap';
-
 function SubmitRating() {
   const [cookies] = useCookies();
   const [rating, setRating] = useState('');
@@ -10,9 +9,16 @@ function SubmitRating() {
   const [alertMessage, setAlertMessage] = useState('');
   const location = useLocation();
   const navigate = useNavigate();
-
   const tripBookingId = location.state.tripBookingId;
     const driverId=location.state.driverId;
+  useEffect(()=>{
+      if(cookies.uuid===null || cookies.uuid===undefined)
+      {
+        navigate('/login');
+      }
+  }
+  ,[]);
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -32,10 +38,9 @@ function SubmitRating() {
           }),
         }
       );
-
       if (response.ok) {
         setAlertMessage('Rating submitted successfully');
-        setTimeout(() => navigate('/booking-history'), 2000); // Redirect after success
+        setTimeout(() => navigate('/booking-history-customer'), 2000); // Redirect after success
       } else {
         setAlertMessage('Failed to submit rating. Please try again.');
       }
@@ -44,7 +49,6 @@ function SubmitRating() {
       setAlertMessage('An error occurred while submitting the rating.');
     }
   };
-
   return (
     <Container>
       <Row className="my-4">

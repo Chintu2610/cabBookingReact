@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css"; // Import Bootstrap CSS
 import { useCookies } from "react-cookie";
 
+
 export function CabRegister() {
   const navigate = useNavigate();
   const [cookies, ] = useCookies();
@@ -26,6 +27,7 @@ export function CabRegister() {
     {
     redirect="/vendor-dashboard";
   }
+
   return (
     <div className="container" style={{ marginTop: "100px" }}>
       <Formik
@@ -40,6 +42,7 @@ export function CabRegister() {
           cabImage: null,
           area:"",
           manufacturingYear:"",
+          email:cookie.email,
         }}
         onSubmit={async (values) => {
           try {
@@ -53,7 +56,8 @@ export function CabRegister() {
             formData.append("currLocation", values.currLocation);
             formData.append("cabCurrStatus", values.cabCurrStatus);
             formData.append("area", values.area);
-            formData.append("manufacturingYear",values.manufacturingYear)
+            formData.append("manufacturingYear",values.manufacturingYear);
+            formData.append("email",values.email);
             if (values.cabImage) {
               formData.append("file", values.cabImage); // Append the file
             }
@@ -280,6 +284,22 @@ export function CabRegister() {
                           className="text-danger"
                         />
                       </div>
+                      <div className="mb-3">
+                      <label htmlFor="cabCurrStatus" className="form-label fs-5">
+                         Owner Email
+                        </label>
+                       <Field
+                         type="email"
+                         name="email"
+                         className="form-control"
+                         readOnly={cookie.currRole !== 'Admin'}
+                       />
+                       <ErrorMessage
+                         name="email"
+                         component="div"
+                         className="text-danger"
+                       />
+                     </div>
                       <div className="mb-3">
                         <label htmlFor="cabImage" className="form-label fs-5">
                           Cab Image
