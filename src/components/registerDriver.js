@@ -23,6 +23,7 @@ export function DriverRegister() {
           userRole: "Driver",
           licenceNo: "",
           rating: 0,
+          gender: "",
           currLocation: "",
           currDriverStatus: "",
         }}
@@ -90,7 +91,7 @@ export function DriverRegister() {
           ,
 
           licenceNo: yup.string().required("licence is required"),
-
+          gender: yup.string().required("please provide Gender"),
           currLocation: yup.string().required("please provide a valid location."),
           currDriverStatus: yup.string().nonNullable().required("status is required."),
         })}
@@ -199,6 +200,26 @@ export function DriverRegister() {
                         />
                         <ErrorMessage
                           name="age"
+                          component="div"
+                          className="text-danger"
+                        />
+                      </div>
+                      <div className="mb-3">
+                        <label htmlFor="gender" className="form-label">
+                          Gender
+                        </label>
+                        <Field
+                          name="gender"
+                          as="select"
+                          className="form-control"
+                        >
+                          <option value="">Select Gender</option>
+                          <option value="Male">Male</option>
+                          <option value="Female">Female</option>
+                          <option value="Others">Others</option>
+                        </Field>
+                        <ErrorMessage
+                          name="gender"
                           component="div"
                           className="text-danger"
                         />
