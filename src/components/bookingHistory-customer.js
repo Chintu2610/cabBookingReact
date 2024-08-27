@@ -133,14 +133,21 @@ useEffect(() => {
   }
 
   function handleDateFilter() {
-    const filteredData = originalRecords.filter(
-      (row) =>
-        (!fromDate || new Date(row.fromDateTime) >= fromDate) &&
-        (!toDate || new Date(row.toDateTime) <= toDate)
-    );
+    const filteredData = originalRecords.filter((row) => {
+      const rowFromDateTime = new Date(row.fromDateTime).setHours(0, 0, 0, 0);
+      const rowToDateTime = new Date(row.toDateTime).setHours(23, 59, 59, 999);
+      const fromDateStart = fromDate ? fromDate.setHours(0, 0, 0, 0) : null;
+      const toDateEnd = toDate ? toDate.setHours(23, 59, 59, 999) : null;
+  
+      return (
+        (!fromDate || rowFromDateTime >= fromDateStart) &&
+        (!toDate || rowToDateTime <= toDateEnd)
+      );
+    });
+  
     setFilteredRecords(filteredData);
   }
-
+  
   async function handleCancelTrip(tripBookingId) {
     try {
       const uuid = cookies.uuid;
@@ -171,10 +178,14 @@ useEffect(() => {
   var redirect="";
   if(cookies.currRole==="Driver"){
    redirect="/driver-dashboard";
-  }else if(cookies.currRole==="Admin")
+  }else if(cookies.currRole==="Customer")
   {
-    redirect="/admin-dashboard";
-  }else{
+    redirect="/booking-history-customer";
+  }else if(cookies.currRole==="Admin")
+    
+    {
+      redirect="/admin-dashboard";
+    }else{ 
     redirect="/vendor-dashboard";
   }
 

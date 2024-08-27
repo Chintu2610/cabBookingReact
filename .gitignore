@@ -25,3 +25,6 @@ yarn-error.log*
 
 # Local Netlify folder
 .netlify
+public/images/cabImages/classic.jpeg
+public/images/cabImages/pixa.jpeg
+public/images/cabImages/tayota.jpeg
