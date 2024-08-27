@@ -19,6 +19,7 @@ const DriverDash = () => {
 	 noOfDrivers:0,
    noOfCab:0,
    noOfVendors:0,
+   total_earnings:0,
   });
   const fetchData = async () => {
     
@@ -40,7 +41,7 @@ const DriverDash = () => {
           noOfBookingsLastMonth: data.noOfBookingsLastMonth,
           noOfDrivers: data.noOfDrivers,
           noOfCab:data.noOfCab,
-          noOfVendors:data.noOfVendors,
+          total_earnings:data.noOfVendors,
           });
       } else {
        
@@ -124,7 +125,7 @@ const DriverDash = () => {
             <div className="col-lg-3 col-6">
               <div className="small-box bg-warning">
                 <div className="inner">
-                  <h3>{countdata.noOfUserRegistered}</h3>
+                  <h3>{countdata.total_earnings}</h3>
                   <p>Earnings Amount</p>
                 </div>
                 <div className="icon">

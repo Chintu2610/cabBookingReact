@@ -75,7 +75,8 @@ const Product = ({ cabId, currLocation, cabCurrStatus, carName, cabImage, perKmR
             <p className="card-text">{manufacturingYear}</p>
           </div>
         </div>
-
+        {cookies.currRole &&
+          (cookies.currRole.toLowerCase() === "customer") &&
         <button
           onClick={handleBookingClick}
           style={{ color: "black" }}
@@ -83,6 +84,7 @@ const Product = ({ cabId, currLocation, cabCurrStatus, carName, cabImage, perKmR
         >
           Book Now
         </button>
+}
         {cookies.currRole &&
           (cookies.currRole.toLowerCase() === "admin" ||
             cookies.currRole.toLowerCase()==="vendor") && (

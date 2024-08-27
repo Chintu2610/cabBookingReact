@@ -102,7 +102,7 @@ useEffect(() => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const uuid=sessionStorage.getItem("uuid");
+        const uuid=cookies.uuid;
         const response = await fetch(`http://localhost:1995/driver/AllDriver?uuid=${uuid}`);
         if (response.ok) {
           const data = await response.json();

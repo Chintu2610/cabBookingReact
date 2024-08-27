@@ -44,6 +44,7 @@ export function DriverRegister() {
           gender: "",
           currLocation: "",
           currDriverStatus: "",
+          ownerEmail:cookies.email,
         }}
         onSubmit={async (values) => {
           try {
@@ -299,6 +300,22 @@ export function DriverRegister() {
                           className="text-danger"
                         />
                       </div>
+                      <div className="mb-3">
+                      <label htmlFor="cabCurrStatus" className="form-label fs-5">
+                         Owner Email
+                        </label>
+                       <Field
+                         type="email"
+                         name="ownerEmail"
+                         className="form-control"
+                        // readOnly={cookies.currRole !== 'Admin'}
+                       />
+                       <ErrorMessage
+                         name="email"
+                         component="div"
+                         className="text-danger"
+                       />
+                     </div>
                       <button
                         type="submit"
                         className="btn btn-primary form-control"
