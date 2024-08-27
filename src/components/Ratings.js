@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 
 function Ratings() {
  const navigate=useNavigate();
- const [cookie,removeCookie,setCookie]=useCookies();
+ const [cookie]=useCookies();
 useEffect(() => {
   if (!cookie.uuid) {
     navigate("/login");
