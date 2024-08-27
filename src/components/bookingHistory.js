@@ -182,6 +182,7 @@ useEffect(() => {
       if (response.ok) {
         const responseText = await response.text(); // Get the response as text
       alert(responseText);
+      window.location.reload();
       } else {
         alert(`Failed to ${status} trip`);
       }
