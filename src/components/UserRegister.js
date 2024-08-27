@@ -157,20 +157,7 @@ export function UserRegister() {
                          className="text-danger"
                        />
                      </div>
-                     <div className="mb-3">
-                      
-                       <Field
-                         type="email"
-                         name="email"
-                         className="form-control"
-                         value={cookie.email}
-                       />
-                       <ErrorMessage
-                         name="email"
-                         component="div"
-                         className="text-danger"
-                       />
-                     </div>
+                    
                      <button
                        type="submit"
                        className="btn btn-primary form-control"

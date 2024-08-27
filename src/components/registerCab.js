@@ -42,7 +42,7 @@ export function CabRegister() {
           cabImage: null,
           area:"",
           manufacturingYear:"",
-          email:cookie.email,
+          email:cookies.email,
         }}
         onSubmit={async (values) => {
           try {
@@ -292,7 +292,7 @@ export function CabRegister() {
                          type="email"
                          name="email"
                          className="form-control"
-                         readOnly={cookie.currRole !== 'Admin'}
+                         readOnly={cookies.currRole !== 'Admin'}
                        />
                        <ErrorMessage
                          name="email"

@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import MapComponent from '../components/mapComponent';
 import { useCookies } from 'react-cookie';
-import { Navigate, useLocation, useParams } from 'react-router-dom';
+import { useNavigate, useLocation, useParams } from 'react-router-dom';
 
 const BookingPage = () => {
+  const navigate=useNavigate();
+
   const location = useLocation();
   const perKmRate = location.state?.perKmRate || 0;
   const { cabId } = useParams();
@@ -15,7 +17,7 @@ const BookingPage = () => {
   const [price, setPrice] = useState(0);
   const [distanceInKm, setDistanceInKm] = useState(0);
   const [currStatus, setCurrStatus] = useState('');
-  const [preferredGender, setpreferredGender] = useState(''); // preferredGender state
+  const [preferredGender, setpreferredGender] = useState('Male'); // preferredGender state
   const [driver, setDriver] = useState({
     userName: '',
     password: '',
@@ -50,6 +52,8 @@ const BookingPage = () => {
   const handleConfirmBooking = async () => {
     if (pickupLocation && fromDateTime && toDateTime) {
       try {
+        debugger;
+        console.log(preferredGender);
         const response = await fetch(`http://localhost:1995/tripBooking/BookRequest?cabId=${cabId}&uuid=${cookies.uuid}`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -68,10 +72,10 @@ const BookingPage = () => {
         });
 
         if (response.ok) {
-          const result = await response.json();
-          alert('Booking confirmed.');
-          console.log('Booking confirmed:', result);
-          Navigate('/booking-history-customer');
+          const result = await response.text();
+          alert(result);
+         
+          navigate('/booking-history-customer');
           // Handle successful booking
         } else {
           throw new Error('Network response was not ok');
@@ -130,10 +134,10 @@ const BookingPage = () => {
             value={preferredGender}
             onChange={(e) => setpreferredGender(e.target.value)}
           >
-            <option value="" disabled>Select Preferred Gender</option>
-            <option value="male">Male</option>
-            <option value="female">Female</option>
-            <option value="other">Other</option>
+            
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+            <option value="Other">Other</option>
           </select>
         </div>
         <div className="mb-3">
