@@ -70,9 +70,9 @@ useEffect(() => {
     {
       name: "Rating",
       selector: (row) =>
-        row.rating !== null && row.rating !== undefined
+        row.rating !== null && row.rating !== undefined && row.rating !== -1
           ? row.rating
-          : "You have not given a rating yet",
+          : "You have not given any rating yet",
       sortable: true,
     },
     {
@@ -92,7 +92,7 @@ useEffect(() => {
             <Button
               variant="warning"
               onClick={() => handleGiveRating(row.tripBookingId, row.driver.driverId)}
-              disabled={row.currStatus.toLowerCase() === "pending" || row.currStatus.toLowerCase() === "cancelled" || row.rating!==null || row.rating!==undefined}
+              disabled={row.currStatus.toLowerCase() === "pending" || row.currStatus.toLowerCase() === "cancelled" || row.rating!==-1}
             >
               {row.currStatus.toLowerCase() === "cancelled" ? "Cancelled" : "Give Rating"}
             </Button>
