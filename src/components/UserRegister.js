@@ -128,20 +128,23 @@ export function UserRegister() {
                        />
                      </div>
                      <div className="mb-3">
-                       <label htmlFor="mobileNumber" className="form-label">
-                         Mobile
-                       </label>
-                       <Field
-                         type="text"
-                         name="mobileNumber"
-                         className="form-control"
-                       />
-                       <ErrorMessage
-                         name="mobileNumber"
-                         component="div"
-                         className="text-danger"
-                       />
-                     </div>
+  <label htmlFor="mobileNumber" className="form-label">Mobile</label>
+  <Field
+    type="text"
+    name="mobileNumber"
+    className="form-control"
+    maxLength="10" // Limit input to 10 characters
+    onInput={(e) => {
+      e.target.value = e.target.value.replace(/[^0-9]/g, '').slice(0, 10); // Ensure only digits and limit to 10 digits
+    }}
+  />
+  <ErrorMessage
+    name="mobileNumber"
+    component="div"
+    className="text-danger"
+  />
+</div>
+
                      <div className="mb-3">
                        <label htmlFor="email" className="form-label">
                          Email
