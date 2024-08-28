@@ -76,7 +76,7 @@ const VendorDash = () => {
             <div className="col-lg-3 col-6">
               <div className="small-box bg-info">
                 <div className="inner">
-                  <h3>{countdata.noOfBookingsLastMonth}</h3>
+                  <h3>{countdata.noOfBookings}</h3>
                   <p>New Bookings</p>
                 </div>
                 <div className="icon">
