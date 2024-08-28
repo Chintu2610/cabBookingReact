@@ -33,7 +33,7 @@ const ListView = ({ products }) => {
     } else {
       try {
         const response = await axios.delete(
-          `http://localhost:1995/cab/delete?cabId=${cabId}&uuid=${cookies.uuid}`
+          `http://13.60.224.153:1995/cab/delete?cabId=${cabId}&uuid=${cookies.uuid}`
         );
         if (response.status === 200) {
           alert("Cab deleted successfully.");

@@ -12,7 +12,7 @@ const ResetPassword = () => {
     
     try {
       // Sends a POST request to the API endpoint with the email address
-      const response = await axios.post(`http://localhost:1995/PasswordReset?toEmail=${email}`);
+      const response = await axios.post(`http://13.60.224.153:1995/PasswordReset?toEmail=${email}`);
       
       // Checks if the response status is 200 (OK)
       if (response.status === 200) {

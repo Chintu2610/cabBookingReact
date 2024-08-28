@@ -62,7 +62,7 @@ export function CabRegister() {
               formData.append("file", values.cabImage); // Append the file
             }
 
-            const response = await fetch("http://localhost:1995/cab/register", {
+            const response = await fetch("http://13.60.224.153:1995/cab/register", {
               method: "POST",
               body: formData,
             });

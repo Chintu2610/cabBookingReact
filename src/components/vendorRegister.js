@@ -47,7 +47,7 @@ export function VendorRegister() {
         onSubmit={async (values) => {
           try {
             const response = await fetch(
-              `http://localhost:1995/admin/register/${cookie.currRole}`,
+              `http://13.60.224.153:1995/admin/register/${cookie.currRole}`,
               {
                 method: "POST",
                 headers: {

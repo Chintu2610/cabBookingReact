@@ -17,7 +17,7 @@ const EnterOTP = () => {
   const handleOtpSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(`http://localhost:1995/ValidateOtp?otp=${enteredOtp}&email=${email}`);
+      const response = await axios.post(`http://13.60.224.153:1995/ValidateOtp?otp=${enteredOtp}&email=${email}`);
       
       if (response.status === 200) {
         setSuccess('OTP verified. You can now reset your password.');
