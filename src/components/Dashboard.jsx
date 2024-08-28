@@ -37,7 +37,7 @@ const AdminDashboard = () => {
         setCountData({
           noOfUserRegistered: data.noOfUserRegistered,
           noOfBookings: data.noOfBookings,
-          noOfBookingsLastMonth: data.noOfBookingsLastMonth,
+          noOfBookingsLastMonth: data.noOfBookings,
           noOfDrivers: data.noOfDrivers,
           noOfCab:data.noOfCab,
           noOfVendors:data.noOfVendors,
