@@ -24,7 +24,7 @@ function SubmitRating() {
     try {
       const uuid = cookies.uuid;
       const response = await fetch(
-        `http://localhost:1995/tripBooking/submitRating?uuid=${uuid}`,
+        `http://13.60.224.153:1995/tripBooking/submitRating?uuid=${uuid}`,
         {
           method: 'POST',
           headers: {

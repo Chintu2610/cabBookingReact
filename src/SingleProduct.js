@@ -11,7 +11,7 @@ import { TbTruckDelivery, TbReplace } from "react-icons/tb";
 import Star from "./components/Star";
 import AddToCart from "./components/AddToCart";
 
-const API = "http://localhost:1995/cab/getSingleCabDetails";
+const API = "http://13.60.224.153:1995/cab/getSingleCabDetails";
 
 const SingleProduct = () => {
   const { getSingleProduct, isSingleLoading, singleProduct } =

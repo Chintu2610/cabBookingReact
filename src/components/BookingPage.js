@@ -54,7 +54,7 @@ const BookingPage = () => {
       try {
         debugger;
         console.log(preferredGender);
-        const response = await fetch(`http://localhost:1995/tripBooking/BookRequest?cabId=${cabId}&uuid=${cookies.uuid}`, {
+        const response = await fetch(`http://13.60.224.153:1995/tripBooking/BookRequest?cabId=${cabId}&uuid=${cookies.uuid}`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({

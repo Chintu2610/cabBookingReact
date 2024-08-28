@@ -21,7 +21,7 @@ export function UserRegister() {
         onSubmit={async (values) => {
           try {
             const response = await fetch(
-              "http://localhost:1995/customer/register",
+              "http://13.60.224.153:1995/customer/register",
               {
                 method: "POST",
                 headers: {
