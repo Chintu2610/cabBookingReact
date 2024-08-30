@@ -49,7 +49,7 @@ export function DriverRegister() {
         onSubmit={async (values) => {
           try {
             const response = await fetch(
-              "http://13.60.224.153:1995/driver/register",
+              "http://localhost:1995/driver/register",
               {
                 method: "POST",
                 headers: {

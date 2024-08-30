@@ -17,7 +17,7 @@ useEffect(() => {
   async function deleteCustomer(customerId) {
     try {
       const response = await axios.delete(
-        `http://13.60.224.153:1995/customer/delete?uuid=${cookie.uuid}&customerId=${customerId}`,
+        `http://localhost:1995/customer/delete?uuid=${cookie.uuid}&customerId=${customerId}`,
         {
           headers: {
             "Content-Type": "application/json"
@@ -90,7 +90,7 @@ useEffect(() => {
     const fetchData = async () => {
       try {
         const uuid=cookie.uuid;
-        const response = await fetch(`http://13.60.224.153:1995/customer/viewAllCustomer?uuid=${uuid}`);
+        const response = await fetch(`http://localhost:1995/customer/viewAllCustomer?uuid=${uuid}`);
         if (response.ok) {
           const data = await response.json();
           setOriginalRecords(data);

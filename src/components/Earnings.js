@@ -35,7 +35,7 @@ function Earnings() {
     setError(null);
     try {
       const response = await axios.get(
-        `http://13.60.224.153:1995/driver/GetDriverEarnings`,
+        `http://localhost:1995/driver/GetDriverEarnings`,
         {
           params: {
             driverid: cookies.currUserId,
@@ -58,7 +58,7 @@ function Earnings() {
     setError(null);
     try {
       const response = await axios.get(
-        `http://13.60.224.153:1995/driver/getTransactionDetails`,
+        `http://localhost:1995/driver/getTransactionDetails`,
         {
           params: {
             driverid: cookies.currUserId,
