@@ -18,7 +18,7 @@ export function VendorUpdate() {
     const fetchvendorDetails = async () => {
       try {
         const response = await axios.get(
-          `http://13.60.224.153:1995/vendor/viewVendor/${params.vendorId}?uuid=${cookie.uuid}`
+          `http://localhost:1995/vendor/viewVendor/${params.vendorId}?uuid=${cookie.uuid}`
         );
         if (response) {
           setvendorDetails(response.data);
@@ -60,7 +60,7 @@ export function VendorUpdate() {
         onSubmit={async (values) => {
           try {
             const response = await axios.put(
-              "http://13.60.224.153:1995/vendor/update",
+              "http://localhost:1995/vendor/update",
               values,
               {
                 params:{

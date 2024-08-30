@@ -17,7 +17,7 @@ const Login = () => {
     const formData = { email, password };
     
     try {
-      const response = await fetch('http://13.60.224.153:1995/Userlogin/Login', {
+      const response = await fetch('http://localhost:1995/Userlogin/Login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -28,7 +28,7 @@ const PasswordReset = () => {
     }
 
     try {
-      const response = await axios.post(`http://13.60.224.153:1995/api/ChangePasswords?email=${email}&newPassword=${newPassword}`);
+      const response = await axios.post(`http://localhost:1995/api/ChangePasswords?email=${email}&newPassword=${newPassword}`);
 
       if (response.status === 200) {
         setSuccess('Password has been successfully reset.');

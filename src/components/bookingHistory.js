@@ -121,13 +121,13 @@ useEffect(() => {
       try {
         debugger;
         const uuid = cookies.uuid;
-        var URL=`http://13.60.224.153:1995/admin/getAllTrips?uuid=${uuid}`;
+        var URL=`http://localhost:1995/admin/getAllTrips?uuid=${uuid}`;
         if(cookies.currRole==='Driver')
         {
-          URL=`http://13.60.224.153:1995/admin/getTripsDriverwise?driverId=${cookies.currUserId}&uuid=${uuid}`;
+          URL=`http://localhost:1995/admin/getTripsDriverwise?driverId=${cookies.currUserId}&uuid=${uuid}`;
         }else  if(cookies.currRole==='Vendor')
           {
-            URL=`http://13.60.224.153:1995/admin/getTripsVendorwise?vendorId=${cookies.currUserId}&uuid=${uuid}`;
+            URL=`http://localhost:1995/admin/getTripsVendorwise?vendorId=${cookies.currUserId}&uuid=${uuid}`;
           }
         const response = await fetch(URL);
         if (response.ok) {
@@ -162,7 +162,7 @@ useEffect(() => {
     try {
       const uuid = cookies.uuid;
       const response = await fetch(
-        `http://13.60.224.153:1995/tripBooking/markCompleteTrip?TripBookingId=${tripBookingId}&uuid=${uuid}`
+        `http://localhost:1995/tripBooking/markCompleteTrip?TripBookingId=${tripBookingId}&uuid=${uuid}`
       );
       if (response.ok) {
         const responseText = await response.text(); // Get the response as text
@@ -181,7 +181,7 @@ useEffect(() => {
     try {
       const uuid = cookies.uuid;
       const response = await fetch(
-        `http://13.60.224.153:1995/tripBooking/handleAcceptDeclineTrip?TripBookingId=${tripBookingId}&status=${status}&uuid=${uuid}`
+        `http://localhost:1995/tripBooking/handleAcceptDeclineTrip?TripBookingId=${tripBookingId}&status=${status}&uuid=${uuid}`
       );
       if (response.ok) {
         const responseText = await response.text(); // Get the response as text

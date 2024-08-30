@@ -13,12 +13,12 @@ export function CabUpdate() {
   const navigate = useNavigate();
   const [cabDetails, setCabDetails] = useState(null);
   const [imagePreview, setImagePreview] = useState(null); // State for image preview
-  const baseurl = "http://13.60.224.153:3000/images/cabImages/";
+  const baseurl = "http://localhost:3000/images/cabImages/";
   useEffect(() => {
     const fetchCabDetails = async () => {
       try {
         const response = await axios.get(
-          `http://13.60.224.153:1995/cab/getSingleCabDetails/${params.cabId}`
+          `http://localhost:1995/cab/getSingleCabDetails/${params.cabId}`
         );
         if (response.data) {
           setCabDetails(response.data);
@@ -76,7 +76,7 @@ export function CabUpdate() {
             formData.append("uuid", cookie.uuid);
 
             const response = await axios.put(
-              "http://13.60.224.153:1995/cab/update",
+              "http://localhost:1995/cab/update",
               formData, // Passing the form data
               {
                 headers: {

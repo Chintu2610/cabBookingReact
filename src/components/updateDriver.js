@@ -18,7 +18,7 @@ export function DriverUpdate() {
     const fetchDriverDetails = async () => {
       try {
         const response = await axios.get(
-          `http://13.60.224.153:1995/driver/viewDriver?driverId=${params.driverId}&uuid=${cookie.uuid}`
+          `http://localhost:1995/driver/viewDriver?driverId=${params.driverId}&uuid=${cookie.uuid}`
         );
         if (response) {
           setDriverDetails(response.data);
@@ -60,7 +60,7 @@ export function DriverUpdate() {
         onSubmit={async (values) => {
           try {
             const response = await axios.put(
-              `http://13.60.224.153:1995/driver/update?driverId=${values.driverId}`,
+              `http://localhost:1995/driver/update?driverId=${values.driverId}`,
               values,
               {
                 params:{

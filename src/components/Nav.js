@@ -13,7 +13,7 @@ const Nav = ({ role }) => {
     const uuId = cookies.uuid;
     if (uuId) {
       console.log(uuId);
-      const url = `http://13.60.224.153:1995/Userlogin/logout?uuid=${uuId}`;
+      const url = `http://localhost:1995/Userlogin/logout?uuid=${uuId}`;
 
       fetch(url, {
         method: "GET",

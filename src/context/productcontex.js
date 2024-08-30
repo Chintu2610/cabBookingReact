@@ -4,7 +4,7 @@ import reducer from "../reducer/productReducer";
 import { useCookies } from "react-cookie";
 const AppContext = createContext();
 
-const API = "http://13.60.224.153:1995/cab/getAllAvailableCab"; // Ensure the correct protocol
+const API = "http://localhost:1995/cab/getAllAvailableCab"; // Ensure the correct protocol
 
 const initialState = {
   filter_products: [],
