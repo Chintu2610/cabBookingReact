@@ -106,7 +106,7 @@ useEffect(() => {
     const fetchData = async () => {
       try {
         const uuid = cookies.uuid;
-        const response = await fetch(`http://localhost:1995/admin/getTripsCustomerwise?uuid=${uuid}&customerId=${cookies.currUserId}`);
+        const response = await fetch(`http://185.199.52.133:1996/admin/getTripsCustomerwise?uuid=${uuid}&customerId=${cookies.currUserId}`);
         if (response.ok) {
           const data = await response.json();
           setOriginalRecords(data);
@@ -152,7 +152,7 @@ useEffect(() => {
     try {
       const uuid = cookies.uuid;
       const response = await fetch(
-        `http://localhost:1995/tripBooking/cancelTrip?TripBookingId=${tripBookingId}&uuid=${uuid}`,
+        `http://185.199.52.133:1996/tripBooking/cancelTrip?TripBookingId=${tripBookingId}&uuid=${uuid}`,
         { method: 'GET' }
       );
       if (response.ok) {

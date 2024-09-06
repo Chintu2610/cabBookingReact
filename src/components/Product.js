@@ -34,7 +34,7 @@ const Product = ({ cabId, currLocation, cabCurrStatus, carName, cabImage, perKmR
   async function deleteCab() {
     try {
       const response = await axios.delete(
-        `http://localhost:1995/cab/delete?cabId=${cabId}&uuid=${cookies.uuid}`
+        `http://185.199.52.133:1996/cab/delete?cabId=${cabId}&uuid=${cookies.uuid}`
       );
       if (response.status === 200) {
 
