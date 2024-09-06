@@ -26,7 +26,7 @@ const Contact = () => {
     try {
       // Send form data to the server using axios
       const response = await axios.post(
-        `http://localhost:1995/email/contact`,
+        `http://185.199.52.133:1996/email/contact`,
         formData,
         {
           headers: {

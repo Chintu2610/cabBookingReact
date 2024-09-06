@@ -18,7 +18,7 @@ export function CabUpdate() {
     const fetchCabDetails = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:1995/cab/getSingleCabDetails/${params.cabId}`
+          `http://185.199.52.133:1996/cab/getSingleCabDetails/${params.cabId}`
         );
         if (response.data) {
           setCabDetails(response.data);
@@ -76,7 +76,7 @@ export function CabUpdate() {
             formData.append("uuid", cookie.uuid);
 
             const response = await axios.put(
-              "http://localhost:1995/cab/update",
+              "http://185.199.52.133:1996/cab/update",
               formData, // Passing the form data
               {
                 headers: {

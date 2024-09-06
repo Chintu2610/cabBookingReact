@@ -18,7 +18,7 @@ useEffect(() => {
   async function deleteCustomer(customerId) {
     try {
       const response = await axios.delete(
-        `http://localhost:1995/customer/delete?uuid=${cookie.uuid}&customerId=${customerId}`,
+        `http://185.199.52.133:1996/customer/delete?uuid=${cookie.uuid}&customerId=${customerId}`,
         {
           headers: {
             "Content-Type": "application/json"
@@ -73,7 +73,7 @@ useEffect(() => {
       try {
         const uuid=cookie.uuid;
         const driveId=cookie.currUserId;
-        const response = await axios.get(`http://localhost:1995/tripBooking/viewRatingDriverWise?driverId=${driveId}&uuid=${uuid}`);
+        const response = await axios.get(`http://185.199.52.133:1996/tripBooking/viewRatingDriverWise?driverId=${driveId}&uuid=${uuid}`);
         if (response.status===200) {
           const data = response.data;
           setOriginalRecords(data);

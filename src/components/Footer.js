@@ -12,7 +12,7 @@ const Footer = () => {
   const handleSubscribe = async (e) => {
     e.preventDefault();
     try {
-      await fetch('http://localhost:1995/email/subscribe', {
+      await fetch('http://185.199.52.133:1996/email/subscribe', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',

@@ -33,11 +33,11 @@ useEffect(() => {
   const fetchAdminDetails = async () => {
     var URL="";
     if(cookies.currRole==='Admin' || cookies.currRole==='Vendor'){
-      URL=`http://localhost:1995/admin/viewAdminProfile?adminId=${cookies.currUserId}&uuid=${cookies.uuid}`;
+      URL=`http://185.199.52.133:1996/admin/viewAdminProfile?adminId=${cookies.currUserId}&uuid=${cookies.uuid}`;
     }else if(cookies.currRole==='Customer') {
-      URL=`http://localhost:1995/customer/viewCustomerProfile?customerId=${cookies.currUserId}&uuid=${cookies.uuid}`;
+      URL=`http://185.199.52.133:1996/customer/viewCustomerProfile?customerId=${cookies.currUserId}&uuid=${cookies.uuid}`;
     }else{
-      URL=`http://localhost:1995/driver/GetDriverDetails?driverid=${cookies.currUserId}&uuid=${cookies.uuid}`;
+      URL=`http://185.199.52.133:1996/driver/GetDriverDetails?driverid=${cookies.currUserId}&uuid=${cookies.uuid}`;
     }
     try {
       
@@ -76,11 +76,11 @@ useEffect(() => {
     try {
       var URL="";
       if(cookies.currRole==="Admin" || cookies.currRole==='Vendor'){
-        URL=`http://localhost:1995/admin/Update?adminId=${cookies.currUserId}&uuid=${cookies.uuid}`;
+        URL=`http://185.199.52.133:1996/admin/Update?adminId=${cookies.currUserId}&uuid=${cookies.uuid}`;
       }else if(cookies.currRole==='Customer') {
-        URL=`http://localhost:1995/customer/update?customerId=${cookies.currUserId}&uuid=${cookies.uuid}`;
+        URL=`http://185.199.52.133:1996/customer/update?customerId=${cookies.currUserId}&uuid=${cookies.uuid}`;
       }else{
-        URL=`http://localhost:1995/driver/update?driverId=${cookies.currUserId}&uuid=${cookies.uuid}`;
+        URL=`http://185.199.52.133:1996/driver/update?driverId=${cookies.currUserId}&uuid=${cookies.uuid}`;
       }
       const response = await fetch(URL
         

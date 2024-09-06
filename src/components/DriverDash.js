@@ -26,7 +26,7 @@ const DriverDash = () => {
     try {
       const uuid=cookies.uuid;
      
-      const response = await fetch(`http://localhost:1995/admin/getCountsForAdminDashboard?uuid=${uuid}`, {
+      const response = await fetch(`http://185.199.52.133:1996/admin/getCountsForAdminDashboard?uuid=${uuid}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',

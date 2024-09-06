@@ -21,7 +21,7 @@ useEffect(() => {
   async function deleteDriver(driverId) {
     try {
       const response = await axios.delete(
-        `http://localhost:1995/driver/delete?uuid=${cookies.uuid}&driverId=${driverId}`,
+        `http://185.199.52.133:1996/driver/delete?uuid=${cookies.uuid}&driverId=${driverId}`,
         {
          
           headers: {
@@ -103,7 +103,7 @@ useEffect(() => {
     const fetchData = async () => {
       try {
         const uuid=cookies.uuid;
-        const response = await fetch(`http://localhost:1995/driver/AllDriver?uuid=${uuid}`);
+        const response = await fetch(`http://185.199.52.133:1996/driver/AllDriver?uuid=${uuid}`);
         if (response.ok) {
           const data = await response.json();
           setOriginalRecords(data);
