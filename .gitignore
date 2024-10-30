@@ -28,3 +28,5 @@ yarn-error.log*
 public/images/cabImages/classic.jpeg
 public/images/cabImages/pixa.jpeg
 public/images/cabImages/tayota.jpeg
+package-lock.json
+package.json

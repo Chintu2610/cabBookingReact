@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "homepage": "http://185.199.52.133:8080/urbanwheels",
+
   "dependencies": {
     "@auth0/auth0-react": "^1.10.2",
     "@fortawesome/fontawesome-free": "^6.6.0",
@@ -13,6 +14,7 @@
     "axios": "^0.27.2",
     "bootstrap": "^5.3.3",
     "bootstrap-icons": "^1.11.3",
+    "ecom": "file:",
     "formik": "^2.4.6",
     "framer-motion": "^11.3.21",
     "react": "^18.3.1",
