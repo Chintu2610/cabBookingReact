@@ -24,7 +24,7 @@ const Sidebar = () => {
               <Link to="/registerDriver" className="nav-link">
               <i class="bi bi-person fs-5"></i>
                 <p>
-                Register Driver
+                Add Driver
                 </p>
               </Link>
             </li>
@@ -32,7 +32,7 @@ const Sidebar = () => {
               <Link to="/registerCab" className="nav-link">
               <i class="bi bi-car-front fs-5"></i>
                 <p>
-                Register Cab
+                Add Cab
                   
                 </p>
               </Link>
@@ -44,7 +44,7 @@ const Sidebar = () => {
               <Link to="/register-vendor" className="nav-link">
               <i class="bi bi-person fs-5"></i>
                 <p>
-                Register Vendor
+                Add Vendor
                 </p>
               </Link>
             </li>

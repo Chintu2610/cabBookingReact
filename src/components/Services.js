@@ -62,6 +62,12 @@ const Wrapper = styled.section`
     text-align: center;
     border-radius: 2rem;
     box-shadow: rgba(0, 0, 0, 0.05) 0px 1px 2px 0px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+    &:hover {
+      transform: scale(1.05);
+      box-shadow: rgba(0, 0, 0, 0.2) 0px 8px 24px;
+    }
   }
 
   .services-2 {
@@ -78,6 +84,11 @@ const Wrapper = styled.section`
       align-items: center;
       border-radius: 2rem;
       box-shadow: rgba(0, 0, 0, 0.05) 0px 1px 2px 0px;
+      transition: background-color 0.3s ease;
+
+      &:hover {
+        background-color: ${({ theme }) => theme.colors.primaryLight};
+      }
 
       div {
         display: flex;
@@ -95,13 +106,19 @@ const Wrapper = styled.section`
   }
 
   .icon {
-    /* font-size: rem; */
     width: 8rem;
     height: 8rem;
     padding: 2rem;
     border-radius: 50%;
     background-color: #fff;
     color: #5138ee;
+    transition: transform 0.3s ease, background-color 0.3s ease;
+
+    &:hover {
+      transform: rotate(15deg);
+      background-color: #e0e0ff;
+    }
   }
 `;
+
 export default Services;

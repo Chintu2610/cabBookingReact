@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import About from './About';
 import Home from './Home';
+import { HashRouter as Router } from 'react-router-dom';
 
 import Contact from './Contact';
 import Cart from './Cart';
@@ -47,6 +48,11 @@ import DriverDashboard from './components/DriverDashboard';
 import SubmitRating from './components/SubmitRating';
 import Ratings from './components/Ratings';
 import Earnings from './components/Earnings';
+import SubmitReport from './components/submitReport.js';
+import Reports from './components/Reports.js';
+import { UpdateReport } from './components/updateReport.js';
+
+
 const App = () => {
   const theme = {
     colors: {
@@ -83,11 +89,12 @@ const App = () => {
 
   return (
     <ThemeProvider theme={theme}>
-      <BrowserRouter>
+      <Router>
         <GlobalStyle />
         <Header currentRole={{"userRole":userRole}} />
         <div style={{marginTop:'100px'}}>
         <Routes>
+          <Route path="/urbanwheels" element={Home}></Route>
           <Route path="/" element={<WithFooter showFooter={true} />}>
             <Route index element={<Home />} />
             <Route path="about" element={<About />} />
@@ -102,6 +109,7 @@ const App = () => {
             <Route path="forgot-password" element={<ResetPassword />} />
             <Route path="PasswordReset" element={<PasswordReset />} />
             <Route path="/profile" element={<AdminProfile />} />
+            
             <Route path="EnterOTP" element={<EnterOTP />} />
            
             <Route path="singleproduct/:id" element={<SingleProduct />} />
@@ -119,6 +127,9 @@ const App = () => {
           <Route path="/vendor-dashboard" element={<WithFooter showFooter={false} />}>
             <Route index element={<VendorDashboard />} />
           </Route>
+          <Route path="/reports" element={<WithFooter showFooter={false} />}>
+            <Route index element={<Reports />} />
+          </Route>
           <Route path="/driver-dashboard" element={<WithFooter showFooter={false} />}>
             <Route index element={<DriverDashboard />} />
           </Route>
@@ -128,8 +139,14 @@ const App = () => {
           <Route path="/submit-rating" element={<WithFooter showFooter={false} />}>
             <Route index element={<SubmitRating />} />
           </Route>
+          <Route path="/submit-report" element={<WithFooter showFooter={false} />}>
+            <Route index element={<SubmitReport />} />
+          </Route>
           <Route path="/earnings" element={<WithFooter showFooter={false} />}>
           <Route  index element={<Earnings />} />
+          </Route>
+          <Route path="/update-report/:reportId" element={<WithFooter showFooter={false} />}>
+          <Route  index element={<UpdateReport />} />
           </Route>
           <Route path="/booking-history-customer" element={<WithFooter showFooter={false} />}>
             <Route index element={<BookingHistoryCustomer />} />
@@ -155,7 +172,7 @@ const App = () => {
           <Route path="*" element={<ErrorPage />} />
         </Routes>
         </div>
-      </BrowserRouter>
+      </Router>
     </ThemeProvider>
   );
 };

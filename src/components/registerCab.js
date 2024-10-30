@@ -4,6 +4,7 @@ import * as yup from "yup";
 import { useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css"; // Import Bootstrap CSS
 import { useCookies } from "react-cookie";
+import { BASE_URL } from '../config'; // Adjust path based on file location
 
 
 export function CabRegister() {
@@ -62,7 +63,7 @@ export function CabRegister() {
               formData.append("file", values.cabImage); // Append the file
             }
 
-            const response = await fetch("http://185.199.52.133:1996/cab/register", {
+            const response = await fetch(`${BASE_URL}/cab/register`, {
               method: "POST",
               body: formData,
             });

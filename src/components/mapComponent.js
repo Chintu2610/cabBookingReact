@@ -21,6 +21,7 @@ const MapComponent = ({ onLocationSelect }) => {
   const [map, setMap] = useState(null);
   const [markerPosition, setMarkerPosition] = useState(center);
   const [autocomplete, setAutocomplete] = useState(null);
+  const [searchInputValue, setSearchInputValue] = useState(''); // State for search input value
 
   // Function to get address from latitude and longitude using Geocoding API
   const getAddressFromLatLng = async (lat, lng) => {
@@ -39,6 +40,29 @@ const MapComponent = ({ onLocationSelect }) => {
     }
   };
 
+  // Get current location
+  const getCurrentLocation = useCallback(() => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        async (position) => {
+          const { latitude, longitude } = position.coords;
+          const latLng = { lat: latitude, lng: longitude };
+          setMarkerPosition(latLng);
+          map.panTo(latLng);
+
+          const address = await getAddressFromLatLng(latitude, longitude);
+          setSearchInputValue(address); // Update the input value with the address
+          onLocationSelect(address);
+        },
+        (error) => {
+          console.error('Error fetching current location: ', error);
+        }
+      );
+    } else {
+      console.log('Geolocation is not supported by this browser.');
+    }
+  }, [map, onLocationSelect]);
+
   const onMapClick = useCallback(
     async (event) => {
       const lat = event.latLng.lat();
@@ -46,6 +70,7 @@ const MapComponent = ({ onLocationSelect }) => {
       setMarkerPosition({ lat, lng });
 
       const address = await getAddressFromLatLng(lat, lng);
+      setSearchInputValue(address); // Update the input value with the clicked location's address
       onLocationSelect(address);
     },
     [onLocationSelect]
@@ -75,6 +100,7 @@ const MapComponent = ({ onLocationSelect }) => {
         map.panTo({ lat, lng });
 
         const address = await getAddressFromLatLng(lat, lng);
+        setSearchInputValue(address); // Update the input value with the selected place
         onLocationSelect(address);
       }
     }
@@ -82,10 +108,7 @@ const MapComponent = ({ onLocationSelect }) => {
 
   return isLoaded ? (
     <div style={{ marginTop: '100px' }}>
-      <Autocomplete
-        onLoad={onLoadAutocomplete}
-        onPlaceChanged={onPlaceChanged}
-      >
+      <Autocomplete onLoad={onLoadAutocomplete} onPlaceChanged={onPlaceChanged}>
         <input
           type="text"
           placeholder="Search for a location"
@@ -96,8 +119,26 @@ const MapComponent = ({ onLocationSelect }) => {
             fontSize: '16px',
             marginBottom: '10px',
           }}
+          value={searchInputValue} // Bind the input to the searchInputValue state
+          onChange={(e) => setSearchInputValue(e.target.value)} // Update the state when the user types
         />
       </Autocomplete>
+
+      {/* Current Location Button */}
+      <button
+        onClick={getCurrentLocation}
+        style={{
+          marginBottom: '10px',
+          padding: '10px',
+          backgroundColor: '#4285F4',
+          color: 'white',
+          border: 'none',
+          borderRadius: '5px',
+          cursor: 'pointer',
+        }}
+      >
+        Get Current Location
+      </button>
 
       <GoogleMap
         mapContainerStyle={containerStyle}

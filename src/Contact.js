@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useState } from "react";
 import styled from "styled-components";
+import { BASE_URL } from './config'; // Adjust path based on file location
 
 const Contact = () => {
   // State for handling form data and errors
@@ -26,7 +27,7 @@ const Contact = () => {
     try {
       // Send form data to the server using axios
       const response = await axios.post(
-        `http://185.199.52.133:1996/email/contact`,
+        `${BASE_URL}/email/contact`,
         formData,
         {
           headers: {

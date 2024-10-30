@@ -2,37 +2,40 @@ import React, { useEffect, useState } from 'react';
 import { useCookies } from 'react-cookie';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Form, Button, Container, Row, Col, Alert } from 'react-bootstrap';
+import { FaStar, FaRegStar } from 'react-icons/fa'; // Import star icons
+import { BASE_URL } from '../config'; // Adjust path based on file location
+
 function SubmitRating() {
   const [cookies] = useCookies();
-  const [rating, setRating] = useState('');
+  const [rating, setRating] = useState(0); // Set default rating to 0
+  const [hoverRating, setHoverRating] = useState(0); // State to track hover rating
   const [feedBack, setFeedback] = useState('');
   const [alertMessage, setAlertMessage] = useState('');
   const location = useLocation();
   const navigate = useNavigate();
   const tripBookingId = location.state.tripBookingId;
-    const driverId=location.state.driverId;
-  useEffect(()=>{
-      if(cookies.uuid===null || cookies.uuid===undefined)
-      {
-        navigate('/login');
-      }
-  }
-  ,[]);
-  
+  const driverId = location.state.driverId;
+
+  useEffect(() => {
+    if (cookies.uuid === null || cookies.uuid === undefined) {
+      navigate('/login');
+    }
+  }, [cookies.uuid, navigate]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const uuid = cookies.uuid;
       const response = await fetch(
-        `http://185.199.52.133:1996/tripBooking/submitRating?uuid=${uuid}`,
+        `${BASE_URL}/tripBooking/submitRating?uuid=${uuid}`,
         {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            tripBookingId,  
-            driverId,      
+            tripBookingId,
+            driverId,
             rating,
             feedBack,
           }),
@@ -49,6 +52,7 @@ function SubmitRating() {
       setAlertMessage('An error occurred while submitting the rating.');
     }
   };
+
   return (
     <Container>
       <Row className="my-4">
@@ -59,7 +63,9 @@ function SubmitRating() {
       {alertMessage && (
         <Row className="my-3">
           <Col md={12}>
-            <Alert variant={alertMessage.startsWith('Failed') ? 'danger' : 'success'}>
+            <Alert
+              variant={alertMessage.startsWith('Failed') ? 'danger' : 'success'}
+            >
               {alertMessage}
             </Alert>
           </Col>
@@ -70,19 +76,19 @@ function SubmitRating() {
           <Form onSubmit={handleSubmit}>
             <Form.Group controlId="rating">
               <Form.Label>Rating</Form.Label>
-              <Form.Control
-                as="select"
-                value={rating}
-                onChange={(e) => setRating(e.target.value)}
-                required
-              >
-                <option value="">Select Rating</option>
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-              </Form.Control>
+              <div className="d-flex">
+                {[1, 2, 3, 4, 5].map((star) => (
+                  <span
+                    key={star}
+                    onClick={() => setRating(star)} // Set rating on click
+                    onMouseEnter={() => setHoverRating(star)} // Show filled stars on hover
+                    onMouseLeave={() => setHoverRating(0)} // Reset hover state when not hovering
+                    style={{ cursor: 'pointer', fontSize: '2rem', color: '#FFD700' }}
+                  >
+                    {star <= (hoverRating || rating) ? <FaStar /> : <FaRegStar />}
+                  </span>
+                ))}
+              </div>
             </Form.Group>
 
             <Form.Group controlId="feedback" className="mt-3">

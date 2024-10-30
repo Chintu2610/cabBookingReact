@@ -2,8 +2,9 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
+import { BASE_URL } from '../config'; // Adjust path based on file location
 
-const EnterOTP = () => {
+const  EnterOTP = () => {
   const [cookies, setCookie, removeCookie] = useCookies();
   const [enteredOtp, setEnteredOtp] = useState('');
   const [error, setError] = useState('');
@@ -17,7 +18,7 @@ const EnterOTP = () => {
   const handleOtpSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(`http://185.199.52.133:1996/ValidateOtp?otp=${enteredOtp}&email=${email}`);
+      const response = await axios.post(`${BASE_URL}/ValidateOtp?otp=${enteredOtp}&email=${email}`);
       
       if (response.status === 200) {
         setSuccess('OTP verified. You can now reset your password.');

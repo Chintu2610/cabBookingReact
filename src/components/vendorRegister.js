@@ -5,33 +5,24 @@ import { useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useCookies } from "react-cookie";
 import { FaEye, FaEyeSlash } from "react-icons/fa"; // Import the eye icons
+import { BASE_URL } from "../config"; // Adjust path based on file location
+import styled from "styled-components";
 
 export function VendorRegister() {
   const navigate = useNavigate();
   const [cookie] = useCookies();
   const [showPassword, setShowPassword] = useState(false); // State to manage password visibility
-  const [cookies] = useCookies();
-  useEffect(() => {
-    if (!cookies.uuid) {
-      navigate("/login");
-    }
-  }, [cookies.uuid, navigate]);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+  const toggleConfirmPasswordVisibility = () => {
+    setShowConfirmPassword(!showConfirmPassword);
+  };
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
-  var redirect="";
-  if(cookies.currRole==="Driver"){
-   redirect="/driver-dashboard";
-  }else if(cookies.currRole==="Admin")
-  {
-    redirect="/admin-dashboard";
-  }else if(cookies.currRole==="Customer")
-    {
-      redirect="/";
-    }else
-    {
-    redirect="/vendor-dashboard";
-  }
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   return (
     <div className="container" style={{ marginTop: "100px" }}>
       <Formik
@@ -42,12 +33,14 @@ export function VendorRegister() {
           mobileNumber: "",
           email: "",
           password: "",
+          confirmPassword: "",
           userRole: "Vendor",
+          gender: "",
         }}
         onSubmit={async (values) => {
           try {
             const response = await fetch(
-              `http://185.199.52.133:1996/admin/register/${cookie.currRole}`,
+              `${BASE_URL}/admin/register/${cookie.currRole}`,
               {
                 method: "POST",
                 headers: {
@@ -71,17 +64,25 @@ export function VendorRegister() {
           userName: yup
             .string()
             .required("Username is required")
-            .min(4, "Minimum length should be 4")
-            .max(10, "Length should not exceed 10"),
+            .min(4, "Minimum length should be 4"),
+
+          firstName: yup.string().required("Username is required"),
+          lastName: yup.string().required("Username is required"),
           mobileNumber: yup
             .string() // Use .string() since Mobile is a text input
             .required("Mobile number is required"),
           email: yup
             .string()
             .required("Email is required")
-            .email("Invalid email format"),
+            .email("Invalid email format")
+            .matches(
+              /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+              "Email must include a valid domain"
+            )
+            .matches(/\.com$/, "Email must end with .com"), // Ensure it ends with .com
           address: yup.string().required("Address is required"),
           userRole: yup.string(),
+          gender: yup.string().required("Gender is required"),
           password: yup
             .string()
             .required("Password is required")
@@ -99,25 +100,32 @@ export function VendorRegister() {
               /[\W_]/,
               "Password must contain at least one special character"
             ),
+          confirmPassword: yup
+            .string()
+            .required("Confirm Password is required")
+            .oneOf([yup.ref("password"), null], "Passwords must match"),
         })}
       >
         {({ isSubmitting }) => (
-          
           <Form>
             <div className="container" style={{ marginTop: "150px" }}>
-            <div className="col-12">
-                    <ol className="breadcrumb float-sm-right">
-                        <li className="breadcrumb-item"><a href={redirect}>Home</a></li>
-                        <li className="breadcrumb-item active">Register Vendor</li>
-                    </ol>
-                </div>
               <div className="row justify-content-center">
                 <div className="col-md-5">
                   <div className="card">
                     <div className="card-body">
-                      <h5 className="text-center mb-4">Register a vendor</h5>
+                      <StyledHeader>
+                        <h4 className="text-center mb-4">
+                          Vendor Registration
+                        </h4>
+                        <h5 className="text-center mb-4">
+                          Be your own boss with UrbanWheels
+                        </h5>
+                      </StyledHeader>
                       <div className="mb-3 align-items-center">
-                        <label htmlFor="userName" className="form-label">
+                        <label
+                          htmlFor="userName"
+                          className="form-label fs-4 fw-bold text-dark"
+                        >
                           User Name
                         </label>
                         <Field
@@ -131,8 +139,47 @@ export function VendorRegister() {
                           className="text-danger"
                         />
                       </div>
+                      <div className="mb-3 align-items-center">
+                        <label
+                          htmlFor="userName"
+                          className="form-label fs-4 fw-bold text-dark"
+                        >
+                          First Name
+                        </label>
+                        <Field
+                          type="text"
+                          name="firstName"
+                          className="form-control"
+                        />
+                        <ErrorMessage
+                          name="firstName"
+                          component="div"
+                          className="text-danger"
+                        />
+                      </div>
+                      <div className="mb-3 align-items-center">
+                        <label
+                          htmlFor="userName"
+                          className="form-label fs-4 fw-bold text-dark"
+                        >
+                          Last Name
+                        </label>
+                        <Field
+                          type="text"
+                          name="lastName"
+                          className="form-control"
+                        />
+                        <ErrorMessage
+                          name="lastName"
+                          component="div"
+                          className="text-danger"
+                        />
+                      </div>
                       <div className="mb-3">
-                        <label htmlFor="password" className="form-label">
+                        <label
+                          htmlFor="password"
+                          className="form-label fs-4 fw-bold text-dark"
+                        >
                           Password
                         </label>
                         <div className="input-group">
@@ -156,7 +203,37 @@ export function VendorRegister() {
                         />
                       </div>
                       <div className="mb-3">
-                        <label htmlFor="address" className="form-label">
+                        <label
+                          htmlFor="confirmPassword"
+                          className="form-label fs-4 fw-bold text-dark"
+                        >
+                          Confirm Password
+                        </label>
+                        <div className="input-group">
+                          <Field
+                            type={showConfirmPassword ? "text" : "password"}
+                            name="confirmPassword"
+                            className="form-control"
+                          />
+                          <button
+                            type="button"
+                            className="btn btn-outline-secondary"
+                            onClick={toggleConfirmPasswordVisibility}
+                          >
+                            {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
+                          </button>
+                        </div>
+                        <ErrorMessage
+                          name="confirmPassword"
+                          component="div"
+                          className="text-danger"
+                        />
+                      </div>
+                      <div className="mb-3">
+                        <label
+                          htmlFor="address"
+                          className="form-label fs-4 fw-bold text-dark"
+                        >
                           Address
                         </label>
                         <Field
@@ -171,7 +248,10 @@ export function VendorRegister() {
                         />
                       </div>
                       <div className="mb-3">
-                        <label htmlFor="mobileNumber" className="form-label">
+                        <label
+                          htmlFor="mobileNumber"
+                          className="form-label fs-4 fw-bold text-dark"
+                        >
                           Mobile
                         </label>
                         <Field
@@ -188,7 +268,10 @@ export function VendorRegister() {
                         />
                       </div>
                       <div className="mb-3">
-                        <label htmlFor="email" className="form-label">
+                        <label
+                          htmlFor="email"
+                          className="form-label fs-4 fw-bold text-dark"
+                        >
                           Email
                         </label>
                         <Field
@@ -198,6 +281,29 @@ export function VendorRegister() {
                         />
                         <ErrorMessage
                           name="email"
+                          component="div"
+                          className="text-danger"
+                        />
+                      </div>
+                      <div className="mb-3">
+                        <label
+                          htmlFor="cabCurrStatus"
+                          className="form-label fs-4 fw-bold text-dark"
+                        >
+                          Gender
+                        </label>
+                        <Field
+                          name="gender"
+                          as="select"
+                          className="form-control"
+                        >
+                          <option value="">Select Gender</option>
+                          <option value="male">Male</option>
+                          <option value="female">Female</option>
+                          <option value="others">Others</option>
+                        </Field>
+                        <ErrorMessage
+                          name="gender"
                           component="div"
                           className="text-danger"
                         />
@@ -218,6 +324,7 @@ export function VendorRegister() {
                       <button
                         type="submit"
                         className="btn btn-primary form-control"
+                        style={{ backgroundColor: "blue" }}
                         disabled={isSubmitting}
                       >
                         Register
@@ -233,3 +340,25 @@ export function VendorRegister() {
     </div>
   );
 }
+const StyledHeader = styled.div`
+  h4 {
+    font-size: 2.4rem;
+    font-weight: 700;
+    color: #2d2d2d;
+    margin-bottom: 1.5rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    text-align: center;
+  }
+
+  h5 {
+    font-size: 1.8rem;
+    font-weight: 500;
+    color: #5a5a5a;
+    margin-bottom: 2rem;
+    text-align: center;
+    font-style: italic;
+  }
+`;
+
+export default StyledHeader;

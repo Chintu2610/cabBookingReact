@@ -5,6 +5,7 @@ import styled from "styled-components";
 import { useCookies } from "react-cookie";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { BASE_URL } from '../config'; // Adjust path based on file location
 
 function Ratings() {
  const navigate=useNavigate();
@@ -18,7 +19,7 @@ useEffect(() => {
   async function deleteCustomer(customerId) {
     try {
       const response = await axios.delete(
-        `http://185.199.52.133:1996/customer/delete?uuid=${cookie.uuid}&customerId=${customerId}`,
+        `${BASE_URL}/customer/delete?uuid=${cookie.uuid}&customerId=${customerId}`,
         {
           headers: {
             "Content-Type": "application/json"
@@ -73,7 +74,7 @@ useEffect(() => {
       try {
         const uuid=cookie.uuid;
         const driveId=cookie.currUserId;
-        const response = await axios.get(`http://185.199.52.133:1996/tripBooking/viewRatingDriverWise?driverId=${driveId}&uuid=${uuid}`);
+        const response = await axios.get(`${BASE_URL}/tripBooking/viewRatingDriverWise?driverId=${driveId}&uuid=${uuid}`);
         if (response.status===200) {
           const data = response.data;
           setOriginalRecords(data);
