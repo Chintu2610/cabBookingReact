@@ -3,6 +3,8 @@ import DataTable from "react-data-table-component";
 import Sidebar from "../Sidebar/sidebar";
 import { useCookies } from "react-cookie";
 import { useNavigate } from "react-router-dom";
+import { BASE_URL } from '../config'; // Adjust path based on file location
+
 function BookingHistory() {
   const [cookies] = useCookies();
   const navigate = useNavigate();
@@ -121,13 +123,13 @@ useEffect(() => {
       try {
         debugger;
         const uuid = cookies.uuid;
-        var URL=`http://185.199.52.133:1996/admin/getAllTrips?uuid=${uuid}`;
+        var URL=`${BASE_URL}/admin/getAllTrips?uuid=${uuid}`;
         if(cookies.currRole==='Driver')
         {
-          URL=`http://185.199.52.133:1996/admin/getTripsDriverwise?driverId=${cookies.currUserId}&uuid=${uuid}`;
+          URL=`${BASE_URL}/admin/getTripsDriverwise?driverId=${cookies.currUserId}&uuid=${uuid}`;
         }else  if(cookies.currRole==='Vendor')
           {
-            URL=`http://185.199.52.133:1996/admin/getTripsVendorwise?vendorId=${cookies.currUserId}&uuid=${uuid}`;
+            URL=`${BASE_URL}/admin/getTripsVendorwise?vendorId=${cookies.currUserId}&uuid=${uuid}`;
           }
         const response = await fetch(URL);
         if (response.ok) {
@@ -162,7 +164,7 @@ useEffect(() => {
     try {
       const uuid = cookies.uuid;
       const response = await fetch(
-        `http://185.199.52.133:1996/tripBooking/markCompleteTrip?TripBookingId=${tripBookingId}&uuid=${uuid}`
+        `${BASE_URL}/tripBooking/markCompleteTrip?TripBookingId=${tripBookingId}&uuid=${uuid}`
       );
       if (response.ok) {
         const responseText = await response.text(); // Get the response as text
@@ -181,7 +183,7 @@ useEffect(() => {
     try {
       const uuid = cookies.uuid;
       const response = await fetch(
-        `http://185.199.52.133:1996/tripBooking/handleAcceptDeclineTrip?TripBookingId=${tripBookingId}&status=${status}&uuid=${uuid}`
+        `${BASE_URL}/tripBooking/handleAcceptDeclineTrip?TripBookingId=${tripBookingId}&status=${status}&uuid=${uuid}`
       );
       if (response.ok) {
         const responseText = await response.text(); // Get the response as text
@@ -196,12 +198,12 @@ useEffect(() => {
   }
   var redirect="";
   if(cookies.currRole==="Driver"){
-   redirect="/driver-dashboard";
+   redirect="/urbanwheels/#/driver-dashboard";
   }else if(cookies.currRole==="Admin")
   {
-    redirect="/admin-dashboard";
+    redirect="/urbanwheels/#/admin-dashboard";
   }else{
-    redirect="/vendor-dashboard";
+    redirect="/urbanwheels/#/vendor-dashboard";
   }
   return (
     <>

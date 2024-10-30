@@ -5,6 +5,8 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import Loader from "./Loader";
 import { useNavigate } from "react-router-dom";
+import { BASE_URL } from '../config'; // Adjust path based on file location
+
 function Earnings() {
   const [cookies] = useCookies();
   const [currentView, setCurrentView] = useState("daily"); // To track the current view
@@ -35,7 +37,7 @@ function Earnings() {
     setError(null);
     try {
       const response = await axios.get(
-        `http://185.199.52.133:1996/driver/GetDriverEarnings`,
+        `${BASE_URL}/driver/GetDriverEarnings`,
         {
           params: {
             driverid: cookies.currUserId,
@@ -58,7 +60,7 @@ function Earnings() {
     setError(null);
     try {
       const response = await axios.get(
-        `http://185.199.52.133:1996/driver/getTransactionDetails`,
+        `${BASE_URL}/driver/getTransactionDetails`,
         {
           params: {
             driverid: cookies.currUserId,
@@ -83,9 +85,9 @@ function Earnings() {
 
   // Redirect path based on user role
   const dashboardRedirects = {
-    Driver: "/driver-dashboard",
-    Admin: "/admin-dashboard",
-    Vendor: "/vendor-dashboard",
+    Driver: "/urbanwheels/#/driver-dashboard",
+    Admin: "/urbanwheels/#/admin-dashboard",
+    Vendor: "/urbanwheels/#/vendor-dashboard",
   };
   const redirectPath = dashboardRedirects[cookies.currRole] || "/";
 

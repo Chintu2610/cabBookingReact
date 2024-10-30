@@ -6,6 +6,7 @@ import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 import axios from "axios";
+import { BASE_URL } from '../config'; // Adjust path based on file location
 
 export function CabUpdate() {
   const params = useParams();
@@ -13,16 +14,20 @@ export function CabUpdate() {
   const navigate = useNavigate();
   const [cabDetails, setCabDetails] = useState(null);
   const [imagePreview, setImagePreview] = useState(null); // State for image preview
-  const baseurl = "http://localhost:3000/images/cabImages/";
+  const [existingImage, setExistingImage] = useState(null); // State for existing image name
+
+  //const baseurl = "http://localhost:3000/images/cabImages/";
+  const baseurl=`${process.env.PUBLIC_URL}/images/cabImages/`;
   useEffect(() => {
     const fetchCabDetails = async () => {
       try {
         const response = await axios.get(
-          `http://185.199.52.133:1996/cab/getSingleCabDetails/${params.cabId}`
+          `${BASE_URL}/cab/getSingleCabDetails/${params.cabId}`
         );
         if (response.data) {
           setCabDetails(response.data);
           setImagePreview(`${baseurl}${response.data.cabImage}`);
+          setExistingImage(response.data.cabImage); // Set existing image name
         } else {
           alert("Failed to fetch cab details. Please try again.");
         }
@@ -70,13 +75,16 @@ export function CabUpdate() {
             formData.append("area",values.area);
             formData.append("manufacturingYear",values.manufacturingYear);
             // If you want to add file upload, uncomment below line and ensure `carImage` is handled in your form
-            if (values.carImage) {
-              formData.append("carImage", values.carImage); // Assuming values.carImage is a file object
+            if (values.carImage && typeof values.carImage === "object") {
+              formData.append("carImage", values.carImage); // New image selected
+            } else {
+              formData.append("fileName", existingImage); // Retain existing image
             }
+
             formData.append("uuid", cookie.uuid);
 
             const response = await axios.put(
-              "http://185.199.52.133:1996/cab/update",
+              `${BASE_URL}/cab/update`,
               formData, // Passing the form data
               {
                 headers: {
@@ -87,6 +95,7 @@ export function CabUpdate() {
             if (response.status === 200) {
               alert("Cab updated successfully.");
               navigate("/cabs");
+              window.location.reload();
             } else {
               alert("Update failed. Please try again.");
             }
@@ -315,6 +324,12 @@ export function CabUpdate() {
                           className="text-danger"
                         />
                       </div>
+                      {/* Show the existing image name if no new image is selected */}
+                      {existingImage && !imagePreview && (
+                        <div className="mb-3">
+                          <label>Existing Image: {existingImage}</label>
+                        </div>
+                      )}
                       {/* Display existing or new image preview */}
                       {imagePreview && (
                         <div className="mb-3 ">

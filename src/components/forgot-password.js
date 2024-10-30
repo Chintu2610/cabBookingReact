@@ -1,18 +1,20 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import '../styles/forgotpassword.css'; 
+import { Link, useNavigate } from 'react-router-dom';
+import { BASE_URL } from '../config'; // Adjust path based on file location
 
 const ResetPassword = () => {
   const [email, setEmail] = useState('');
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
-
+  const navigate=useNavigate();
   const handleEmailSubmit = async (e) => {
     e.preventDefault(); // Prevents the default form submission behavior (page reload)
     
     try {
       // Sends a POST request to the API endpoint with the email address
-      const response = await axios.post(`http://185.199.52.133:1996/PasswordReset?toEmail=${email}`);
+      const response = await axios.post(`${BASE_URL}/PasswordReset?toEmail=${email}`);
       
       // Checks if the response status is 200 (OK)
       if (response.status === 200) {
@@ -20,7 +22,9 @@ const ResetPassword = () => {
         setError(''); // Clears any previous error messages
         // Redirect to EnterOTP page with email parameter
         setTimeout(() => {
-          window.location.href = `/EnterOTP?email=${encodeURIComponent(email)}`;
+          //<Link className="text-danger" to={`/EnterOTP?email=${encodeURIComponent(email)}`}>Forgot password?</Link>
+         // window.location.href = `http://185.199.52.133:8080/urbanwheels/#/EnterOTP?email=${encodeURIComponent(email)}`;
+          navigate(`/EnterOTP?email=${encodeURIComponent(email)}`);
         }, 2000); // Redirects after 2 seconds
       } else {
         setError('Email not found'); // Sets an error message if the email is not found

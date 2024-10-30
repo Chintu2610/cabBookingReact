@@ -4,7 +4,8 @@ import styled from "styled-components";
 import { useCookies } from 'react-cookie';
 import { Dropdown } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
-
+import { BASE_URL } from '../config'; // Adjust path based on file location
+import { FiMenu, FiX } from "react-icons/fi"; 
 const Nav = ({ role }) => {
   const [cookies, , removeCookie] = useCookies();
   const navigate = useNavigate();
@@ -13,7 +14,7 @@ const Nav = ({ role }) => {
     const uuId = cookies.uuid;
     if (uuId) {
       console.log(uuId);
-      const url = `http://185.199.52.133:1996/Userlogin/logout?uuid=${uuId}`;
+      const url = `${BASE_URL}/Userlogin/logout?uuid=${uuId}`;
 
       fetch(url, {
         method: "GET",
@@ -49,7 +50,7 @@ const Nav = ({ role }) => {
 
   const [menuIcon, setMenuIcon] = useState(false);
 
-  const Nav = styled.nav`
+  const NavContainer = styled.nav`
     .navbar-lists {
       display: flex;
       gap: 4.8rem;
@@ -58,17 +59,12 @@ const Nav = ({ role }) => {
       .navbar-link {
         &:link,
         &:visited {
-          display: inline-block;
           text-decoration: none;
           font-size: 1.8rem;
           font-weight: 500;
-          text-transform: uppercase;
           color: ${({ theme }) => theme.colors.black};
-          transition: color 0.3s linear;
         }
-
-        &:hover,
-        &:active {
+        &:hover {
           color: ${({ theme }) => theme.colors.helper};
         }
       }
@@ -81,55 +77,43 @@ const Nav = ({ role }) => {
       border: none;
     }
 
+    .mobile-nav-icon {
+      font-size: 3rem;
+      color: ${({ theme }) => theme.colors.black};
+    }
+
     @media (max-width: ${({ theme }) => theme.media.mobile}) {
       .mobile-navbar-btn {
         display: inline-block;
         z-index: 9999;
-        border: ${({ theme }) => theme.colors.black};
-
-        .mobile-nav-icon {
-          font-size: 4.2rem;
-          color: ${({ theme }) => theme.colors.black};
-        }
       }
 
       .navbar-lists {
-        width: 100vw;
-        height: 100vh;
-        position: absolute;
-        top: 0;
-        left: 0;
-        background-color: #fff;
-
         display: flex;
+        flex-direction: column;
         justify-content: center;
         align-items: center;
-        flex-direction: column;
-
-        visibility: hidden;
-        opacity: 0;
-        transform: translateX(100%);
-        transition: all 3s linear;
-      }
-
-      .active .navbar-lists {
-        visibility: visible;
-        opacity: 1;
-        transform: translateX(0);
-        z-index: 999;
-        transform-origin: right;
-        transition: all 3s linear;
-
-        .navbar-link {
-          font-size: 4.2rem;
-        }
+        gap: 2rem;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100vh;
+        background-color: ${({ theme }) => theme.colors.bg};
+        visibility: ${menuIcon ? "visible" : "hidden"};
+        opacity: ${menuIcon ? "1" : "0"};
+        transform: translateX(${menuIcon ? "0" : "100%"});
+        transition: all 0.3s ease-in-out;
       }
     }
   `;
 
   return (
-    <Nav>
+    <NavContainer>
       <div className={menuIcon ? "navbar active" : "navbar"}>
+      <button className="mobile-navbar-btn" onClick={() => setMenuIcon(!menuIcon)}>
+          {menuIcon ? <FiX className="mobile-nav-icon" /> : <FiMenu className="mobile-nav-icon" />}
+        </button>
         <ul className="navbar-lists">
           <li>
             <NavLink
@@ -239,6 +223,13 @@ const Nav = ({ role }) => {
                       Profile
                     </Dropdown.Item>
                     <Dropdown.Item
+                      as={NavLink}
+                      to={`/PasswordReset`}
+                      onClick={() => setMenuIcon(false)}
+                    >
+                      Reset password
+                    </Dropdown.Item>
+                    <Dropdown.Item
                       onClick={() => {
                         setMenuIcon(false);
                         handleLogout(); // Call handleLogout function
@@ -279,6 +270,13 @@ const Nav = ({ role }) => {
                       onClick={() => setMenuIcon(false)}
                     >
                       Profile
+                    </Dropdown.Item>
+                    <Dropdown.Item
+                      as={NavLink}
+                      to={`/PasswordReset`}
+                      onClick={() => setMenuIcon(false)}
+                    >
+                      Reset password
                     </Dropdown.Item>
                     <Dropdown.Item
                       onClick={() => {
@@ -323,6 +321,13 @@ const Nav = ({ role }) => {
                       Profile
                     </Dropdown.Item>
                     <Dropdown.Item
+                      as={NavLink}
+                      to={`/PasswordReset`}
+                      onClick={() => setMenuIcon(false)}
+                    >
+                      Reset password
+                    </Dropdown.Item>
+                    <Dropdown.Item
                       onClick={() => {
                         setMenuIcon(false);
                         handleLogout(); // Call handleLogout function
@@ -349,7 +354,7 @@ const Nav = ({ role }) => {
           )}
         </ul>
       </div>
-    </Nav>
+    </NavContainer>
   );
 };
 

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import ferariImage from './images/cabImages/ferari.jpeg'; // Renamed the imported image for clarity
+import { BASE_URL } from '../config'; // Adjust path based on file location
 
 
 const Register = () => {
@@ -10,7 +11,9 @@ const Register = () => {
     address: '',
     mobileNumber: '',
     email: '',
-    userRole: 'Customer'
+    userRole: 'Customer',
+    firstName:'',
+    lastName:'',
   });
   const navigate = useNavigate();
 
@@ -25,7 +28,7 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch('http://185.199.52.133:1996/customer/register', {
+      const response = await fetch(`${BASE_URL}/customer/register`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -69,6 +72,30 @@ const Register = () => {
                     className="form-control"
                     id="userName"
                     name="userName"
+                    value={formData.userName}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
+                <div className="mb-3">
+                  <label htmlFor="userName" className="form-label">First Name</label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="firstName"
+                    name="firstName"
+                    value={formData.userName}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
+                <div className="mb-3">
+                  <label htmlFor="userName" className="form-label">Last Name</label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="lastName"
+                    name="lastName"
                     value={formData.userName}
                     onChange={handleChange}
                     required

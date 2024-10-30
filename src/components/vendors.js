@@ -5,6 +5,8 @@ import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useCookies } from "react-cookie";
+import { BASE_URL } from '../config'; // Adjust path based on file location
+
 function Vendors() {
   const navigate=useNavigate();
   const [cookies]=useCookies();
@@ -19,27 +21,54 @@ useEffect(() => {
       navigate(`/updateVendor/${adminId}`);
   }
   async function deleteVendor(driverId) {
-    try {
-      const response = await axios.delete(
-        `http://185.199.52.133:1996/vendor/delete?uuid=${cookies.uuid}&vendorId=${driverId}`,
-        {
-         
-          headers: {
-            "Content-Type": "application/json"
+    const isConfirmed = window.confirm("Are you sure you want to delete this vendor?");
+  
+    if (isConfirmed) {
+      try {
+        const response = await axios.delete(
+          `${BASE_URL}/vendor/delete?uuid=${cookies.uuid}&vendorId=${driverId}`,
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
           }
+        );
+        if (response.status === 200) {
+          alert("Vendor deleted successfully.");
+          window.location.reload();
+        } else {
+          alert(await response.text());
         }
-      );
-      if (response.status === 200) {
-        alert("vendor deleted successfully.");
-        window.location.reload();
-      } else {
-        alert(response.text());
+      } catch (error) {
+        console.error("Error:", error);
       }
-    } catch (error) {
-      console.error("Error:", error);
-    
+    } else {
+      alert("Deletion canceled.");
     }
   }
+  async function approveVendor(vendorId) {
+    
+   
+      try {
+        const response = await axios.put(
+          `${BASE_URL}/vendor/approve?uuid=${cookies.uuid}&vendorId=${vendorId}`,
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        if (response.status === 200) {
+          alert("Vendor approved successfully.");
+          window.location.reload();
+        } else {
+          alert(await response.text());
+        }
+      } catch (error) {
+        console.error("Error:", error);
+      }
+    } 
+  
   
   const columns = [
    
@@ -81,10 +110,16 @@ useEffect(() => {
         <button className="btn btn-primary me-2"
         onClick={()=>updateVendor(row.adminId)}
         >Update Vendor</button>
-
+        { row.approvalStatus==='approved' &&
         <button className="btn btn-danger"
         onClick={()=>deleteVendor(row.adminId)}
         >Delete Vendor</button>
+        }
+        { row.approvalStatus==='pending' &&
+        <button className="btn btn-warning"
+        onClick={()=>approveVendor(row.adminId)}
+        >Approve Vendor</button>
+        }
         </>
       )
     }
@@ -96,7 +131,7 @@ useEffect(() => {
     const fetchData = async () => {
       try {
         const uuid=cookies.uuid;
-        const response = await fetch(`http://185.199.52.133:1996/vendor/AllVendor?uuid=${uuid}`);
+        const response = await fetch(`${BASE_URL}/vendor/AllVendor?uuid=${uuid}`);
         if (response.ok) {
           const data = await response.json();
           setOriginalRecords(data);
@@ -136,12 +171,12 @@ useEffect(() => {
 `;
 var redirect="";
 if(cookies.currRole==="Driver"){
- redirect="/driver-dashboard";
+ redirect="/urbanwheels/#/driver-dashboard";
 }else if(cookies.currRole==="Admin")
 {
-  redirect="/admin-dashboard";
+  redirect="/urbanwheels/#/admin-dashboard";
 }else{
-  redirect="/vendor-dashboard";
+  redirect="/urbanwheels/#/vendor-dashboard";
 }
   return (
     <>
