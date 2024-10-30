@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { NavLink } from "react-router-dom";
 import { Button } from "../styles/Button";
 import { FaDiscord, FaInstagram, FaYoutube } from "react-icons/fa";
+import { BASE_URL } from '../config'; // Adjust path based on file location
 
 
 
@@ -12,7 +13,7 @@ const Footer = () => {
   const handleSubscribe = async (e) => {
     e.preventDefault();
     try {
-      await fetch('http://185.199.52.133:1996/email/subscribe', {
+      await fetch(`${BASE_URL}/email/subscribe`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
@@ -32,13 +33,13 @@ const Footer = () => {
         <section className="contact-short">
           <div className="grid grid-two-column">
             <div>
-              <h3>Ready to get started?</h3>
-              <h3>Talk to us today</h3>
+              <h3>Join Our Network and Grow Your Business.</h3>
+              <h3>Be your own boss with urbanwheels – Attach your cab now</h3>
             </div>
 
             <div>
               <Button className="btn hireme-btn">
-                <NavLink to="/"> Get Started </NavLink>
+                <NavLink to="/register-vendor"> Get Started </NavLink>
               </Button>
             </div>
           </div>

@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { BASE_URL } from '../config'; // Adjust path based on file location
+import { useCookies } from 'react-cookie';
 
 const PasswordReset = () => {
   const [email, setEmail] = useState('');
@@ -8,17 +10,18 @@ const PasswordReset = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
-
+  const navigate=useNavigate();
   const location = useLocation();
-  const queryParams = new URLSearchParams(location.search);
-  const emailFromQuery = queryParams.get('email');
+  const [cookies]=useCookies();
+  // const queryParams = new URLSearchParams(location.search);
+  // const emailFromQuery = queryParams.get('email');
 
   // Set email from query params if available
   React.useEffect(() => {
-    if (emailFromQuery) {
-      setEmail(emailFromQuery);
-    }
-  }, [emailFromQuery]);
+    
+      setEmail(cookies.email);
+    
+  }, []);
 
   const handlePasswordReset = async (e) => {
     e.preventDefault();
@@ -28,13 +31,14 @@ const PasswordReset = () => {
     }
 
     try {
-      const response = await axios.post(`http://185.199.52.133:1996/api/ChangePasswords?email=${email}&newPassword=${newPassword}`);
+      const response = await axios.post(`${BASE_URL}/api/ChangePasswords?email=${email}&newPassword=${newPassword}`);
 
       if (response.status === 200) {
         setSuccess('Password has been successfully reset.');
         setError('');
         setTimeout(() => {
-          window.location.href = '/login';
+          navigate('/login');
+          //window.location.href = '/#/login';
         }, 2000);
       } else {
         setError('Failed to reset password');

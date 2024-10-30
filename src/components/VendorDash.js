@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useCookies } from 'react-cookie';
 import { useNavigate } from 'react-router-dom';
+import { BASE_URL } from '../config'; // Adjust path based on file location
 
 const VendorDash = () => {
   const Navigate=useNavigate();
@@ -25,7 +26,7 @@ const VendorDash = () => {
     try {
       const uuid=cookies.uuid;
      
-      const response = await fetch(`http://185.199.52.133:1996/admin/getCountsForAdminDashboard?uuid=${uuid}`, {
+      const response = await fetch(`${BASE_URL}/admin/getCountsForAdminDashboard?uuid=${uuid}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -82,7 +83,7 @@ const VendorDash = () => {
                 <div className="icon">
                   <i className="ion ion-bag"></i>
                 </div>
-                <a href="/booking-history" className="small-box-footer">More info <i className="fas fa-arrow-circle-right"></i></a>
+                <a href="/urbanwheels/#/booking-history" className="small-box-footer">More info <i className="fas fa-arrow-circle-right"></i></a>
               </div>
             </div>
             <div className="col-lg-3 col-6">
@@ -94,7 +95,7 @@ const VendorDash = () => {
                 <div className="icon">
                   <i className="ion ion-stats-bars"></i>
                 </div>
-                <a href="/cabs" className="small-box-footer">More info <i className="fas fa-arrow-circle-right"></i></a>
+                <a href="/urbanwheels/#/cabs" className="small-box-footer">More info <i className="fas fa-arrow-circle-right"></i></a>
               </div>
             </div>
             <div className="col-lg-3 col-6">
@@ -106,7 +107,7 @@ const VendorDash = () => {
                 <div className="icon">
                   <i className="ion ion-person-add"></i>
                 </div>
-                <a href="/users" className="small-box-footer">More info <i className="fas fa-arrow-circle-right"></i></a>
+                <a href="/urbanwheels/#/users" className="small-box-footer">More info <i className="fas fa-arrow-circle-right"></i></a>
               </div>
             </div>
             <div className="col-lg-3 col-6">
@@ -118,7 +119,7 @@ const VendorDash = () => {
                 <div className="icon">
                   <i className="ion ion-pie-graph"></i>
                 </div>
-                <a href="/drivers" className="small-box-footer">More info <i className="fas fa-arrow-circle-right"></i></a>
+                <a href="/urbanwheels/#/drivers" className="small-box-footer">More info <i className="fas fa-arrow-circle-right"></i></a>
               </div>
             </div>
           </div>
@@ -133,7 +134,7 @@ const VendorDash = () => {
                   <div className="icon">
                     <i className="ion ion-pie-graph"></i>
                   </div>
-                  <a href="/vendors" className="small-box-footer">More info <i className="fas fa-arrow-circle-right"></i></a>
+                  <a href="/urbanwheels/#/vendors" className="small-box-footer">More info <i className="fas fa-arrow-circle-right"></i></a>
                 </div>
               </div>
   

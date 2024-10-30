@@ -10,8 +10,9 @@ import { MdSecurity } from "react-icons/md";
 import { TbTruckDelivery, TbReplace } from "react-icons/tb";
 import Star from "./components/Star";
 import AddToCart from "./components/AddToCart";
+import { BASE_URL } from './config'; // Adjust path based on file location
 
-const API = "http://185.199.52.133:1996/cab/getSingleCabDetails";
+const API = `${BASE_URL}/cab/getSingleCabDetails`;
 
 const SingleProduct = () => {
   const { getSingleProduct, isSingleLoading, singleProduct } =

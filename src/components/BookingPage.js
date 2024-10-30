@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import MapComponent from '../components/mapComponent';
 import { useCookies } from 'react-cookie';
 import { useNavigate, useLocation, useParams } from 'react-router-dom';
+import { BASE_URL } from '../config'; // Adjust path based on file location
 
 const BookingPage = () => {
   const navigate=useNavigate();
@@ -11,6 +12,7 @@ const BookingPage = () => {
   const { cabId } = useParams();
   const [cookies] = useCookies();
   const [pickupLocation, setPickupLocation] = useState('');
+  const [priceValidate, setPriceValidate] = useState('');
   const [dropLocation, setDropLocation] = useState('');
   const [fromDateTime, setFromDateTime] = useState('');
   const [toDateTime, setToDateTime] = useState('');
@@ -54,7 +56,7 @@ const BookingPage = () => {
       try {
         debugger;
         console.log(preferredGender);
-        const response = await fetch(`http://185.199.52.133:1996/tripBooking/BookRequest?cabId=${cabId}&uuid=${cookies.uuid}`, {
+        const response = await fetch(`${BASE_URL}/tripBooking/BookRequest?cabId=${cabId}&uuid=${cookies.uuid}`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -155,7 +157,7 @@ const BookingPage = () => {
             type="button"
             className="btn btn-primary mt-3"
             onClick={handleConfirmBooking}
-            //disabled={!pickupLocation || !fromDateTime || !toDateTime}
+            disabled={!pickupLocation || !fromDateTime || !toDateTime || (price<0)}
           >
             Confirm Booking
           </button>
@@ -164,5 +166,4 @@ const BookingPage = () => {
     </div>
   );
 };
-
 export default BookingPage;

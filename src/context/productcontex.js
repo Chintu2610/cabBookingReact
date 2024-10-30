@@ -2,9 +2,11 @@ import { createContext, useContext, useEffect, useReducer } from "react";
 import axios from "axios";
 import reducer from "../reducer/productReducer";
 import { useCookies } from "react-cookie";
+import { BASE_URL } from '../config'; // Adjust path based on file location
+
 const AppContext = createContext();
 
-const API = "http://185.199.52.133:1996/cab/getAllAvailableCab"; // Ensure the correct protocol
+const API = `${BASE_URL}/cab/getAllAvailableCab`; // Ensure the correct protocol
 
 const initialState = {
   filter_products: [],

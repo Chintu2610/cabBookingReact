@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useCookies } from 'react-cookie';
 import { useNavigate } from 'react-router-dom';
+import { BASE_URL } from '../config'; // Adjust path based on file location
 
 const DriverDash = () => {
   const Navigate=useNavigate();
@@ -20,13 +21,14 @@ const DriverDash = () => {
    noOfCab:0,
    noOfVendors:0,
    total_earnings:0,
+   noOfReports:0,
   });
   const fetchData = async () => {
     
     try {
       const uuid=cookies.uuid;
      
-      const response = await fetch(`http://185.199.52.133:1996/admin/getCountsForAdminDashboard?uuid=${uuid}`, {
+      const response = await fetch(`${BASE_URL}/admin/getCountsForAdminDashboard?uuid=${uuid}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -42,6 +44,7 @@ const DriverDash = () => {
           noOfDrivers: data.noOfDrivers,
           noOfCab:data.noOfCab,
           total_earnings:data.noOfVendors,
+          noOfReports:data.noOfReports,
           });
       } else {
        
@@ -83,7 +86,7 @@ const DriverDash = () => {
                 <div className="icon">
                   <i className="ion ion-bag"></i>
                 </div>
-                <a href="/booking-history" className="small-box-footer">More info <i className="fas fa-arrow-circle-right"></i></a>
+                <a href="/urbanwheels/#/booking-history" className="small-box-footer">More info <i className="fas fa-arrow-circle-right"></i></a>
               </div>
             </div>
             <div className="col-lg-3 col-6">
@@ -95,7 +98,7 @@ const DriverDash = () => {
                 <div className="icon">
                   <i className="ion ion-stats-bars"></i>
                 </div>
-                <a href="/cabs" className="small-box-footer">More info <i className="fas fa-arrow-circle-right"></i></a>
+                <a href="/urbanwheels/#/cabs" className="small-box-footer">More info <i className="fas fa-arrow-circle-right"></i></a>
               </div>
             </div>
             <div className="col-lg-3 col-6">
@@ -107,7 +110,7 @@ const DriverDash = () => {
                 <div className="icon">
                   <i className="ion ion-person-add"></i>
                 </div>
-                <a href="/users" className="small-box-footer">More info <i className="fas fa-arrow-circle-right"></i></a>
+                <a href="/urbanwheels/#/users" className="small-box-footer">More info <i className="fas fa-arrow-circle-right"></i></a>
               </div>
             </div>
             <div className="col-lg-3 col-6">
@@ -119,7 +122,7 @@ const DriverDash = () => {
                 <div className="icon">
                   <i className="ion ion-person-add"></i>
                 </div>
-                <a href="/ratings" className="small-box-footer">More info <i className="fas fa-arrow-circle-right"></i></a>
+                <a href="/urbanwheels/#/ratings" className="small-box-footer">More info <i className="fas fa-arrow-circle-right"></i></a>
               </div>
             </div>
             <div className="col-lg-3 col-6">
@@ -131,10 +134,21 @@ const DriverDash = () => {
                 <div className="icon">
                   <i className="ion ion-person-add"></i>
                 </div>
-                <a href="/earnings" className="small-box-footer">More info <i className="fas fa-arrow-circle-right"></i></a>
+                <a href="/urbanwheels/#/earnings" className="small-box-footer">More info <i className="fas fa-arrow-circle-right"></i></a>
               </div>
             </div>
-           
+            <div className="col-lg-3 col-6">
+                <div className="small-box bg-light">
+                  <div className="inner">
+                    <h3>{countdata.noOfReports}</h3>
+                    <p>Reports/Complains</p>
+                  </div>
+                  <div className="icon">
+                    <i className="ion ion-pie-graph"></i>
+                  </div>
+                  <a href="/urbanwheels/#/reports" className="small-box-footer">More info <i className="fas fa-arrow-circle-right"></i></a>
+                </div>
+              </div>
           </div>
 
           {(cookies.currRole==="Admin") &&
@@ -148,7 +162,7 @@ const DriverDash = () => {
                   <div className="icon">
                     <i className="ion ion-pie-graph"></i>
                   </div>
-                  <a href="/vendors" className="small-box-footer">More info <i className="fas fa-arrow-circle-right"></i></a>
+                  <a href="/urbanwheels/#/vendors" className="small-box-footer">More info <i className="fas fa-arrow-circle-right"></i></a>
                 </div>
               </div>
   

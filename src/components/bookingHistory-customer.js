@@ -5,6 +5,7 @@ import { Button, Container, Row, Col, Form, Alert } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { BASE_URL } from "../config"; // Adjust path based on file location
 
 function BookingHistoryCustomer() {
   const [cookies] = useCookies();
@@ -15,12 +16,12 @@ function BookingHistoryCustomer() {
   const [toDate, setToDate] = useState(null);
   const [isDatePickerOpen, setIsDatePickerOpen] = useState(false);
   const Navigate = useNavigate();
-  
-useEffect(() => {
-  if (!cookies.uuid) {
-    Navigate("/login");
-  }
-}, [cookies.uuid, Navigate]);
+
+  useEffect(() => {
+    if (!cookies.uuid) {
+      Navigate("/login");
+    }
+  }, [cookies.uuid, Navigate]);
 
   const columns = [
     {
@@ -43,7 +44,7 @@ useEffect(() => {
       selector: (row) => row.price,
       sortable: true,
     },
-    
+
     {
       name: "Current Status",
       selector: (row) => row.currStatus,
@@ -54,19 +55,7 @@ useEffect(() => {
       selector: (row) => row.driver.mobileNumber,
       sortable: true,
     },
-    // ...(cookie.currRole === 'Admin'
-    //   ? [{
-    //       name: "Action",
-    //       cell: (row) => (
-    //         <button
-    //           className="btn btn-danger"
-    //           onClick={() => deleteCustomer(row.customerId)}
-    //         >
-    //           Delete Customer
-    //         </button>
-    //       )
-    //     }]
-    //   : [])
+
     {
       name: "Rating",
       selector: (row) =>
@@ -79,34 +68,63 @@ useEffect(() => {
       name: "",
       cell: (row) => (
         <>
-          {(row.currStatus === 'Booked' || row.currStatus === 'Pending') && cookies.currRole === 'Customer' && (
-            <Button
-              variant="danger"
-              onClick={() => handleCancelTrip(row.tripBookingId)}
-              disabled={row.currStatus.toLowerCase() === "canceled"}
-            >
-              {row.currStatus.toLowerCase() === "canceled" ? "Canceled" : "Cancel Trip"}
-            </Button>
-          )}
-          {row.currStatus === 'Completed' && (
+          {(row.currStatus === "Booked" || row.currStatus === "Pending") &&
+            cookies.currRole === "Customer" && (
+              <Button
+                variant="danger"
+                onClick={() => handleCancelTrip(row.tripBookingId)}
+                disabled={row.currStatus.toLowerCase() === "canceled"}
+              >
+                {row.currStatus.toLowerCase() === "canceled"
+                  ? "Canceled"
+                  : "Cancel Trip"}
+              </Button>
+            )}
+          {row.currStatus === "Completed" && (
             <Button
               variant="warning"
-              onClick={() => handleGiveRating(row.tripBookingId, row.driver.driverId)}
-              disabled={row.currStatus.toLowerCase() === "pending" || row.currStatus.toLowerCase() === "cancelled" || row.rating!==-1}
+              onClick={() =>
+                handleGiveRating(row.tripBookingId, row.driver.driverId)
+              }
+              disabled={
+                row.currStatus.toLowerCase() === "pending" ||
+                row.currStatus.toLowerCase() === "cancelled" ||
+                row.rating !== -1
+              }
             >
-              {row.currStatus.toLowerCase() === "cancelled" ? "Cancelled" : "Give Rating"}
+              {row.currStatus.toLowerCase() === "cancelled"
+                ? "Cancelled"
+                : "Give Rating"}
+            </Button>
+          )}
+          {row.currStatus === "Completed" && (
+            <Button
+              variant="danger"
+              onClick={() =>
+                handleReport(row.tripBookingId, row.driver.driverId)
+              }
+              disabled={
+                row.currStatus.toLowerCase() === "reported" ||
+                row.currStatus.toLowerCase() === "cancelled"
+              }
+            >
+              {row.currStatus.toLowerCase() === "cancelled"
+                ? "Cancelled"
+                : "Report"}
             </Button>
           )}
         </>
       ),
-    }
+    },
   ];
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const uuid = cookies.uuid;
-        const response = await fetch(`http://185.199.52.133:1996/admin/getTripsCustomerwise?uuid=${uuid}&customerId=${cookies.currUserId}`);
+        const response = await fetch(
+          `${BASE_URL}/admin/getTripsCustomerwise?uuid=${uuid}&customerId=${cookies.currUserId}`
+        );
         if (response.ok) {
           const data = await response.json();
           setOriginalRecords(data);
@@ -124,10 +142,11 @@ useEffect(() => {
 
   function handleFilter(e) {
     const searchValue = e.target.value.toLowerCase();
-    const filteredData = originalRecords.filter((row) =>
-      row.pickupLocation.toLowerCase().includes(searchValue) &&
-      (!fromDate || new Date(row.fromDateTime) >= fromDate) &&
-      (!toDate || new Date(row.toDateTime) <= toDate)
+    const filteredData = originalRecords.filter(
+      (row) =>
+        row.pickupLocation.toLowerCase().includes(searchValue) &&
+        (!fromDate || new Date(row.fromDateTime) >= fromDate) &&
+        (!toDate || new Date(row.toDateTime) <= toDate)
     );
     setFilteredRecords(filteredData);
   }
@@ -138,55 +157,57 @@ useEffect(() => {
       const rowToDateTime = new Date(row.toDateTime).setHours(23, 59, 59, 999);
       const fromDateStart = fromDate ? fromDate.setHours(0, 0, 0, 0) : null;
       const toDateEnd = toDate ? toDate.setHours(23, 59, 59, 999) : null;
-  
+
       return (
         (!fromDate || rowFromDateTime >= fromDateStart) &&
         (!toDate || rowToDateTime <= toDateEnd)
       );
     });
-  
+
     setFilteredRecords(filteredData);
   }
-  
+
   async function handleCancelTrip(tripBookingId) {
     try {
       const uuid = cookies.uuid;
       const response = await fetch(
-        `http://185.199.52.133:1996/tripBooking/cancelTrip?TripBookingId=${tripBookingId}&uuid=${uuid}`,
-        { method: 'GET' }
+        `${BASE_URL}/tripBooking/cancelTrip?TripBookingId=${tripBookingId}&uuid=${uuid}`,
+        { method: "GET" }
       );
       if (response.ok) {
         const responseText = await response.text();
         setAlertMessage(responseText);
-        const updatedRecords = originalRecords.filter(record => record.tripBookingId !== tripBookingId);
+        const updatedRecords = originalRecords.filter(
+          (record) => record.tripBookingId !== tripBookingId
+        );
         setOriginalRecords(updatedRecords);
         setFilteredRecords(updatedRecords);
       } else {
-        setAlertMessage('Failed to cancel trip. Please try again.');
+        setAlertMessage("Failed to cancel trip. Please try again.");
       }
     } catch (error) {
       console.error("Error:", error);
-      setAlertMessage('An error occurred while canceling the trip.');
+      setAlertMessage("An error occurred while canceling the trip.");
     }
   }
 
   const navigate = useNavigate();
 
   async function handleGiveRating(tripBookingId, driverId) {
-    navigate('/submit-rating', { state: { tripBookingId, driverId } });
+    navigate("/submit-rating", { state: { tripBookingId, driverId } });
   }
-  var redirect="";
-  if(cookies.currRole==="Driver"){
-   redirect="/driver-dashboard";
-  }else if(cookies.currRole==="Customer")
-  {
-    redirect="/booking-history-customer";
-  }else if(cookies.currRole==="Admin")
-    
-    {
-      redirect="/admin-dashboard";
-    }else{ 
-    redirect="/vendor-dashboard";
+  async function handleReport(tripBookingId, driverId) {
+    navigate("/submit-report", { state: { tripBookingId, driverId } });
+  }
+  var redirect = "";
+  if (cookies.currRole === "Driver") {
+    redirect = "/urbanwheels/#/driver-dashboard";
+  } else if (cookies.currRole === "Customer") {
+    redirect = "/urbanwheels/#/";
+  } else if (cookies.currRole === "Admin") {
+    redirect = "/urbanwheels/#/admin-dashboard";
+  } else {
+    redirect = "/urbanwheels/#/vendor-dashboard";
   }
 
   return (
@@ -199,7 +220,9 @@ useEffect(() => {
       {alertMessage && (
         <Row className="my-3">
           <Col md={12}>
-            <Alert variant={alertMessage.startsWith('Failed') ? 'danger' : 'success'}>
+            <Alert
+              variant={alertMessage.startsWith("Failed") ? "danger" : "success"}
+            >
               {alertMessage}
             </Alert>
           </Col>
@@ -209,10 +232,13 @@ useEffect(() => {
         <div className="row">
           <div className="col-12">
             <ol className="breadcrumb float-sm-right">
-              <li className="breadcrumb-item"><a href={redirect}>Home</a></li>
+              <li className="breadcrumb-item">
+                <a href={redirect}>Home</a>
+              </li>
               <li className="breadcrumb-item active">Booking History</li>
             </ol>
           </div>
+
           <div className="col-12 text-end mb-3">
             <input
               type="text"
@@ -222,53 +248,24 @@ useEffect(() => {
               style={{ maxWidth: "300px", display: "inline-block" }}
             />
           </div>
-          <div className="col-md-6 mb-3" style={{ zIndex: isDatePickerOpen ? 9999 : 1 }}>
+          <div className="col-md-12 mb-3">
             <Form.Group>
-              <Form.Label>From Date:</Form.Label>
-              <DatePicker
-                selected={fromDate}
-                onChange={(date) => setFromDate(date)}
-                onCalendarOpen={() => setIsDatePickerOpen(true)}
-                onCalendarClose={() => setIsDatePickerOpen(false)}
-                isClearable
-                className="form-control"
-                placeholderText="Select From Date"
-                popperPlacement="bottom-start"
-                popperModifiers={{
-                  preventOverflow: {
-                    enabled: true,
-                    escapeWithReference: false,
-                    boundariesElement: 'viewport'
-                  }
-                }}
-              />
+              <div className="float-sm-right">
+                <a
+                  href="/urbanwheels/#/reports"
+                  className="btn btn-primary"
+                  style={{
+                    padding: "5px 20px",
+                    fontSize: "16px",
+                    textDecoration: "none",
+                  }}
+                >
+                  Reports
+                </a>
+              </div>
             </Form.Group>
           </div>
-          <div className="col-md-6 mb-3" style={{ zIndex: isDatePickerOpen ? 9999 : 1 }}>
-            <Form.Group>
-              <Form.Label>To Date:</Form.Label>
-              <DatePicker
-                selected={toDate}
-                onChange={(date) => setToDate(date)}
-                onCalendarOpen={() => setIsDatePickerOpen(true)}
-                onCalendarClose={() => setIsDatePickerOpen(false)}
-                isClearable
-                className="form-control"
-                placeholderText="Select To Date"
-                popperPlacement="bottom-start"
-                popperModifiers={{
-                  preventOverflow: {
-                    enabled: true,
-                    escapeWithReference: false,
-                    boundariesElement: 'viewport'
-                  }
-                }}
-              />
-            </Form.Group>
-          </div>
-          <div className="col-12 mb-3">
-            <Button onClick={handleDateFilter}>Filter by Date</Button>
-          </div>
+         
         </div>
       </div>
       <Row>

@@ -5,9 +5,12 @@ import "bootstrap/dist/css/bootstrap.min.css"; // Import Bootstrap CSS
 import { FaEye, FaEyeSlash } from 'react-icons/fa'; // Import eye icons
 import { useEffect, useState } from "react";
 import { Cookies, useCookies } from "react-cookie";
+import { BASE_URL } from '../config'; // Adjust path based on file location
+
 export function DriverRegister() {
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false); // State for password visibility
+  const [showWarning, setShowWarning] = useState(true);
   const [cookies, ] = useCookies();
   useEffect(() => {
     if (!cookies.uuid) {
@@ -49,7 +52,7 @@ export function DriverRegister() {
         onSubmit={async (values) => {
           try {
             const response = await fetch(
-              "http://185.199.52.133:1996/driver/register",
+              `${BASE_URL}/driver/register`,
               {
                 method: "POST",
                 headers: {
@@ -74,8 +77,7 @@ export function DriverRegister() {
           userName: yup
             .string()
             .required("Username is required")
-            .min(4, "Minimum length should be 4")
-            .max(10, "Length should not exceed 10"),
+            .min(4, "Minimum length should be 4"),            
             mobileNumber: yup
             .string() // Ensures the input is treated as a string
             .required("Mobile number is required") // Makes the field mandatory
@@ -146,29 +148,38 @@ export function DriverRegister() {
                         />
                       </div>
                       <div className="mb-3">
-                        <label htmlFor="password" className="form-label">
-                          Password
-                        </label>
-                        <div className="input-group">
-                          <Field
-                            type={showPassword ? "text" : "password"} // Toggle between password and text
-                            name="password"
-                            className="form-control"
-                          />
-                          <button
-                            type="button"
-                            className="btn btn-outline-secondary"
-                            onClick={() => setShowPassword(!showPassword)} // Toggle password visibility
-                          >
-                            {showPassword ? <FaEyeSlash /> : <FaEye />}
-                          </button>
-                        </div>
-                        <ErrorMessage
-                          name="password"
-                          component="div"
-                          className="text-danger"
-                        />
-                      </div>
+  <label htmlFor="password" className="form-label">
+    Password
+  </label>
+  <div className="input-group">
+    <Field
+      type={showPassword ? "text" : "password"}
+      name="password"
+      className="form-control"
+      onFocus={() => setShowWarning(false)} // Hide warning on focus
+    />
+    <button
+      type="button"
+      className="btn btn-outline-secondary"
+      onClick={() => setShowPassword(!showPassword)} // Toggle password visibility
+    >
+      {showPassword ? <FaEyeSlash /> : <FaEye />}
+    </button>
+  </div>
+  {/* Initial warning message about password format */}
+  {showWarning && (
+    <div className="text-warning">
+      Password must contain at least 8 characters, including uppercase, lowercase, and special characters.
+    </div>
+  )}
+  {/* Error message shown if password validation fails */}
+  <ErrorMessage
+    name="password"
+    component="div"
+    className="text-danger mt-2" // Adds spacing below the input field
+  />
+</div>
+
                       <div className="mb-3">
                         <label htmlFor="address" className="form-label">
                           Address

@@ -5,6 +5,7 @@ import styled from "styled-components";
 import { useCookies } from "react-cookie";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { BASE_URL } from '../config'; // Adjust path based on file location
 
 function Users() {
  const navigate=useNavigate();
@@ -17,7 +18,7 @@ useEffect(() => {
   async function deleteCustomer(customerId) {
     try {
       const response = await axios.delete(
-        `http://185.199.52.133:1996/customer/delete?uuid=${cookie.uuid}&customerId=${customerId}`,
+        `${BASE_URL}/customer/delete?uuid=${cookie.uuid}&customerId=${customerId}`,
         {
           headers: {
             "Content-Type": "application/json"
@@ -90,7 +91,7 @@ useEffect(() => {
     const fetchData = async () => {
       try {
         const uuid=cookie.uuid;
-        const response = await fetch(`http://185.199.52.133:1996/customer/viewAllCustomer?uuid=${uuid}`);
+        const response = await fetch(`${BASE_URL}/customer/viewAllCustomer?uuid=${uuid}`);
         if (response.ok) {
           const data = await response.json();
           setOriginalRecords(data);
@@ -131,12 +132,12 @@ useEffect(() => {
 `;
 var redirect="";
 if(cookie.currRole==="Driver"){
- redirect="/driver-dashboard";
+ redirect="/urbanwheels/#/driver-dashboard";
 }else if(cookie.currRole==="Admin")
 {
-  redirect="/admin-dashboard";
+  redirect="/urbanwheels/#/admin-dashboard";
 }else{
-  redirect="/vendor-dashboard";
+  redirect="/urbanwheels/#/vendor-dashboard";
 }
   return (
     <>

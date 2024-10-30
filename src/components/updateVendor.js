@@ -6,6 +6,7 @@ import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 import axios from "axios";
+import { BASE_URL } from '../config'; // Adjust path based on file location
 
 export function VendorUpdate() {
   const params = useParams();
@@ -18,7 +19,7 @@ export function VendorUpdate() {
     const fetchvendorDetails = async () => {
       try {
         const response = await axios.get(
-          `http://185.199.52.133:1996/vendor/viewVendor/${params.vendorId}?uuid=${cookie.uuid}`
+          `${BASE_URL}/vendor/viewVendor/${params.vendorId}?uuid=${cookie.uuid}`
         );
         if (response) {
           setvendorDetails(response.data);
@@ -60,7 +61,7 @@ export function VendorUpdate() {
         onSubmit={async (values) => {
           try {
             const response = await axios.put(
-              "http://185.199.52.133:1996/vendor/update",
+              `${BASE_URL}/vendor/update`,
               values,
               {
                 params:{

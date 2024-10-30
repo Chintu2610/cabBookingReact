@@ -4,6 +4,7 @@ import FormatPrice from "../Helpers/FormatPrice";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useCookies } from "react-cookie";
+import { BASE_URL } from '../config'; // Adjust path based on file location
 
 
 const Product = ({ cabId, currLocation, cabCurrStatus, carName, cabImage, perKmRate, manufacturingYear }) => {
@@ -20,21 +21,15 @@ const Product = ({ cabId, currLocation, cabCurrStatus, carName, cabImage, perKmR
       // If uuid is present, proceed with booking
       navigate(`/booking/${cabId}`, { state: { perKmRate } });
     }
-
   };
   const updateCab = () => {
-    // if (currentRole !== 'admin') {
-    //   navigate(`/booking/${cabId}`);
-    // } else {
-    //   alert("Admin users cannot book a cab.");
-    // }
     navigate(`/updatecab/${cabId}`);
   };
 
   async function deleteCab() {
     try {
       const response = await axios.delete(
-        `http://185.199.52.133:1996/cab/delete?cabId=${cabId}&uuid=${cookies.uuid}`
+        `${BASE_URL}/cab/delete?cabId=${cabId}&uuid=${cookies.uuid}`
       );
       if (response.status === 200) {
 
@@ -51,10 +46,8 @@ const Product = ({ cabId, currLocation, cabCurrStatus, carName, cabImage, perKmR
   }
 
   return (
-    // <NavLink to={`/singleproduct/${cabId}`}>
     <div className="card">
       <figure>
-        {/* <img src={cabImage} alt={carName} /> */}
         <img
           src={`${process.env.PUBLIC_URL}/images/cabImages/${cabImage}`}
           alt={carName}
@@ -84,7 +77,6 @@ const Product = ({ cabId, currLocation, cabCurrStatus, carName, cabImage, perKmR
           Book Now
         </button>
       )}
-
         {cookies.currRole &&
           (cookies.currRole.toLowerCase() === "admin" ||
             cookies.currRole.toLowerCase()==="vendor") && (
@@ -109,10 +101,8 @@ const Product = ({ cabId, currLocation, cabCurrStatus, carName, cabImage, perKmR
               </div>
             </div>
           )}
-
       </div>
     </div>
   );
 };
-
 export default Product;

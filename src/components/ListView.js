@@ -6,6 +6,7 @@ import { Button } from "../styles/Button";
 import PropTypes from "prop-types";
 import axios from "axios";
 import { useCookies } from "react-cookie";
+import { BASE_URL } from '../config'; // Adjust path based on file location
 
 const ListView = ({ products }) => {
   const navigate = useNavigate();
@@ -33,7 +34,7 @@ const ListView = ({ products }) => {
     } else {
       try {
         const response = await axios.delete(
-          `http://185.199.52.133:1996/cab/delete?cabId=${cabId}&uuid=${cookies.uuid}`
+          `${BASE_URL}/cab/delete?cabId=${cabId}&uuid=${cookies.uuid}`
         );
         if (response.status === 200) {
           alert("Cab deleted successfully.");
@@ -52,7 +53,8 @@ const ListView = ({ products }) => {
     <Wrapper className="section">
       <div className="container grid">
         {products.map((curElem) => {
-          const { cabId, carName, cabImage, perKmRate, currLocation, area } = curElem;
+          const { cabId, carName, cabImage, perKmRate, currLocation, area } =
+            curElem;
 
           return (
             <div className="card grid grid-two-column" key={cabId}>
@@ -72,6 +74,7 @@ const ListView = ({ products }) => {
                   {currLocation}, {area}
                 </p>
                 <div className="button-container">
+                {(!cookies.currRole || cookies.currRole.toLowerCase() === "customer") && (
                   <Button
                     onClick={() => handleBookingClick(cabId, perKmRate)}
                     style={{ color: "black" }}
@@ -79,18 +82,32 @@ const ListView = ({ products }) => {
                   >
                     Book Now
                   </Button>
-                  <Button
-                    onClick={() => handleUpdateClick(cabId)}
-                    className="btn btn-update"
-                  >
-                    Update
-                  </Button>
-                  <Button
-                    onClick={() => handleDeleteClick(cabId)}
-                    className="btn btn-update"
-                  >
-                    Delete
-                  </Button>
+                )}
+                  {cookies.currRole &&
+                    (cookies.currRole.toLowerCase() === "admin" ||
+                      cookies.currRole.toLowerCase() === "vendor") && (
+                      <div className="row">
+                        <div className="col-md-6">
+                          <Button
+                            onClick={() => handleUpdateClick(cabId)}
+                            className="btn btn-primary btn-block btn-md"
+                            style={{ color: "black", backgroundColor: "green" }}
+                          >
+                            Update
+                          </Button>
+                          </div>
+                          <div className="col-md-6">
+                          <Button
+                            onClick={() => handleDeleteClick(cabId)}
+                            className="btn btn-danger btn-block btn-md"
+                            style={{ color: "black", backgroundColor: "red" }}
+                          >
+                            Delete
+                          </Button>
+                          </div>
+                        </div>
+                      
+                    )}
                 </div>
               </div>
             </div>

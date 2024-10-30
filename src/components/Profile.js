@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useCookies } from 'react-cookie';
 import { FaEye, FaEyeSlash } from 'react-icons/fa'; // Import eye icons
 import { useNavigate } from 'react-router-dom';
+import { BASE_URL } from '../config'; // Adjust path based on file location
 
 const AdminProfile = () => {
   const [cookies] = useCookies();
@@ -19,8 +20,11 @@ useEffect(() => {
     address: '',
     mobileNumber: '',
     email: '',
-    userRole: '',
+   
     currDriverStatus:'',
+    firstName:'',
+    lastName:'',
+    gender:'',
   });
   const [error, setError] = useState(null);
   const [adminId, setAdminId] = useState(''); // State for admin ID
@@ -33,11 +37,11 @@ useEffect(() => {
   const fetchAdminDetails = async () => {
     var URL="";
     if(cookies.currRole==='Admin' || cookies.currRole==='Vendor'){
-      URL=`http://185.199.52.133:1996/admin/viewAdminProfile?adminId=${cookies.currUserId}&uuid=${cookies.uuid}`;
+      URL=`${BASE_URL}/admin/viewAdminProfile?adminId=${cookies.currUserId}&uuid=${cookies.uuid}`;
     }else if(cookies.currRole==='Customer') {
-      URL=`http://185.199.52.133:1996/customer/viewCustomerProfile?customerId=${cookies.currUserId}&uuid=${cookies.uuid}`;
+      URL=`${BASE_URL}/customer/viewCustomerProfile?customerId=${cookies.currUserId}&uuid=${cookies.uuid}`;
     }else{
-      URL=`http://185.199.52.133:1996/driver/GetDriverDetails?driverid=${cookies.currUserId}&uuid=${cookies.uuid}`;
+      URL=`${BASE_URL}/driver/GetDriverDetails?driverid=${cookies.currUserId}&uuid=${cookies.uuid}`;
     }
     try {
       
@@ -76,11 +80,11 @@ useEffect(() => {
     try {
       var URL="";
       if(cookies.currRole==="Admin" || cookies.currRole==='Vendor'){
-        URL=`http://185.199.52.133:1996/admin/Update?adminId=${cookies.currUserId}&uuid=${cookies.uuid}`;
+        URL=`${BASE_URL}/admin/Update?adminId=${cookies.currUserId}&uuid=${cookies.uuid}`;
       }else if(cookies.currRole==='Customer') {
-        URL=`http://185.199.52.133:1996/customer/update?customerId=${cookies.currUserId}&uuid=${cookies.uuid}`;
+        URL=`${BASE_URL}/customer/update?customerId=${cookies.currUserId}&uuid=${cookies.uuid}`;
       }else{
-        URL=`http://185.199.52.133:1996/driver/update?driverId=${cookies.currUserId}&uuid=${cookies.uuid}`;
+        URL=`${BASE_URL}/driver/update?driverId=${cookies.currUserId}&uuid=${cookies.uuid}`;
       }
       const response = await fetch(URL
         
@@ -94,9 +98,10 @@ useEffect(() => {
           address: adminDetails.address,
           mobileNumber: adminDetails.mobileNumber,
           email: adminDetails.email,
-          userRole: adminDetails.userRole,
           currDriverStatus:adminDetails.currDriverStatus,
-         
+          firstName:adminDetails.firstName,
+          lastName:adminDetails.lastName,
+          gender:adminDetails.gender,
         })
        }
       );
@@ -112,16 +117,16 @@ useEffect(() => {
   };
   var redirect="";
   if(cookies.currRole==="Driver"){
-   redirect="/driver-dashboard";
+   redirect="/urbanwheels/#/driver-dashboard";
   }else if(cookies.currRole==="Admin")
   {
-    redirect="/admin-dashboard";
+    redirect="/urbanwheels/#/admin-dashboard";
   }else if(cookies.currRole==="Customer")
     {
-      redirect="/";
+      redirect="/urbanwheels/#/";
     }else
     {
-    redirect="/vendor-dashboard";
+    redirect="/urbanwheels/#/vendor-dashboard";
   }
   return (
     <div 
@@ -159,10 +164,50 @@ useEffect(() => {
                       value={adminDetails.userName || ''}
                       onChange={handleInputChange}
                       required
+                      readOnly
                     />
                   </div>
                   <div className="mb-3">
-                    <label htmlFor="password" className="form-label">Password</label>
+                    <label htmlFor="firstName" className="form-label">First Name</label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      id="firstName"
+                      name="firstName"
+                      value={adminDetails.firstName || ''}
+                      onChange={handleInputChange}
+                      required
+                    />
+                  </div>
+                  <div className="mb-3">
+                    <label htmlFor="lastName" className="form-label">Last Name</label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      id="lastName"
+                      name="lastName"
+                      value={adminDetails.lastName || ''}
+                      onChange={handleInputChange}
+                      required
+                    />
+                  </div>
+                  <div className="mb-3">
+                        <label htmlFor="cabCurrStatus" className="form-label fs-5">
+                          Gender
+                        </label>
+                        <select
+                          name="gender"
+                          value={adminDetails.gender || ''}
+                          onChange={handleInputChange}
+                          className="form-control"
+                        >
+                          <option value="">Select Gender</option>
+                          <option value="male">Male</option>
+                          <option value="female">Female</option>
+                          <option value="others">Others</option>
+                        </select>
+                       
+                      </div>
                     <div className="input-group">
                       <input
                         type={showPassword ? "text" : "password"} // Toggle between password and text
@@ -171,18 +216,12 @@ useEffect(() => {
                         name="password"
                         value={adminDetails.password || ''}
                         onChange={handleInputChange}
-                        readOnly // Make the password field read-only
+                        hidden // Make the password field read-only
                         required
                       />
-                      <button
-                        type="button"
-                        className="btn btn-outline-secondary"
-                        onClick={() => setShowPassword(!showPassword)} // Toggle password visibility
-                      >
-                        {showPassword ? <FaEyeSlash /> : <FaEye />}
-                      </button>
+                      
                     </div>
-                  </div>
+                  
                   <div className="mb-3">
                     <label htmlFor="address" className="form-label">Address</label>
                     <input
@@ -219,21 +258,10 @@ useEffect(() => {
                       value={adminDetails.email || ''}
                       onChange={handleInputChange}
                       required
-                    />
-                  </div>
-                  <div className="mb-3">
-                    <label htmlFor="userRole" className="form-label">Role</label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      id="userRole"
-                      name="userRole"
-                      value={adminDetails.userRole || ''}
-                      onChange={handleInputChange}
-                      required
                       readOnly
                     />
                   </div>
+                  
                   {(cookies.currRole==='Driver')&& 
                   <div className="mb-3">
                     <label htmlFor="userRole" className="form-label">Availability</label>
